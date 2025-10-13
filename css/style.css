@@ -4,7 +4,7 @@ body {
 	color: #222;
 	text-align: center;
 	margin: 0;
-	padding: 20px;
+	padding: 80px 20px 20px;
 	transition: background 0.6s ease,color 0.6s ease;
 }
 
@@ -185,4 +185,191 @@ h1 {
 	h1 {
 		font-size: 24px;
 	}
+}
+
+/* 导航栏样式 */
+.top-nav {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background: #fff;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	z-index: 1000;
+	transition: background 0.6s ease;
+}
+
+.nav-inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.brand-logo img {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.nav-toggle {
+	display: none;
+	background: none;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.nav-menu {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-menu li {
+	margin: 0 15px;
+}
+
+.nav-menu a {
+	text-decoration: none;
+	color: #333;
+	font-weight: 500;
+	padding: 5px 10px;
+	border-radius: 5px;
+	transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-menu a:hover {
+	background: #f0f0f0;
+	color: #1976d2;
+}
+
+@media (max-width: 768px) {
+	.nav-menu {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		background: #fff;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		padding: 10px 0;
+	}
+
+	.nav-menu.open {
+		display: flex;
+	}
+
+	.nav-menu li {
+		margin: 10px 0;
+		text-align: center;
+	}
+
+	.nav-toggle {
+		display: block;
+	}
+}
+
+/* 返回主页按钮样式 */
+.back-button {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	display: inline-block;
+	padding: 10px 20px;
+	background: #1976d2;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 8px;
+	font-weight: 500;
+	transition: background 0.3s ease;
+	z-index: 10;
+}
+
+.back-button:hover {
+	background: #1565c0;
+}
+
+/* 主页夜间模式按钮样式，避免被导航栏挡住 */
+#darkToggle {
+	position: fixed;
+	top: 80px;
+	right: 20px;
+	z-index: 999;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+#darkToggle:hover {
+	background: #f0f0f0;
+}
+
+/* 磁盘空间卡片样式 */
+.disk-card {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+	padding: 20px;
+	margin: 24px auto;
+	max-width: 600px;
+	animation: fadeUp 1s ease;
+}
+
+.disk-details {
+	margin-bottom: 20px;
+}
+
+.disk-bar {
+	width: 100%;
+	height: 20px;
+	background: #e0e0e0;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 8px 0;
+}
+
+.disk-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #1976d2, #64b5f6);
+	transition: width 0.5s ease;
+}
+
+.disk-sub {
+	margin-top: 20px;
+	border-top: 1px solid #eee;
+	padding-top: 20px;
+}
+
+/* 渐变文字样式 */
+.gradient-text {
+	/* 渐变背景及动画设置 */
+	background: linear-gradient(90deg, #161de8, #4de0ff, #ff6b6b, #a64dff, #161de8);
+	background-size: 400% 400%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	animation: gradientShift 8s ease infinite;
+	transition: color 0.6s ease;
+}
+
+body.dark .disk-sub {
+	color: #e0e0e0;
 }

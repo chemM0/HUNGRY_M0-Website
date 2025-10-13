@@ -1,5 +1,5 @@
 /* about 页面专用样式 - app 风格 */
-.about-wrap { max-width: 720px; margin: 48px auto; padding: 20px; display:flex; flex-direction:column; align-items:center; }
+.about-wrap { max-width: 720px; margin: 48px auto; padding: 20px; display:flex; flex-direction:column; align-items:center; position: relative; }
 .about-card { width:100%; border-radius:16px; padding: 28px; display:flex; flex-direction:column; align-items:center; gap:14px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); background:#fff; }
 
 /* 使 about-card 成为定位容器，便于在右上角放置主题开关 */
