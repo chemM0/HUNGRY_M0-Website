@@ -194,6 +194,11 @@ body.dark .terms-header .about-version { color: #aab6bf; }
 	font-size: 14px;
 }
 
+/* 小型法律/版权链接样式（关于页底部） */
+.about-sub-legal { margin-top: 6px; }
+.about-sub-legal a { color: #1976d2; text-decoration: none; font-size: 12px; }
+body.dark .about-sub-legal a { color: #90caf9; }
+
 /* 联系方式页样式 */
 .contact-grid {
 	width: 100%;
