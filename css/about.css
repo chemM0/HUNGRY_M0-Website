@@ -4,11 +4,13 @@
 
 /* 使 about-card 成为定位容器，便于在右上角放置主题开关 */
 .about-card { position: relative; }
-.about-logo { width:120px; height:120px; border-radius:20px; overflow:hidden; border: 4px solid rgba(25,118,210,0.12); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px rgba(25,118,210,0.08); }
+.about-logo { width:120px; height:120px; border-radius:20px; overflow:hidden; border: 4px solid rgba(25,118,210,0.12); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px rgba(25,118,210,0.08); margin-top: calc(-1 * (var(--nav-height, 60px) - 6px)); }
 .about-logo img { width:100%; height:100%; object-fit:cover; }
 .about-author { font-size:18px; font-weight:800; color:#222; }
 .about-author.large { font-size:26px; }
 .about-sub { color:#666; font-size:14px; text-align:center; max-width:640px; }
+
+.terms-footer { margin-top: 18px; }
 
 /* changelog heading styles (replaces inline styles) */
 .changelog-heading { font-size: x-large; font-weight: bold; text-align: left; width: 100%; }
@@ -81,17 +83,104 @@ body.dark .ch-entry { background: #152226; }
 body.dark .ch-text { color:#dbe9f8; }
 .about-wrap {
 	max-width: 920px;
-	margin: 48px auto;
-	padding: 20px;
+	/* 减小整体顶部间距，使条款页内容靠近导航 */
+		margin: 4px auto 12px auto;
+		padding: 6px 20px 14px 20px;
 }
 
 .about-card {
 	background: #fff;
 	border-radius: 12px;
-	padding: 20px;
+	/* 减少卡片内顶边距以整体上移内容 */
+		padding: 4px 20px;
 	box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
+/* 专用于条款页的左对齐布局与页首（不影响 about 页） */
+.terms-header {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	justify-content: flex-start;
+	margin-bottom: 2px;
+	/* 为固定在左上的返回按钮预留空间，使 logo 与标题不被覆盖 */
+	padding-left: 96px;
+}
+
+.terms-card .about-body {
+	text-align: left;
+	max-width: 900px;
+	margin: 0 auto;
+	padding-top: 4px;
+}
+
+.terms-header .about-logo { width: 64px; height: 64px; border-radius: 8px; border-width: 2px; }
+
+/* 将条款页 logo 固定到视口左上角（仅作用于条款页） */
+.terms-header .about-logo {
+	/* 在条款页内向上移动（靠近导航），但不固定到视口左上 */
+	position: relative;
+	width: 56px;
+	height: 56px;
+	margin: 0 12px 0 0;
+	/* 取消上移，改为与标题垂直居中显示 */
+	margin-top: 0;
+	border-radius: 8px;
+	align-self: flex-start;
+	z-index: 10005;
+	/* 微调：再上移一点，使 logo 与标题和卡片整体更靠近导航 */
+		margin-top: -12px;
+}
+
+/* 在条款页中，避免返回按钮与 logo 重叠 */
+/* 在条款页中，调整返回按钮与夜间切换按钮位置，使其位于导航栏内垂直居中 */
+body.terms-page { padding-top: calc(var(--nav-height) + 12px); }
+body.terms-page .back-button {
+	position: fixed;
+	top: 12px; /* 置顶，靠近视口左上 */
+	left: 12px; /* 页面左上角 */
+	z-index: 10003;
+}
+
+body.terms-page #darkToggle {
+	position: fixed;
+	top: calc(var(--nav-height) / 2 - 18px + 6px);
+	right: 12px;
+	z-index: 10003;
+}
+
+@media (max-width: 600px) {
+	body.terms-page .back-button { left: 8px; top: 10px; }
+	body.terms-page #darkToggle { right: 8px; }
+	/* 小屏幕时减少 header 左侧内边距并调整 logo 上移量 */
+	.terms-header { padding-left: 64px; }
+	.terms-header .about-logo { margin-top: 0; }
+}
+
+/* 取消条款页标题的渐变效果并放大加粗以显得更正式 */
+.terms-header .about-author {
+	background: none;
+	-webkit-background-clip: unset;
+	background-clip: unset;
+	-webkit-text-fill-color: unset;
+	font-size: 36px;
+	font-weight: 900;
+}
+
+/* 适配浅色与深色主题下的标题颜色 */
+body:not(.dark) .terms-header .about-author { color: #111; }
+body.dark .terms-header .about-author { color: #e6eef8; }
+
+/* 深色主题下条款正文可读性调整 */
+body.dark .terms-card .about-body,
+body.dark .terms-card .about-body p,
+body.dark .terms-card .about-body li,
+body.dark .terms-card .about-body h3 {
+	color: #cfd8dc;
+}
+
+body.dark .terms-header .about-version { color: #aab6bf; }
 .about-title {
 	font-size: 20px;
 	font-weight: 800;
@@ -223,11 +312,11 @@ body.dark .back-small { background:#1f2a31; color:#90caf9; box-shadow: 0 6px 18p
 .version-body { padding:10px 12px; max-height: none; overflow: hidden; transition: max-height 360ms cubic-bezier(.2,.9,.3,1), padding 260ms ease; }
 .version-body.collapsed { max-height: 0; padding-top:0; padding-bottom:0; }
 
-/* 夜间切换按钮样式（在 about-card 右上角） */
+/* 夜间切换按钮：页面右上角（使用固定定位，以免被局部容器覆盖） */
 #darkToggle {
-	position: absolute;
-	top: 12px;
-	right: 12px;
+	position: fixed;
+	top: calc(var(--nav-height, 60px) + 18px);
+	right: 20px;
 	z-index: 9999;
 	background: #1976d2;
 	color: #fff;

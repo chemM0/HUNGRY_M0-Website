@@ -36,6 +36,12 @@
     function bindToggle(){
         const btn = document.getElementById('darkToggle');
         if(!btn) return false;
+        // 如果按钮被放在局部容器内，移动到 body 以确保 fixed 定位相对于视口生效
+        try{
+            if(btn.parentElement && btn.parentElement !== document.body){
+                document.body.appendChild(btn);
+            }
+        }catch(e){ /* ignore */ }
         // 防止重复绑定（如果脚本被多次执行）
         if(btn.__dark_bound) return true;
         btn.__dark_bound = true;

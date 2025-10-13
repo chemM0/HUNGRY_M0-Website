@@ -39,17 +39,18 @@ body.dark .metric-value {
 }
 
 #darkToggle {
-	position: fixed;
-	top: 80px;
-	right: 20px;
-	padding: 6px 12px;
-	border: none;
-	border-radius: 5px;
-	background: linear-gradient(135deg,#1976d2,#64b5f6);
-	color: #fff;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background 0.5s ease,color 0.5s ease,transform 0.2s ease;
+	position: fixed !important;
+	top: calc(var(--nav-height, 60px) + 18px) !important;
+	right: 20px !important;
+	padding: 6px 12px !important;
+	border: none !important;
+	border-radius: 5px !important;
+	background: linear-gradient(135deg,#1976d2,#64b5f6) !important;
+	color: #fff !important;
+	cursor: pointer !important;
+	font-weight: bold !important;
+	transition: background 0.5s ease,color 0.5s ease,transform 0.2s ease !important;
+	z-index: 10001 !important;
 }
 
 #darkToggle:hover {
@@ -62,7 +63,7 @@ body.dark .metric-value {
 
 /* 确保切换按钮在其他元素之上以便可点击 */
 #darkToggle {
-	z-index: 9999;
+	z-index: 10001 !important;
 }
 /* 夜间主题：磁盘卡及内部元素样式 */
 body.dark .disk-card {
@@ -81,4 +82,19 @@ body.dark .disk-details #diskTextD,
 body.dark #diskName,
 body.dark #diskNameD {
 	color: #e0e0e0;
+}
+
+/* 夜间模式下导航栏适配 */
+body.dark .top-nav {
+	background: #0f1720;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+body.dark .nav-menu a {
+	color: #e0e0e0;
+}
+
+body.dark .nav-menu a:hover {
+	background: rgba(255,255,255,0.04);
+	color: #64b5f6;
 }
