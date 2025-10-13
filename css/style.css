@@ -1,0 +1,188 @@
+body {
+	font-family: "PingFang SC","Microsoft YaHei","SF Pro",sans-serif;
+	background: #fafafa;
+	color: #222;
+	text-align: center;
+	margin: 0;
+	padding: 20px;
+	transition: background 0.6s ease,color 0.6s ease;
+}
+
+h1 {
+	/* 用可动画的线性渐变替代固定颜色，裁剪为文本显示 */
+	font-size: 30px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	margin: 12px 0 20px;
+	/* 渐变背景及动画设置 */
+	background: linear-gradient(90deg, #161de8, #4de0ff, #ff6b6b, #a64dff, #161de8);
+	background-size: 400% 400%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent; /* Safari/Chrome */
+	color: transparent;
+	animation: gradientShift 8s ease infinite, fadeIn 1s ease;
+	transition: color 0.6s ease;
+}
+
+@keyframes gradientShift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #4caf50;
+	animation: blink 1.5s infinite alternate;
+	transition: background 0.6s ease;
+}
+
+@keyframes blink {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0.4;
+	}
+}
+
+.info-block,#focus-card,.metric-box {
+	transition: background 0.6s ease,color 0.6s ease,border-color 0.6s ease;
+}
+
+.info-block {
+	background: #fff;
+	border-radius: 10px;
+	display: inline-block;
+	padding: 10px 20px;
+	margin-bottom: 20px;
+	font-size: 17px;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+	animation: fadeIn 1s ease;
+}
+
+#focus-card {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+	padding: 20px;
+	margin: 24px auto;
+	max-width: 600px;
+	animation: fadeUp 1s ease;
+}
+
+.focus-title {
+	font-size: 22px;
+	font-weight: 800;
+	color: #1976d2;
+	margin-bottom: 10px;
+	transition: color 0.6s ease;
+}
+
+.focus-details {
+	font-size: 15px;
+	color: #333;
+	line-height: 1.6;
+	transition: color 0.6s ease;
+}
+
+.metrics-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.metric-box {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	width: 160px;
+	padding: 16px;
+	transition: all 0.6s ease;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+	animation: fadeUp 1s ease;
+}
+
+.metric-box:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.metric-label {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 6px;
+	transition: color 0.6s ease;
+}
+
+.metric-value {
+	font-size: 26px;
+	font-weight: 700;
+	color: #1565c0;
+	transition: color 0.6s ease,transform 0.3s ease;
+}
+
+/* 调整网络速率显示稍微小一点，优先级高于 .metric-value */
+#netVal {
+	font-size: 22px;
+}
+
+#uptime {
+	margin-top: 10px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #444;
+	transition: color 0.6s ease;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width:600px) {
+	.metric-box {
+		width: 45%;
+		min-width: 130px;
+	}
+
+	h1 {
+		font-size: 24px;
+	}
+}

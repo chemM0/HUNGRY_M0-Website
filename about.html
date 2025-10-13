@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/png" href="favicon.png">
+	<title>关于 - HUNGRY_M0</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/dark.css">
+	<link rel="stylesheet" type="text/css" href="css/about.css">
+</head>
+<body>
+	<div class="about-wrap">
+		<a class="back-button" href="index.html">🖥️ 返回主页</a>
+		<button id="darkToggle" type="button" aria-label="切换夜间模式">🌙 夜间</button>
+	<div class="about-logo"><img src="favicon.png" alt="logo"></div><br />
+	<div class="about-author gradient-text large">HUNGRY#末老师 个人网页</div>
+        <div class="about-version">当前版本: <strong id="siteVersion">v0.0.3</strong></div>
+        <br /><br /><br /><br /><br />
+		<div class="about-sub">© Copyright 2025-2026  |  HUNGRY#末老师 版权所有</div>
+		<div class="changelog-card">
+			<div class="about-changelog">
+				<div class="changelog-heading">
+					&nbsp;&nbsp;网页更新日志
+					<span class="changelog-sub">
+						&nbsp;&nbsp;(最近一次编辑时间：2025-10-13 11:00:39)
+					</span>
+				</div>
+				<br />
+                <!-- 把所有版本条目放到同一个卡片内 -->
+				<div class="version-block">
+					<div class="version-block">
+						<div class="version-header" data-target="ver0">
+							<div class="version-title">v0.0.3 - 2025-10-13</div>
+							<div class="version-action">展开</div>
+						</div>
+						<div id="ver0" class="version-body collapsed">
+							<div class="ch-entry">
+								<div class="ch-icon add w45">新增</div>
+								<div class="ch-text">更改了git仓库所属的账户</div>
+							</div>
+						</div>
+						<div class="version-header" data-target="ver0">
+							<div class="version-title">v0.0.2 - 2025-10-12</div>
+							<div class="version-action">展开</div>
+						</div>
+						<div id="ver0" class="version-body collapsed">
+							<div class="ch-entry">
+								<div class="ch-icon add w45">新增</div>
+								<div class="ch-text">新建 联系方式 页面</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon add w45">新增</div>
+								<div class="ch-text">现在可以显示当前聚焦进程的时长，并在每次切换时会重置</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon fix w45">修复</div>
+								<div class="ch-text">修复了CPU使用率会突破100%的问题</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon fix w45">修复</div>
+								<div class="ch-text">修复了html的24个报错</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon remove w45">移除</div>
+								<div class="ch-text">移除当前聚焦进程的CPU与内存占用率</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="version-header" data-target="ver1">
+						<div class="version-title">v0.0.1 - 2025-10-10</div>
+						<div class="version-action">展开</div>
+					</div>
+					<div id="ver1" class="version-body collapsed">
+							<div class="ch-entry">
+								<div class="ch-icon add w45">新增</div>
+								<div class="ch-text">添加 CPU 分核页面</div>
+							</div>
+						<div class="ch-entry">
+							<div class="ch-icon add w45">新增</div>
+							<div class="ch-text">新建 关于 页面</div>
+						</div>
+						<div class="ch-entry">
+							<div class="ch-icon add w45">新增</div>
+							<div class="ch-text">新增夜间模式记忆功能</div>
+						</div>
+						<div class="ch-entry">
+							<div class="ch-icon add w45">新增</div>
+							<div class="ch-text">主页左上角新增圆角图标</div>
+						</div>
+						<div class="ch-entry">
+							<div class="ch-icon fix w45">修复</div>
+							<div class="ch-text">修复夜间模式按钮不可点击</div>
+						</div>
+						<div class="ch-entry">
+							<div class="ch-icon fix w45">修复</div>
+							<div class="ch-text">修复更新日志展开动画</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="JavaScript/page_transitions.js"></script>
+	<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
+	<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+	<script>
+		// 折叠/展开版本日志（动态高度动画 + 状态记忆）
+		(function(){
+			const STORAGE_KEY = 'about_changelog_state_v1';
+			function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
+			function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }catch(e){}
+			}
+
+			function openPanel(body){
+				// 展开：从 0px -> scrollHeight 动画，动画结束后把 max-height 设为 'none' 以保持自适应高度
+				body.style.maxHeight = '0px';
+				body.classList.remove('collapsed');
+				requestAnimationFrame(()=>{
+					const h = body.scrollHeight;
+					body.style.maxHeight = h + 'px';
+				});
+				function onEnd(){ body.style.maxHeight = 'none'; body.removeEventListener('transitionend', onEnd); }
+				body.addEventListener('transitionend', onEnd);
+			}
+			function closePanel(body){
+				// 收起：先设置 max-height 为当前高度（确保开始点），然后在下一个帧设置为 0
+				const h = body.scrollHeight;
+				body.style.maxHeight = h + 'px';
+				requestAnimationFrame(()=>{
+					requestAnimationFrame(()=>{
+						body.style.maxHeight = '0px';
+					});
+				});
+				function onEnd(){ body.classList.add('collapsed'); body.style.maxHeight = ''; body.removeEventListener('transitionend', onEnd); }
+				body.addEventListener('transitionend', onEnd);
+			}
+
+			document.addEventListener('DOMContentLoaded', function(){
+				const state = loadState();
+				document.querySelectorAll('.version-header').forEach(h=>{
+					const targetId = h.getAttribute('data-target');
+					const body = document.getElementById(targetId);
+					const action = h.querySelector('.version-action');
+					if(!body) return;
+					// 恢复状态
+					const open = !!state[targetId];
+					if(open){ body.classList.remove('collapsed'); if(action) action.textContent = '收起'; }
+					else { body.classList.add('collapsed'); if(action) action.textContent = '展开'; }
+
+					h.addEventListener('click', ()=>{
+						const id = h.getAttribute('data-target');
+						if(body.classList.contains('collapsed')){ openPanel(body); if(action) action.textContent='收起'; state[id]=true; }
+						else { closePanel(body); if(action) action.textContent='展开'; state[id]=false; }
+						saveState(state);
+					});
+				});
+				// 设置当前版本号
+				var verEl = document.getElementById('siteVersion');
+				if(verEl) verEl.textContent = window.APP_VERSION || verEl.textContent;
+			});
+
+		})();
+	</script>
+</body>
+</html>

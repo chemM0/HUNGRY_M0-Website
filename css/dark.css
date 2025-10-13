@@ -1,0 +1,84 @@
+body.dark {
+	background: #121212;
+	color: #e0e0e0;
+}
+
+body.dark h1 {
+	color: #64b5f6;
+}
+
+body.dark .info-block {
+	background: #1e1e1e;
+	color: #e0e0e0;
+}
+
+body.dark #focus-card {
+	background: #1e1e1e;
+	color: #e0e0e0;
+}
+
+body.dark .focus-title {
+	color: #90caf9;
+}
+
+body.dark .focus-details {
+	color: #ccc;
+}
+
+body.dark .metric-box {
+	background: #1e1e1e;
+	border-color: #333;
+}
+
+body.dark .metric-label {
+	color: #aaa;
+}
+
+body.dark .metric-value {
+	color: #64b5f6;
+}
+
+#darkToggle {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	padding: 6px 12px;
+	border: none;
+	border-radius: 5px;
+	background: linear-gradient(135deg,#1976d2,#64b5f6);
+	color: #fff;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background 0.5s ease,color 0.5s ease,transform 0.2s ease;
+}
+
+#darkToggle:hover {
+	transform: scale(1.05);
+}
+
+#darkToggle:active {
+	transform: scale(0.95);
+}
+
+/* 确保切换按钮在其他元素之上以便可点击 */
+#darkToggle {
+	z-index: 9999;
+}
+/* 夜间主题：磁盘卡及内部元素样式 */
+body.dark .disk-card {
+	/* 夜间主题下磁盘卡的背景与阴影，配合 style.css 的过渡 */
+	background: #151515;
+	box-shadow: 0 1px 4px hsla(0, 0%, 23%, 0.4);
+}
+body.dark .disk-details {
+	color: #e0e0e0;
+}
+body.dark .disk-fill {
+	background: linear-gradient(90deg, #90caf9, #64b5f6);
+}
+body.dark .disk-details #diskText,
+body.dark .disk-details #diskTextD,
+body.dark #diskName,
+body.dark #diskNameD {
+	color: #e0e0e0;
+}

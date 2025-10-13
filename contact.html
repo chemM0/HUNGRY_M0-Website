@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" href="favicon.png">
+		<title>联系方式 - HUNGRY_M0</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/dark.css">
+		<link rel="stylesheet" type="text/css" href="css/about.css">
+	</head>
+	<body>
+		<div class="about-wrap">
+			<a class="back-button" href="index.html">🖥️ 返回主页</a>
+			<button id="darkToggle" type="button" aria-label="切换夜间模式">🌙 夜间</button>
+			<div class="about-card">
+				<div class="about-logo"><img src="favicon.png" alt="logo"></div>
+				<div class="about-author gradient-text">📞联系我</div>
+				<div class="about-sub">下面是常用的联系方式，点击图标将在支持的设备上尝试打开对应 App，否则会回退到网页。</div>
+
+				<div class="spacer-18"></div>
+				<div class="contact-grid">
+					<!-- 每个卡片由 data-* 属性包含深链与回退链接，图标用 inline SVG -->
+
+					<!-- QQ -->
+					<div class="contact-card" data-qr="qrcodes/qq.png" data-web="http://wpa.qq.com/msgrd?v=3&uin=2137336897&site=qq&menu=yes">
+							<div class="contact-icon" aria-hidden="true">
+								<img src="icons/qq.png" alt="QQ" width="36" height="36">
+							</div>
+						<div class="contact-label">QQ</div>
+					</div>
+
+					<!-- 微信（显示二维码） -->
+					<div class="contact-card" data-qr="qrcodes/wechat.png" data-web="https://weixin.qq.com/">
+						<div class="contact-icon"><img src="icons/Wechat.png" alt="微信" width="36" height="36"></div>
+						<div class="contact-label">微信</div>
+					</div>
+
+					<!-- 哔哩哔哩 -->
+					<div class="contact-card" data-qr="qrcodes/bilibili.png" data-web="https://space.bilibili.com/519821105">
+						<div class="contact-icon"><img src="icons/bilibili.ico" alt="哔哩哔哩" width="36" height="36"></div>
+						<div class="contact-label">哔哩哔哩</div>
+					</div>
+
+					<!-- 抖音/TikTok -->
+					<div class="contact-card" data-qr="qrcodes/douyin.png" data-web="https://www.douyin.com/user/94426655891">
+						<div class="contact-icon"><img src="icons/douyin.png" alt="抖音" width="36" height="36"></div>
+						<div class="contact-label">抖音</div>
+					</div>
+
+					<!-- Telegram -->
+					<div class="contact-card" data-qr="qrcodes/telegram.jpg" data-web="https://t.me/REPLACE_TG">
+						<div class="contact-icon"><img src="icons/telegram.png" alt="Telegram" width="36" height="36"></div>
+						<div class="contact-label">Telegram</div>
+					</div>
+
+					<!-- X (Twitter) -->
+					<div class="contact-card" data-action="navigate" data-web="https://x.com/HUNGRY_M0/media">
+						<div class="contact-icon"><img src="icons/x.ico" alt="X" width="36" height="36"></div>
+						<div class="contact-label">X</div>
+					</div>
+
+					<!-- Instagram -->
+					<div class="contact-card" data-action="navigate" data-web="https://www.instagram.com/hungry_m0/">
+						<div class="contact-icon"><img src="icons/Instagram.png" alt="Instagram" width="36" height="36"></div>
+						<div class="contact-label">Instagram</div>
+					</div>
+
+					<!-- Github (直接跳转到仓库) -->
+					<div class="contact-card" data-action="navigate" data-href="https://github.com/commandEnder?tab=repositories">
+						<div class="contact-icon"><img src="icons/Github.png" alt="GitHub" width="36" height="36"></div>
+						<div class="contact-label">GitHub</div>
+					</div>
+					</div>
+
+					<!-- message board removed -->
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
+	<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+	<script>
+	// 联系方式页面脚本：事件代理、模态与强制下载
+	(function(){
+		// create modal
+		const modal = document.createElement('div');
+		modal.id = 'qrModal';
+		modal.className = 'qr-modal';
+		modal.innerHTML = `
+			<div class="qr-backdrop"></div>
+			<div class="qr-panel" role="dialog" aria-modal="true">
+				<button class="qr-close" aria-label="关闭">✕</button>
+				<div class="qr-content">
+					<img id="qrImage" src="" alt="二维码" />
+					<div id="qrLabel" class="qr-label">扫描二维码加我</div>
+					<a id="qrDownload" class="btn" rel="noopener" download>下载二维码</a>
+				</div>
+			</div>
+		`;
+		document.body.appendChild(modal);
+
+		const qrImage = document.getElementById('qrImage');
+		const qrDownload = document.getElementById('qrDownload');
+		const qrClose = modal.querySelector('.qr-close');
+		const qrBackdrop = modal.querySelector('.qr-backdrop');
+
+		function openModal(imgSrc, webUrl, label, downloadName){
+			qrImage.src = imgSrc || '';
+			document.getElementById('qrLabel').textContent = label || '扫描二维码加我';
+			if(imgSrc){
+				qrDownload.href = imgSrc;
+				qrDownload.setAttribute('download', downloadName || 'qrcode.png');
+				qrDownload.style.display = '';
+			} else if(webUrl){
+				qrDownload.href = webUrl;
+				qrDownload.removeAttribute('download');
+				qrDownload.style.display = '';
+			} else {
+				qrDownload.style.display = 'none';
+			}
+			modal.classList.add('open');
+			qrClose.focus();
+		}
+		function closeModal(){ modal.classList.remove('open'); }
+
+		qrClose.addEventListener('click', closeModal);
+		qrBackdrop.addEventListener('click', closeModal);
+		document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+		// 强制下载处理
+		qrDownload.addEventListener('click', async function(ev){
+			ev.preventDefault();
+			const href = qrDownload.getAttribute('href');
+			if(!href) return;
+			try{
+				qrDownload.textContent = '下载中...';
+				const resp = await fetch(href, { mode: 'cors' });
+				if(!resp.ok) throw new Error('network');
+				const blob = await resp.blob();
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = qrDownload.getAttribute('download') || 'qrcode.png';
+				document.body.appendChild(a);
+				a.click();
+				a.remove();
+				URL.revokeObjectURL(url);
+			}catch(err){
+				window.open(href, '_blank');
+			}finally{
+				qrDownload.textContent = '下载二维码';
+			}
+		});
+
+		// event delegation for contact grid
+		const grid = document.querySelector('.contact-grid');
+		if(grid){
+			grid.querySelectorAll('.contact-card').forEach(c=>{ if(!c.hasAttribute('tabindex')) c.setAttribute('tabindex', '0'); });
+
+			grid.addEventListener('click', function(e){
+				const card = e.target.closest && e.target.closest('.contact-card');
+				if(!card) return;
+				const action = card.getAttribute('data-action');
+				const href = card.getAttribute('data-href');
+				const qr = card.getAttribute('data-qr');
+				const web = card.getAttribute('data-web');
+				const label = card.querySelector('.contact-label')?.textContent || '';
+				if(action === 'navigate' && href){ window.open(href, '_blank'); return; }
+				if(!qr){ window.open(web, '_blank'); return; }
+				openModal(qr, web, label, (card.getAttribute('data-download') || (label + '-qrcode.png')));
+			});
+
+			grid.addEventListener('keydown', function(e){
+				if(e.key !== 'Enter' && e.key !== ' ') return;
+				const card = e.target.closest && e.target.closest('.contact-card');
+				if(!card) return;
+				e.preventDefault();
+				const action = card.getAttribute('data-action');
+				const href = card.getAttribute('data-href');
+				const qr = card.getAttribute('data-qr');
+				const web = card.getAttribute('data-web');
+				const label = card.querySelector('.contact-label')?.textContent || '';
+				if(action === 'navigate' && href){ window.open(href, '_blank'); return; }
+				if(!qr){ window.open(web, '_blank'); return; }
+				openModal(qr, web, label, (card.getAttribute('data-download') || (label + '-qrcode.png')));
+			});
+		}
+
+		// message board removed
+	})();
+	</script>
+</html>
+</html>

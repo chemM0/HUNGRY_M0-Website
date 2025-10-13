@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>CPU 核心详情 - HUNGRY_M0</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/dark.css">
+    <link rel="stylesheet" type="text/css" href="css/cpu_page.css">
+</head>
+<body>
+    <a class="back-button" href="index.html">🖥️ 返回主页</a>
+    <button id="darkToggle" type="button" aria-label="切换夜间模式">🌙 夜间模式</button>
+    <div class="nav-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-logo"><img src="favicon.png" alt="logo"></span>
+            <span class="brand-text"><span class="gradient-text">HUNGRY#末老师</span></span>
+        </a>  
+    </div>
+    <div class="page-header" >
+        <h2>24核逻辑处理器实时利用率</h2>
+        <code>Intel(R) Core(TM) i7-14650HX</code>
+    </div>
+
+    <!-- 总 CPU 使用率折线图（实时） -->
+    <div class="total-cpu-card">
+        <div class="cpu-card-row">
+            <div class="cpu-card-title">CPU 总使用率</div>
+            <div id="totalCpuVal">--%</div>
+        </div>
+        <canvas id="totalCpuCanvas" class="total-cpu-canvas"></canvas>
+    </div>
+
+    <div id="cpuGrid"></div>
+
+    <div class="cpu-desc">
+        数据来自接口的 <code>cpu_usage</code> 字段（每个逻辑核心的利用率，单位：%）。
+    </div>
+
+    <script type="text/javascript" src="JavaScript/API.js"></script>
+    <script type="text/javascript" src="JavaScript/dark_theme.js"></script>
+    <script type="text/javascript" src="JavaScript/page_transitions.js"></script>
+    <script type="text/javascript" src="JavaScript/cpu_page.js"></script>
+    <script>
+        (function(){ if(!document.getElementById('pageLoader') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){ var d=document.createElement('div'); d.id='pageLoader'; document.body.appendChild(d); } })();
+    </script>
+</body>
+</html>

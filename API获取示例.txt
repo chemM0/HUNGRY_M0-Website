@@ -1,0 +1,222 @@
+API获取示例（其中，cpu usage为每个核心的利用率）：
+{
+  "computer_name": "Wcomputer-00e2",
+  "uptime": 24165,
+  "cpu_usage": [59.66285, 60.068653, 66.07093, 52.289734, 61.99483, 55.130913, 60.76491, 54.809883, 60.760742, 57.02902, 65.001114, 42.84118, 55.97087, 57.056255, 62.105175, 65.9906, 75.50976, 51.775528, 68.72672, 59.82767],
+  "memory_usage": {
+    "total": 34275778560,
+    "used": 14448230400,
+    "percent": 42.1528875695946
+  },
+  "processes": [
+    {
+      "memory": 121843712,
+      "is_focused": true,
+      "window_title": "无标题",
+      "executable_name": "msedgewebview2.exe",
+      "pid": 15844,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 44838912,
+      "is_focused": false,
+      "window_title": "Watch Me Do - 在线视奸喵喵喵",
+      "executable_name": "watchmedo.exe",
+      "pid": 20620,
+      "cpu_usage": 500
+    },
+    {
+      "memory": 633065472,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 18764,
+      "cpu_usage": 100
+    },
+    {
+      "memory": 11096064,
+      "is_focused": false,
+      "window_title": "SecurityHealthService.exe",
+      "executable_name": "SecurityHealthService.exe",
+      "pid": 5344,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 8044544,
+      "is_focused": false,
+      "window_title": "msedgewebview2.exe",
+      "executable_name": "msedgewebview2.exe",
+      "pid": 23500,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 17764352,
+      "is_focused": false,
+      "window_title": "taskhostw.exe",
+      "executable_name": "taskhostw.exe",
+      "pid": 3756,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 109297664,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 12916,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 92090368,
+      "is_focused": false,
+      "window_title": "node.exe",
+      "executable_name": "node.exe",
+      "pid": 14296,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 305057792,
+      "is_focused": false,
+      "window_title": "Cursor.exe",
+      "executable_name": "Cursor.exe",
+      "pid": 13044,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 9531392,
+      "is_focused": false,
+      "window_title": "svchost.exe",
+      "executable_name": "svchost.exe",
+      "pid": 3640,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 22339584,
+      "is_focused": false,
+      "window_title": "WMExternal.exe",
+      "executable_name": "WMExternal.exe",
+      "pid": 13908,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 5410816,
+      "is_focused": false,
+      "window_title": "cmd.exe",
+      "executable_name": "cmd.exe",
+      "pid": 17120,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 181641216,
+      "is_focused": false,
+      "window_title": "ToDesk.exe",
+      "executable_name": "ToDesk.exe",
+      "pid": 6436,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 13938688,
+      "is_focused": false,
+      "window_title": "svchost.exe",
+      "executable_name": "svchost.exe",
+      "pid": 1564,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 92246016,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 6420,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 11030528,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 9384,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 111067136,
+      "is_focused": false,
+      "window_title": "Cursor.exe",
+      "executable_name": "Cursor.exe",
+      "pid": 7888,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 212037632,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 16636,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 36794368,
+      "is_focused": false,
+      "window_title": "chrome.exe",
+      "executable_name": "chrome.exe",
+      "pid": 7096,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 8544256,
+      "is_focused": false,
+      "window_title": "nvSCPAPISvr.exe",
+      "executable_name": "nvSCPAPISvr.exe",
+      "pid": 1940,
+      "cpu_usage": 0
+    },
+    {
+      "memory": 9830400,
+      "is_focused": false,
+      "window_title": "WeChatAppEx.exe",
+      "executable_name": "WeChatAppEx.exe",
+      "pid": 17344,
+      "cpu_usage": 0
+    }
+  ],
+  "disks": [
+    {
+      "name": "Windows",
+      "mount_point": "C:\\",
+      "total_space": 255953203200,
+      "available_space": 133108129792
+    },
+    {
+      "name": "",
+      "mount_point": "D:\\",
+      "total_space": 500105736192,
+      "available_space": 268542267392
+    }
+  ],
+  "network": [
+    {
+      "name": "以太网 2",
+      "received": 0,
+      "transmitted": 0
+    },
+    {
+      "name": "VMware Network Adapter VMnet1",
+      "received": 54,
+      "transmitted": 605
+    },
+    {
+      "name": "WLAN 2-VirtualBox NDIS Light-Weight Filter-0000",
+      "received": 2326997264,
+      "transmitted": 312313606
+    },
+    {
+      "name": "VMware Network Adapter VMnet8",
+      "received": 54,
+      "transmitted": 591
+    },
+    {
+      "name": "WLAN 2",
+      "received": 2326997264,
+      "transmitted": 312313606
+    }
+  ]
+}
