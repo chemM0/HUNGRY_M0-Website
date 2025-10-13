@@ -12,6 +12,7 @@
 <body>
 	<div class="about-wrap">
 		<a class="back-button" href="index.html">🖥️ 返回主页</a>
+		<a class="back-prev" href="#" onclick="history.back(); return false;">⬅️ 返回上一页</a>
 		<button id="darkToggle" type="button" aria-label="切换夜间模式">🌙 夜间</button>
 	<div class="about-logo"><img src="favicon.png" alt="logo"></div><br />
 	<div class="about-author gradient-text large">HUNGRY#末老师 个人网页</div>
@@ -19,7 +20,7 @@
         <br /><br /><br /><br /><br />
 		<div class="about-sub">
 			© Copyright 2025-2026&nbsp;&nbsp;|&nbsp;&nbsp;HUNGRY#末老师 版权所有&nbsp;&nbsp;|&nbsp;&nbsp;
-			<small><a href="terms.html">服务条款</a></small>
+			<small><a class="force-blue" href="terms.html">服务条款</a></small>
 		</div>
 		
 		<div class="changelog-card">
@@ -41,15 +42,27 @@
 						<div id="ver0" class="version-body collapsed">
 							<div class="ch-entry">
 								<div class="ch-icon add w45">新增</div>
-								<div class="ch-text">更改了git仓库所属的账户</div>
+								<div class="ch-text">新增返回上一页的按钮，提升了可交互性</div>
 							</div>
 							<div class="ch-entry">
 								<div class="ch-icon add w45">新增</div>
 								<div class="ch-text">新建 服务条款 页面</div>
 							</div>
 							<div class="ch-entry">
+								<div class="ch-icon improve w45">改进</div>
+								<div class="ch-text">更改了git仓库所属的账户</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon improve w45">改进</div>
+								<div class="ch-text">主页菜单栏优化UI</div>
+							</div>
+							<div class="ch-entry">
 								<div class="ch-icon fix w45">修复</div>
 								<div class="ch-text">修复了各个页面css样式错乱的问题</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon fix w45">修复</div>
+								<div class="ch-text">修复了主页菜单栏没有铺满屏幕的问题</div>
 							</div>
 						</div>
 						<br />

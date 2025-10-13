@@ -57,6 +57,11 @@ h1 {
 	transition: background 0.6s ease;
 }
 
+/* 大号状态显示（仅首页使用 .status-xl） */
+.status-xl { display: inline-flex; align-items: center; gap: 12px; }
+.status-xl .dot { width: 16px; height: 16px; }
+.status-xl #online-status { font-size: 18px; font-weight: 700; color: #1e303f; }
+
 @keyframes blink {
 	0% {
 		opacity: 1;
@@ -195,12 +200,16 @@ h1 {
 .top-nav {
 	position: fixed;
 	top: 0;
+	left: 0;
+	right: 0;
 	width: 100%;
 	background: #fff;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 	z-index: 1000;
 	transition: background 0.6s ease;
 	height: var(--nav-height);
+	border-radius: 10px; /* 圆角 */
+	overflow: hidden;
 }
 
 .nav-inner {
@@ -211,6 +220,10 @@ h1 {
 	align-items: center;
 	padding: 10px 20px;
 	height: 100%;
+}
+
+@media (max-width: 600px) {
+	.top-nav { border-radius: 6px; }
 }
 
 .brand {
@@ -308,6 +321,26 @@ h1 {
 .back-button:hover {
 	background: #1565c0;
 }
+
+/* 返回上一页 按钮样式（次级，与返回主页风格一致但稍小） */
+.back-prev {
+	position: fixed;
+	/* 放在返回主页下面，垂直堆叠 */
+	top: 84px; /* 与 .back-button 保持更宽的垂直间距 */
+	left: 20px; /* 与 .back-button 左对齐 */
+	display: inline-block;
+	padding: 8px 14px;
+	background: #1976d2;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 8px;
+	font-weight: 500;
+	font-size: 14px;
+	transition: background 0.3s ease;
+	z-index: 10;
+}
+
+.back-prev:hover { background: #1565c0; }
 
 /* 主页夜间模式按钮样式，避免被导航栏挡住 */
 #darkToggle {

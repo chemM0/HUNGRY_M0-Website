@@ -4,7 +4,7 @@
 
 /* 使 about-card 成为定位容器，便于在右上角放置主题开关 */
 .about-card { position: relative; }
-.about-logo { width:120px; height:120px; border-radius:20px; overflow:hidden; border: 4px solid rgba(25,118,210,0.12); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px rgba(25,118,210,0.08); margin-top: calc(-1 * (var(--nav-height, 60px) - 6px)); }
+.about-logo { width:120px; height:120px; border-radius:20px; overflow:hidden; border: 4px solid rgba(25,118,210,0.12); display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 20px rgba(25,118,210,0.08); margin-top: 0; }
 .about-logo img { width:100%; height:100%; object-fit:cover; }
 .about-author { font-size:18px; font-weight:800; color:#222; }
 .about-author.large { font-size:26px; }
@@ -45,6 +45,8 @@
 .ch-icon.add { background: #1976d2; }
 .ch-icon.fix { background: #2e7d32; }
 .ch-icon.remove { background: #c62828; }
+/* 改进类（橙色） */
+.ch-icon.improve { background: #f57c00; }
 
 /* 整体日志卡片样式 */
 .changelog-card {
@@ -194,10 +196,46 @@ body.dark .terms-header .about-version { color: #aab6bf; }
 	font-size: 14px;
 }
 
+/* contact page specific spacing: ensure the logo and card have generous vertical space */
+.contact-page .about-card {
+	padding-top: 28px; /* more top space inside the card */
+	padding-bottom: 28px; /* more bottom space inside the card */
+}
+.contact-page .about-logo { margin-top: 12px; margin-bottom: 12px; }
+
 /* 小型法律/版权链接样式（关于页底部） */
 .about-sub-legal { margin-top: 6px; }
-.about-sub-legal a { color: #1976d2; text-decoration: none; font-size: 12px; }
-body.dark .about-sub-legal a { color: #90caf9; }
+.about-sub-legal a:link,
+.about-sub-legal a:visited {
+	color: #1976d2 !important;
+	text-decoration: none;
+	font-size: 12px;
+}
+body.dark .about-sub-legal a:link,
+body.dark .about-sub-legal a:visited {
+	color: #90caf9 !important;
+}
+
+/* 强制类：在所有伪类上强制保持指定颜色（覆盖浏览器 visited 默认样式） */
+.force-blue,
+.force-blue:link,
+.force-blue:visited,
+.force-blue:hover,
+.force-blue:active,
+.force-blue:focus {
+	color: #1976d2 !important;
+	-webkit-text-fill-color: #1976d2 !important; /* 有些 UA 使用 text-fill-color 控制 visited 显示 */
+	text-decoration: none !important;
+}
+body.dark .force-blue,
+body.dark .force-blue:link,
+body.dark .force-blue:visited,
+body.dark .force-blue:hover,
+body.dark .force-blue:active,
+body.dark .force-blue:focus {
+	color: #90caf9 !important;
+	-webkit-text-fill-color: #90caf9 !important;
+}
 
 /* 联系方式页样式 */
 .contact-grid {

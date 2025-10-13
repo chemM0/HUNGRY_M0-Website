@@ -16,8 +16,8 @@
 					<span class="brand-logo"><img src="favicon.png" alt="logo"></span>
 					<span class="brand-text"><span class="gradient-text">HUNGRY#末老师</span></span>
 				</a>
-                <!-- 移动端菜单切换按钮 -->
-                <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-label="切换导航菜单">☰</button>
+				<!-- 移动端菜单切换按钮 -->
+				<button id="navToggle" class="nav-toggle" aria-expanded="false" aria-label="切换导航菜单">☰</button>
 				<ul class="nav-menu" id="navMenu">
 					<li><a href="index.html">主页</a></li>
 					<li><a href="about.html">关于</a></li>
@@ -26,7 +26,7 @@
 				</ul>
 			</div>
 		</nav>
-	<div id="status" class="status-xl">
+		<div id="status" class="status-xl">
 			<div class="dot" id="dot"></div>
 			<span id="online-status">连接中...</span>
 		</div>
@@ -79,7 +79,7 @@
 		<script>
 			// 预创建加载条（非强制，脚本也会在需要时创建）
 			(function(){ if(!document.getElementById('pageLoader') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){ var d=document.createElement('div'); d.id='pageLoader'; document.body.appendChild(d); } })();
-
+			
 			// 将 CPU 卡片设为可点击，进入 cpu.html，支持回车/空格触发
 			(function(){
 				var cpuBox = document.getElementById('cpuBox');
