@@ -98,3 +98,16 @@ body.dark .nav-menu a:hover {
 	background: rgba(255,255,255,0.04);
 	color: #64b5f6;
 }
+
+/* Floating buttons in dark mode: subtler tint, white text */
+.back-button.floating, .back-prev.floating, #darkToggle.floating, .back-button, .back-prev, #darkToggle {
+	background: rgba(255,255,255,0.04) !important;
+	color: #eaeff6 !important;
+	border: 1px solid rgba(255,255,255,0.06) !important;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.6) !important;
+}
+
+#darkToggle {
+	background: linear-gradient(135deg,#1976d2,#64b5f6) !important;
+	color: #fff !important;
+}

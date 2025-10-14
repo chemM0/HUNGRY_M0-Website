@@ -303,62 +303,77 @@ h1 {
 }
 
 /* 返回主页按钮样式 */
-.back-button {
+/* Floating helper buttons (left / right) - unified, softer visual */
+.floating-btn {
 	position: fixed;
-	top: 20px;
-	left: 20px;
-	display: inline-block;
-	padding: 10px 20px;
-	background: #1976d2;
-	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: rgba(25,118,210,0.12); /* soft tint */
+	color: #1976d2;
 	text-decoration: none;
-	border-radius: 8px;
-	font-weight: 500;
-	transition: background 0.3s ease;
-	z-index: 10;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 14px;
+	box-shadow: 0 6px 18px rgba(31,45,61,0.06);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	border: 1px solid rgba(25,118,210,0.12);
+	transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+	z-index: 10010;
 }
 
-.back-button:hover {
-	background: #1565c0;
+.floating-btn:hover {
+	transform: translateY(-3px) scale(1.03);
+	box-shadow: 0 10px 24px rgba(31,45,61,0.09);
 }
 
 /* 返回上一页 按钮样式（次级，与返回主页风格一致但稍小） */
-.back-prev {
-	position: fixed;
-	/* 放在返回主页下面，垂直堆叠 */
-	top: 84px; /* 与 .back-button 保持更宽的垂直间距 */
-	left: 20px; /* 与 .back-button 左对齐 */
-	display: inline-block;
-	padding: 8px 14px;
-	background: #1976d2;
-	color: #fff;
-	text-decoration: none;
-	border-radius: 8px;
-	font-weight: 500;
-	font-size: 14px;
-	transition: background 0.3s ease;
-	z-index: 10;
+/* keep original selectors but delegate to unified class for easy HTML-free upgrade */
+/* position left-top */
+.back-button { top: 16px; left: 16px; }
+.back-prev { top: 64px; left: 16px; }
+
+/* Force left-top placement regardless of parent container centering */
+.back-button, .back-prev {
+	position: fixed !important;
+	left: 16px !important;
+}
+.back-button { top: 16px !important; }
+.back-prev { top: 64px !important; }
+
+/* Responsive: reduce size and spacing on small screens */
+@media (max-width: 600px) {
+	.back-button, .back-prev { left: 8px !important; }
+	.back-button { top: 8px !important; }
+	.back-prev { top: 48px !important; }
+	.uiverse-btn { padding: .6em 1em; font-size: 13px; }
 }
 
-.back-prev:hover { background: #1565c0; }
-
-/* 主页夜间模式按钮样式，避免被导航栏挡住 */
-#darkToggle {
+/* Actually apply the shared visual rules by combining selectors to avoid changing HTML */
+.back-button.floating, .back-prev.floating, #darkToggle.floating, .back-button, .back-prev, #darkToggle {
+	/* copy of .floating-btn base so no extra HTML class is required */
 	position: fixed;
-	top: calc(var(--nav-height, 60px) + 18px);
-	right: 20px;
-	z-index: 10000 !important;
-	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 	padding: 8px 12px;
-	cursor: pointer;
-	transition: background 0.3s ease;
+	background: rgba(25,118,210,0.12);
+	color: #1976d2;
+	text-decoration: none;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 14px;
+	box-shadow: 0 6px 18px rgba(31,45,61,0.06);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	border: 1px solid rgba(25,118,210,0.12);
+	transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+	z-index: 10010;
 }
 
-#darkToggle:hover {
-	background: #f0f0f0;
-}
+/* #darkToggle visual styles are applied via the combined selector above; positioning kept in its own rule. */
 
 /* 磁盘空间卡片样式 */
 .disk-card {
@@ -412,3 +427,86 @@ h1 {
 body.dark .disk-sub {
 	color: #e0e0e0;
 }
+
+/* Uiverse-style animated button (scoped to .uiverse-btn to avoid global button conflicts) */
+.uiverse-btn {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: white;
+	background-color: #171717;
+	padding: 1em 2em;
+	border: none;
+	border-radius: .6rem;
+	/* do NOT set position here — allow .back-button/.back-prev/#darkToggle to keep fixed positioning */
+	cursor: pointer;
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.uiverse-btn span:not(:nth-child(6)) {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	/* smaller decorative dots so they don't form visible blocks behind text */
+	height: 16px;
+	width: 16px;
+	background-color: #0c66ed;
+	opacity: 0.45; /* further reduce opacity */
+	border-radius: 50%;
+	transition: .6s ease;
+	pointer-events: none;
+}
+
+.uiverse-btn span:nth-child(6) {
+	position: relative;
+}
+
+.uiverse-btn span:nth-child(1) { transform: translate(-3.3em, -4em); }
+.uiverse-btn span:nth-child(2) { transform: translate(-6em, 1.3em); }
+.uiverse-btn span:nth-child(3) { transform: translate(-.2em, 1.8em); }
+.uiverse-btn span:nth-child(4) { transform: translate(3.5em, 1.4em); }
+.uiverse-btn span:nth-child(5) { transform: translate(3.5em, -3.8em); }
+
+.uiverse-btn:hover span:not(:nth-child(6)) {
+	transform: translate(-50%, -50%) scale(4);
+	transition: 1.5s ease;
+}
+
+/* make sure uiverse buttons integrate with existing positions for back buttons and dark toggle */
+.back-button.uiverse-btn, .back-prev.uiverse-btn {
+	/* translucent light-blue with blur */
+	background: rgba(12,102,237,0.06);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
+	color: #0b63c7; /* deep blue text (gradient will override for text span) */
+	border: 1px solid rgba(12,102,237,0.12);
+	box-shadow: 0 8px 24px rgba(12,102,237,0.06);
+	z-index: 10020; /* ensure above content */
+}
+
+/* Day-mode: make the button text a blue gradient for visual emphasis */
+.back-button.uiverse-btn span:nth-child(6), .back-prev.uiverse-btn span:nth-child(6) {
+	display: inline-block; /* ensure background-clip applies to text */
+	background-image: linear-gradient(90deg,#1976d2,#64b5f6);
+	background-size: 200% 200%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	text-decoration: none;
+	padding: 0; /* no extra box behind text */
+	margin: 0;
+	line-height: 1;
+}
+
+/* Reduce size of the two left-top back buttons so they don't overlap and look compact */
+.back-button.uiverse-btn, .back-prev.uiverse-btn {
+	padding: .6em 1em !important;
+	border-radius: .6rem;
+}
+
+/* smaller variant for the small "back-prev" if needed */
+.back-prev.uiverse-btn { padding: .7em 1.2em; border-radius: .5rem; }

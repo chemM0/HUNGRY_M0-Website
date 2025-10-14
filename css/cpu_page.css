@@ -135,3 +135,11 @@ body.dark .cpu-desc { background: #263238; color: #b0bec5; }
 body.dark .page-header h2 { color: #e3f2fd; }
 body.dark .back-link { color: #90caf9; }
 body.dark .back-link:hover { background: #1565c0; color: #fff; }
+
+/* 在 CPU 页面中将导航品牌向右移动以对齐下方 980px 内容区的左侧 */
+@media (min-width: 980px) {
+    .cpu-page .nav-inner .brand {
+        /* 计算：视口宽度减去内容宽度 980px 后两侧各分配一半，再减去 nav-inner 左侧的内边距 20px */
+        margin-left: calc((100% - 980px) / 2 - 20px);
+    }
+}
