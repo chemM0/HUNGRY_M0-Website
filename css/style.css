@@ -205,7 +205,8 @@ h1 {
 	width: 100%;
 	background: #fff;
 	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-	z-index: 1000;
+	/* 提高 z-index，使导航（包含切换按钮和下拉菜单）可以覆盖浮动按钮 */
+	z-index: 10150;
 	transition: background 0.6s ease;
 	height: var(--nav-height);
 	border-radius: 10px; /* 圆角 */
@@ -248,6 +249,8 @@ h1 {
 	font-size: 24px;
 	cursor: pointer;
 	padding: 5px;
+	/* 保证切换按钮在浮动元素之上可点击 */
+	z-index: 10160;
 }
 
 .nav-menu {
@@ -276,30 +279,108 @@ h1 {
 }
 
 @media (max-width: 768px) {
+	/* 移动端：窄面板居中显示（如红框示意），并带淡入/上移的动画 */
 	.nav-menu {
 		display: none;
 		flex-direction: column;
-		position: absolute;
-		top: 100%;
-		left: 0;
-		width: 100%;
+		position: fixed;
+		top: calc(var(--nav-height) + 8px); /* 放在固定导航下方并留出一点间距 */
+		left: 50%;
+		transform: translateX(-50%) translateY(-6px);
+		width: 320px; /* 面板宽度，可按需调整 */
+		box-sizing: border-box;
 		background: #fff;
-		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-		padding: 10px 0;
+		box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+		padding: 8px 0;
+		/* 圆角面板 */
+		border-radius: 16px;
+		/* 隐藏溢出以便圆角生效，同时保留内部滚动 */
+		overflow: hidden;
+		/* 当打开时，菜单应位于浮动按钮之上 */
+		z-index: 10140;
+		/* 当菜单很长时允许滚动 */
+		max-height: calc(100vh - var(--nav-height) - 16px);
+		overflow-y: auto;
+		opacity: 0;
+		transition: opacity 240ms ease, transform 240ms ease;
 	}
 
 	.nav-menu.open {
 		display: flex;
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
 	}
 
 	.nav-menu li {
-		margin: 10px 0;
+		margin: 6px 0;
 		text-align: center;
+	}
+
+	.nav-menu a {
+		display: block;
+		padding: 12px 16px; /* 更适合触控的点击区域 */
+	}
+
+	/* 子菜单指示器（三角） */
+	.nav-menu li.has-submenu > a {
+		position: relative;
+	}
+
+	.nav-menu li.has-submenu > a::after {
+		content: '';
+		position: absolute;
+		right: 16px;
+		top: 50%;
+		width: 0;
+		height: 0;
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: 8px solid rgba(0,0,0,0.35); /* 小三角 */
+		transform: translateY(-50%) rotate(0deg);
+		transition: transform 200ms ease;
+	}
+
+	/* 展开时旋转指示器（向上或向左根据视觉需要） */
+	.nav-menu li.submenu-open > a::after {
+		transform: translateY(-50%) rotate(-180deg);
 	}
 
 	.nav-toggle {
 		display: block;
 	}
+
+	/* 如果有二级菜单（ul 嵌套），在移动端以块级展示并允许展开滚动 */
+	.nav-menu li ul {
+		display: block;
+		position: relative;
+		background: transparent;
+		box-shadow: none;
+		margin: 0;
+		padding: 0 12px 8px 12px;
+		z-index: 10145;
+		/* 折叠动画（将高度限制并过渡） */
+		max-height: 0;
+		overflow: hidden;
+		opacity: 0;
+		transform: translateY(-6px);
+		transition: max-height 260ms ease, opacity 200ms ease, transform 200ms ease;
+	}
+
+	.nav-menu li ul li a {
+		padding-left: 18px; /* 二级菜单项略微缩进 */
+	}
+
+	/* 打开子菜单 */
+	.nav-menu li.submenu-open > ul {
+		max-height: 1000px; /* 足够大以容纳内容，实际由内容高度控制 */
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* 当移动端导航打开时，阻止页面背景滚动 */
+body.nav-open {
+	overflow: hidden;
 }
 
 /* 返回主页按钮样式 */

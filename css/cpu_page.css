@@ -105,6 +105,27 @@ body.dark .core-canvas {
     #cpuGrid { grid-template-columns: repeat(1, 1fr); }
     .page-header { flex-direction: column; gap: 8px; }
 }
+
+/* Better mobile layout for CPU per-core cards */
+@media (max-width: 900px) {
+    /* two rows of columns on medium-small screens */
+    #cpuGrid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .core-card { padding: 10px 8px; border-radius: 12px; }
+}
+
+@media (max-width: 720px) {
+    /* more compact: two columns */
+    #cpuGrid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .core-card { min-height: 90px; }
+    .core-title { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+    /* single column for narrow phones */
+    #cpuGrid { grid-template-columns: repeat(1, 1fr); gap: 10px; padding: 0 8px; }
+    .core-card { min-height: 110px; padding: 10px; border-radius: 12px; }
+    .page-header h2 { font-size: 18px; }
+}
 .cpu-desc {
     max-width: 980px;
     margin: 0 auto 18px auto;
