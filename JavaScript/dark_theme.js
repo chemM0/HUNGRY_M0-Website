@@ -27,7 +27,8 @@
     function updateButtonLabel(btn){
         if(!btn) return;
         const isDark = (document.body && document.body.classList.contains('dark')) || document.documentElement.classList.contains('dark');
-        btn.textContent = isDark ? '☀️ 切换到日间模式' : '🌙 切换到夜间模式';
+        // 不直接修改 textContent（会导致重复图标），改为设置 data 属性供 CSS 伪元素使用
+        btn.setAttribute('data-icon', isDark ? '☀️' : '🌙');
         btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
         // 同步一个类，便于 CSS 更可靠地覆盖样式（提高 specificity）
         if(isDark) btn.classList.add('is-dark'); else btn.classList.remove('is-dark');

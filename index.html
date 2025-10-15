@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/dark.css">
 		<title>HUNGRY_M0 实时视奸</title>
 	</head>
-	<body>
+	<body class="index-page">
 		<!-- 顶部导航栏 -->
 		<nav class="top-nav">
 			<div class="nav-inner">
@@ -32,7 +32,14 @@
 		</div>
 		<button id="darkToggle" class="uiverse-btn" type="button" aria-label="切换夜间模式">
 			<span></span><span></span><span></span><span></span><span></span>
-			<span>🌙 夜间模式</span>
+		</button>
+
+		<!-- Refresh button -->
+		<button class="refresh-btn" title="刷新页面" aria-label="刷新页面">
+		  <span class="refresh-btn__text">刷新</span>
+		  <span class="refresh-btn__icon" aria-hidden="true">
+		    <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
+		  </span>
 		</button>
 		<p></p>
 		<div class="info-block">开机运行时间：<span id="uptime">--:--:--</span></div>
@@ -79,6 +86,7 @@
 		<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
 		<script type="text/javascript" src="JavaScript/page_transitions.js"></script>
 		<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+		<script type="text/javascript" src="JavaScript/refresh_button.js"></script>
 		<script>
 			// 预创建加载条（非强制，脚本也会在需要时创建）
 			(function(){ if(!document.getElementById('pageLoader') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){ var d=document.createElement('div'); d.id='pageLoader'; document.body.appendChild(d); } })();

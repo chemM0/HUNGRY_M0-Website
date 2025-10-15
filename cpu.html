@@ -20,8 +20,15 @@
     </a>
     <button id="darkToggle" class="uiverse-btn" type="button" aria-label="切换夜间模式">
         <span></span><span></span><span></span><span></span><span></span>
-        <span>🌙 夜间模式</span>
     </button>
+
+        <!-- Refresh button -->
+        <button class="refresh-btn" title="刷新页面" aria-label="刷新页面">
+          <span class="refresh-btn__text">刷新</span>
+          <span class="refresh-btn__icon" aria-hidden="true">
+            <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
+          </span>
+        </button>
     <div class="nav-inner">
         <a class="brand" href="index.html">
             <span class="brand-logo"><img src="favicon.png" alt="logo"></span>
@@ -52,6 +59,7 @@
     <script type="text/javascript" src="JavaScript/dark_theme.js"></script>
     <script type="text/javascript" src="JavaScript/page_transitions.js"></script>
     <script type="text/javascript" src="JavaScript/cpu_page.js"></script>
+    <script type="text/javascript" src="JavaScript/refresh_button.js"></script>
     <script>
         (function(){ if(!document.getElementById('pageLoader') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){ var d=document.createElement('div'); d.id='pageLoader'; document.body.appendChild(d); } })();
     </script>

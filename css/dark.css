@@ -111,3 +111,13 @@ body.dark .nav-menu a:hover {
 	background: linear-gradient(135deg,#1976d2,#64b5f6) !important;
 	color: #fff !important;
 }
+
+/* Refresh button dark-mode variant (scoped) */
+body.dark .refresh-btn {
+	--bg-color: #2b2f33;
+	--bg-color-sub: #3a3f44;
+	--font-color: #e6eef8;
+	--main-color: #e6eef8;
+	border-color: rgba(255,255,255,0.08);
+	box-shadow: 4px 4px rgba(0,0,0,0.6);
+}

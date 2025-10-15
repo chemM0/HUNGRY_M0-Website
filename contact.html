@@ -21,7 +21,14 @@
 			</a>
 			<button id="darkToggle" class="uiverse-btn" type="button" aria-label="切换夜间模式">
 				<span></span><span></span><span></span><span></span><span></span>
-				<span>🌙 夜间</span>
+			</button>
+
+			<!-- Refresh button -->
+			<button class="refresh-btn" title="刷新页面" aria-label="刷新页面">
+			  <span class="refresh-btn__text">刷新</span>
+			  <span class="refresh-btn__icon" aria-hidden="true">
+			    <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
+			  </span>
 			</button>
 			<div class="about-card">
 				<div class="about-logo"><img src="favicon.png" alt="logo"></div>
@@ -89,6 +96,8 @@
 	</body>
 	<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
 	<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+	<script type="text/javascript" src="JavaScript/refresh_button.js"></script>
+	
 	<script>
 	// 联系方式页面脚本：事件代理、模态与强制下载
 	(function(){

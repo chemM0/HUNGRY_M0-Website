@@ -21,7 +21,14 @@
 		</a>
 		<button id="darkToggle" class="uiverse-btn" type="button" aria-label="切换夜间模式">
 			<span></span><span></span><span></span><span></span><span></span>
-			<span>🌙 夜间</span>
+		</button>
+
+		<!-- Refresh button -->
+		<button class="refresh-btn" title="刷新页面" aria-label="刷新页面">
+		  <span class="refresh-btn__text">刷新</span>
+		  <span class="refresh-btn__icon" aria-hidden="true">
+		    <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
+		  </span>
 		</button>
 	<div class="about-logo"><img src="favicon.png" alt="logo"></div><br />
 	<div class="about-author gradient-text large">HUNGRY#末老师 个人网页</div>
@@ -37,7 +44,7 @@
 				<div class="changelog-heading">
 					&nbsp;&nbsp;网页更新日志
 					<span class="changelog-sub">
-						&nbsp;&nbsp;(最近一次编辑时间：2025-10-13 11:00:39)
+						&nbsp;&nbsp;(最近一次编辑时间：2025-10-15 15:14:22)
 					</span>
 				</div>
 				<br />
@@ -45,7 +52,7 @@
 				<div class="version-block">
 					<div class="version-block">
 						<div class="version-header" data-target="ver0">
-							<div class="version-title">v0.0.3 - 2025-10-13</div>
+							<div class="version-title">v0.0.3 - 2025-10-15</div>
 							<div class="version-action">展开</div>
 						</div>
 						<div id="ver0" class="version-body collapsed">
@@ -55,11 +62,15 @@
 							</div>
 							<div class="ch-entry">
 								<div class="ch-icon add w45">新增</div>
+								<div class="ch-text">新增返回刷新按钮</div>
+							</div>
+							<div class="ch-entry">
+								<div class="ch-icon add w45">新增</div>
 								<div class="ch-text">新建 服务条款 页面</div>
 							</div>
 							<div class="ch-entry">
 								<div class="ch-icon improve w45">改进</div>
-								<div class="ch-text">重塑了部分按钮的UI样式</div>
+								<div class="ch-text">重塑了部分按钮的UI样式和动画效果</div>
 							</div>
 							<div class="ch-entry">
 								<div class="ch-icon improve w45">改进</div>
@@ -149,6 +160,7 @@
 	<script type="text/javascript" src="JavaScript/page_transitions.js"></script>
 	<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
 	<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+	<script type="text/javascript" src="JavaScript/refresh_button.js"></script>
 	<script>
 		// 折叠/展开版本日志（动态高度动画 + 状态记忆）
 		(function(){

@@ -72,6 +72,128 @@ h1 {
 	}
 }
 
+/* Refresh button (scoped name to avoid collisions) */
+.refresh-btn {
+	--main-focus: #2d8cf0;
+	--font-color: #323232;
+	--bg-color-sub: #dedede;
+	--bg-color: #eee;
+	--main-color: #323232;
+	position: relative;
+	width: 150px;
+	height: 40px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	border: 2px solid var(--main-color);
+	box-shadow: 4px 4px var(--main-color);
+	background-color: var(--bg-color);
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.refresh-btn, .refresh-btn__icon, .refresh-btn__text {
+	transition: all 0.3s;
+}
+
+.refresh-btn .refresh-btn__text {
+	transform: translateX(30px);
+	color: var(--font-color);
+	font-weight: 600;
+}
+
+.refresh-btn .refresh-btn__icon {
+	position: absolute;
+	transform: translateX(109px);
+	height: 100%;
+	width: 39px;
+	background-color: var(--bg-color-sub);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.refresh-btn .svg {
+	width: 20px;
+	fill: var(--main-color);
+}
+
+.refresh-btn:hover {
+	background: var(--bg-color);
+}
+
+.refresh-btn:hover .refresh-btn__text {
+	color: transparent;
+}
+
+.refresh-btn:hover .refresh-btn__icon {
+	width: 148px;
+	transform: translateX(0);
+}
+
+.refresh-btn:active {
+	transform: translate(3px, 3px);
+	box-shadow: 0px 0px var(--main-color);
+}
+
+/* Position the refresh button in the top-left, avoid overlapping existing back buttons */
+.refresh-btn {
+	position: fixed;
+	left: 16px;
+	z-index: 10250;
+}
+
+/* Index page: keep refresh button near the top nav */
+body.index-page .refresh-btn {
+	top: calc(var(--nav-height) + 22px);
+}
+
+/* Other pages: position refresh so it matches spacing of back-button (16px) and back-prev (64px) */
+body:not(.index-page) .refresh-btn {
+	/* back-button: 16px, back-prev: 64px -> refresh should be 112px to keep 48px spacing */
+	top: 112px;
+}
+
+/* If .back-button exists nearby, push the refresh button slightly down to avoid collision */
+@media (min-width: 0px) {
+	.back-button + .refresh-btn, .back-button.uiverse-btn + .refresh-btn { top: calc(var(--nav-height) + 64px); }
+}
+
+/* Small screens: reduce size and spacing */
+@media (max-width: 600px) {
+	/* Make refresh button a compact circular icon like #darkToggle on small screens */
+	.refresh-btn {
+		left: 8px;
+		top: calc(var(--nav-height) + 10px);
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border-radius: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 6px 18px rgba(31,45,61,0.06);
+		background: rgba(25,118,210,0.12);
+		border: 1px solid rgba(25,118,210,0.12);
+		width: 44px;
+		height: 44px;
+	}
+	/* hide the textual label but keep aria-label for accessibility */
+	.refresh-btn .refresh-btn__text { display: none !important; }
+	/* center the svg icon and size it appropriately */
+	.refresh-btn .refresh-btn__icon { position: static; transform: none; width: auto; height: auto; display: inline-flex; align-items: center; justify-content: center; }
+	.refresh-btn .svg { width: 20px; height: 20px; }
+	/* affordance: slight lift on hover (desktop emulation) and press effect */
+	.refresh-btn { transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms cubic-bezier(.2,.9,.3,1); }
+	.refresh-btn:hover { transform: translateY(-3px); }
+	.refresh-btn:active, .refresh-btn:focus-visible { transform: translateY(1px) scale(0.96); box-shadow: 0 4px 12px rgba(31,45,61,0.06); }
+}
+
+/* Non-index mobile: make refresh align equidistant with the two back buttons (8px,48px,88px) */
+@media (max-width: 600px) {
+	body:not(.index-page) .refresh-btn { top: 88px !important; }
+}
+
 .info-block,#focus-card,.metric-box {
 	transition: background 0.6s ease,color 0.6s ease,border-color 0.6s ease;
 }
@@ -456,6 +578,39 @@ body.nav-open {
 
 /* #darkToggle visual styles are applied via the combined selector above; positioning kept in its own rule. */
 
+/* --- Icon-only theme toggle: compact moon/sun button to avoid covering content --- */
+#darkToggle {
+	/* make it a small circular icon button */
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	line-height: 1;
+	box-shadow: 0 6px 18px rgba(31,45,61,0.06);
+	background: rgba(25,118,210,0.12);
+	border: 1px solid rgba(25,118,210,0.12);
+	transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* hide the textual label inside the uiverse-btn markup */
+/* Hide any non-empty span (the textual label) inside the toggle; keep decorative empty spans */
+#darkToggle span:not(:empty) { display: none !important; }
+
+/* use pseudo-element to show moon by default, sun when in dark mode (body.dark present) */
+#darkToggle::before {
+	/* 使用按钮上的 data-icon 属性作为图标来源，避免与文本节点重复 */
+	content: attr(data-icon);
+	display: inline-block;
+	transform: translateY(-1px);
+}
+
+/* slightly lift on hover for affordance */
+#darkToggle:hover { transform: translateY(-3px); }
+
 /* 磁盘空间卡片样式 */
 .disk-card {
 	background: #fff;
@@ -552,8 +707,28 @@ body.dark .disk-sub {
 .uiverse-btn span:nth-child(5) { transform: translate(3.5em, -3.8em); }
 
 .uiverse-btn:hover span:not(:nth-child(6)) {
-	transform: translate(-50%, -50%) scale(4);
-	transition: 1.5s ease;
+	/* keep default behavior for most uiverse buttons */
+	transform: translate(-50%, -50%);
+	transition: .6s ease;
+}
+
+/* Disable decorative animation specifically for the theme toggle button */
+#darkToggle.uiverse-btn span:not(:nth-child(6)),
+#darkToggle.uiverse-btn span { 
+	/* hide decorative dots and prevent them from animating */
+	display: none !important;
+}
+
+#darkToggle.uiverse-btn:hover {
+	/* prevent hover transform/scale on the button itself */
+	transform: none !important;
+	box-shadow: 0 6px 18px rgba(31,45,61,0.06) !important;
+}
+
+/* Press effect: scale down slightly and reduce shadow for tactile feedback */
+#darkToggle:active, #darkToggle:focus-visible {
+	transform: translateY(1px) scale(0.94) !important;
+	box-shadow: 0 4px 12px rgba(31,45,61,0.06) !important;
 }
 
 /* make sure uiverse buttons integrate with existing positions for back buttons and dark toggle */
