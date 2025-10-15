@@ -11,8 +11,16 @@ nav#nav{height:160px;border-radius:10px;background-image:url('https://api.ixiaow
 .card-info-avatar .avatar-img{width:88px;height:88px;border-radius:50%;display:block;margin:6px auto}
 .author-info__name{text-align:center;font-weight:700;margin-top:6px}
 .author-info__description{text-align:center;color:#666;font-size:13px}
-.card-info-social-icons{margin-top:8px}
-.card-info-social-icons .social-icon{display:inline-block;margin:0 6px;color:#333}
+.card-info-social-icons{margin-top:8px;display:flex;justify-content:center;align-items:center;gap:12px}
+.card-info-social-icons .social-icon{display:inline-flex;align-items:center;gap:8px;margin:0 6px;color:#333;text-decoration:none}
+.card-info-social-icons .social-icon .social-link-text{font-size:14px;color:#333;margin-left:4px}
+.card-info-social-icons .social-icon:hover{color:#2b8ae5}
+
+/* 联系按钮样式 */
+.contact-btn{background:transparent;color:#2b8ae5;padding:7px 12px;border-radius:999px;border:1px solid rgba(43,138,229,0.18);transition:all .14s ease;box-shadow:none}
+.contact-btn i{margin-right:6px}
+.contact-btn:hover{background:rgba(43,138,229,0.06);transform:translateY(-2px);color:#1f6fc4}
+.contact-btn:focus{outline:2px solid rgba(43,138,229,0.12);outline-offset:2px}
 .article-container{background:linear-gradient(180deg,#ffffff,#fcfcfc);padding:18px;border-radius:8px}
 
 /* 右侧博文面板 */
@@ -21,15 +29,19 @@ nav#nav{height:160px;border-radius:10px;background-image:url('https://api.ixiaow
 .right-panel h3{margin:4px 0 12px 0;font-size:18px}
 .projects-header{display:flex;justify-content:space-between;align-items:center}
 .projects-header h3{margin:0}
+.projects-header .view-all{color:#2b8ae5;font-weight:700;text-decoration:none;padding:6px 10px;border-radius:8px;background:rgba(43,138,229,0.06);transition:all .16s ease;font-size:14px}
+.projects-header .view-all:hover{background:rgba(43,138,229,0.12);box-shadow:0 4px 12px rgba(43,138,229,0.08);transform:translateY(-2px)}
 .projects-grid{display:flex;flex-direction:column;gap:12px;margin-top:12px}
 .proj-card{border-radius:8px;overflow:hidden;border:1px solid #eee;background:#fff;display:flex;flex-direction:column}
-.proj-thumb img{width:100%;height:auto;display:block}
-.proj-body{padding:12px}
-.proj-title{margin:0 0 6px 0;font-size:18px}
-.proj-desc{color:#666;font-size:13px;margin-bottom:8px}
-.proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.proj-tags span{background:#f1f5f9;padding:6px 8px;border-radius:999px;font-size:12px;color:#344}
-.proj-btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid #eee;text-decoration:none;color:#111;background:#fff;width:100%;text-align:center}
+.proj-thumb{overflow:hidden;}
+.proj-thumb img{width:100%;height:220px;object-fit:cover;display:block;border-bottom:1px solid #f0f0f0}
+.proj-body{padding:16px}
+.proj-title{margin:0 0 8px 0;font-size:18px}
+.proj-desc{color:#666;font-size:14px;margin-bottom:10px}
+.proj-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.proj-tags span{background:#f1f5f9;padding:6px 10px;border-radius:999px;font-size:12px;color:#344}
+.proj-btn{display:block;padding:10px 12px;border-radius:8px;border:1px solid #e6e6e6;text-decoration:none;color:#111;background:#ffffff;width:100%;text-align:center;box-shadow:0 2px 6px rgba(20,20,20,0.04);transition:all .18s ease;box-sizing:border-box}
+.proj-btn:hover{background:#f7f9ff;border-color:#cfe0ff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(32,78,164,0.08)}
 
 @media (max-width:900px){
 	.layout_page{grid-template-columns:1fr;}
@@ -47,6 +59,11 @@ nav#nav{height:160px;border-radius:10px;background-image:url('https://api.ixiaow
 .friend-link a{color:#2b8ae5;font-weight:700;text-decoration:none}
 .friend-desc{color:#888;font-size:12px;margin-top:6px}
 #footer{margin-top:16px;text-align:center;color:#777;font-size:13px}
+
+/* 可点击卡片链接样式 */
+.card-link{display:block;color:inherit;text-decoration:none;border-radius:8px}
+.card-link .card-widget{transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+.card-link:hover .card-widget,.card-link:focus .card-widget{transform:translateY(-6px);box-shadow:0 10px 26px rgba(32,78,164,0.06);border-color:rgba(43,138,229,0.12)}
 
 /* small utilities */
 .item-headline{font-weight:700;display:flex;align-items:center;gap:8px}
