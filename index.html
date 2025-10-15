@@ -89,10 +89,15 @@
 				<hr>
 				<h2>兴趣爱好</h2>
 				<div class="tool hobbies">
-					<span class="hobby-pill">音游</span>
+					<span class="hobby-pill">Phigros</span>
+					<span class="hobby-pill">化学实验</span>
+					<span class="hobby-pill">舞立方</span>
+					<span class="hobby-pill">舞萌DX</span>
+					<span class="hobby-pill">Minecraft</span>
 					<span class="hobby-pill">编程</span>
-					<span class="hobby-pill">化学</span>
-					<span class="hobby-pill">音乐</span>
+					<span class="hobby-pill">Arcaea</span>
+					<span class="hobby-pill">中二节奏</span>
+					
 				</div>
 				<br />
 				<hr>
@@ -104,10 +109,13 @@
 					</div>
 					<div class="friend-link">
 						<a href="https://github.com/wexuo/home" target="_blank" rel="noopener noreferrer">wexuo/home</a>
-						<div class="friend-desc">神秘GitHub仓库</div>
+						<div class="friend-desc">引用了这个神秘GitHub仓库</div>
 					</div>
-					<div class="friend-link"><a href="http://ifeve.com/" target="_blank" rel="noopener noreferrer">并发编程网</a>
-						<div class="friend-desc">并发与性能相关文章</div>
+					<div class="friend-link">
+						<a href="https://www.muc.edu.cn/ggfw.htm" target="_blank" rel="noopener noreferrer">
+							<img src="icons/muc.png" alt="muc" class="friend-favicon">
+						</a>
+						<div class="friend-desc">I ♥ MUC</div>
 					</div>
 				</div>
 			</div>
@@ -120,20 +128,23 @@
 				</div>
 				<div class="projects-grid">
 					<article class="proj-card">
+						<div class="proj-thumb proj-status">
+							<div class="status-dot status-online" aria-hidden="true"></div>
+							<div class="status-text">电脑在线</div>
+						</div>
+						<div class="proj-body">
+							<h4 class="proj-title">👀实时视奸 <span class="hot-badge" aria-hidden="true">Hot</span></h4>
+							<div class="proj-desc">你可以在这个页面看到我的电脑目前正在干什么😋</div>
+							<div class="proj-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+							<a class="proj-btn" href="watchmedo.html">查看项目</a>
+						</div>
+					</article>
+					<article class="proj-card">
 						<div class="proj-thumb"><img src="vendor/images/avatar-20200125221102.png" alt="WRSS"></div>
 						<div class="proj-body">
 							<h4 class="proj-title">WRSS</h4>
 							<div class="proj-desc">WFeed — 一个基于 RSS 的阅读器示例。</div>
 							<div class="proj-tags"><span>HTML5</span><span>Javascript</span></div>
-							<a class="proj-btn" href="#">访问网站</a>
-						</div>
-					</article>
-					<article class="proj-card">
-						<div class="proj-thumb"><img src="vendor/images/avatar-20200125221102.png" alt="Homepage"></div>
-						<div class="proj-body">
-							<h4 class="proj-title">我的主页</h4>
-							<div class="proj-desc">个人主页模版的演示和定制示例。</div>
-							<div class="proj-tags"><span>React</span><span>TailwindCSS</span><span>Next.js</span></div>
 							<a class="proj-btn" href="#">访问网站</a>
 						</div>
 					</article>
@@ -155,6 +166,56 @@
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
 		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
 		<script>
+		// 实时检测 watchmedo API 状态并更新项目卡状态显示
+		(function(){
+			const API = 'http://localhost:21536/api/system';
+			const INTERVAL = 3000; // ms
+			const TIMEOUT = 2500; // ms
+			let running = false;
+			async function probe(){
+				if(running) return;
+				running = true;
+				const controller = new AbortController();
+				const id = setTimeout(()=>controller.abort(), TIMEOUT);
+				try{
+					const res = await fetch(API, {signal: controller.signal});
+					clearTimeout(id);
+					if(res.ok){
+						updateStatus(true);
+					}else{
+						updateStatus(false);
+					}
+				}catch(e){
+					clearTimeout(id);
+					updateStatus(false);
+				}finally{
+					running = false;
+				}
+			}
+			function updateStatus(online){
+				const dot = document.querySelector('.proj-thumb.proj-status .status-dot');
+				const txt = document.querySelector('.proj-thumb.proj-status .status-text');
+				if(!dot || !txt) return;
+				if(online){
+					dot.classList.remove('status-offline');
+					dot.classList.add('status-online');
+					txt.textContent = '当前电脑在线 ✅';
+				}else{
+					dot.classList.remove('status-online');
+					dot.classList.add('status-offline');
+					txt.textContent = '当前API离线 ❌';
+				}
+			}
+			// 初始状态
+			document.addEventListener('DOMContentLoaded', function(){
+				const txt = document.querySelector('.proj-thumb.proj-status .status-text');
+				if(txt) txt.textContent = '连接中...';
+				probe();
+				setInterval(probe, INTERVAL);
+			});
+		})();
+		</script>
+		<script>
 			// 控制台信息
 			console.clear();
 			console.log('%c 模板已注入到 bucaicai.html', 'background:#222;color:#fff');
@@ -162,7 +223,7 @@
 			// 打字机效果（本地化并延迟初始化）
 			document.addEventListener('DOMContentLoaded', function () {
 				if (typeof Typed !== 'undefined') {
-					new Typed('.blogtitle', { strings: ['求知若饥，虚心若愚', 'Stay Hungry Stay Foolish'], startDelay:300, typeSpeed:80, loop:true });
+					new Typed('.blogtitle', { strings: ['逸一时，误一世，逸久逸久罢已零', '1145141919810'], startDelay:400, typeSpeed:140, loop:true });
 				}
 			});
 			
@@ -202,5 +263,6 @@
 			$(function (){ $.fn.snow({ minSize:5, maxSize:50, newOn:800 }); });
 			
 		</script>
+
 	</body>
 </html>
