@@ -1,0 +1,72 @@
+/* bucaicai 模板样式（精简） */
+body{font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;background:#f6f8fa;color:#222;margin:0}
+
+#body-wrap{max-width:1000px;margin:20px auto;padding:12px}
+nav#nav{height:160px;border-radius:10px;background-image:url('https://api.ixiaowai.cn/api/api.php');background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:16px;color:#fff}
+.not_index_bg::after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;border-radius:10px;background:linear-gradient(rgba(0,0,0,0.28), rgba(0,0,0,0.18));pointer-events:none;z-index:1}
+.blogtitle{font-size:20px;font-weight:700}
+.layout_page{display:grid;grid-template-columns:260px 1fr 320px;gap:18px;align-items:start}
+.aside_content{width:100%}
+.card-widget{background:linear-gradient(180deg,#ffffff,#fbfbfb);border-radius:8px;padding:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-info-avatar .avatar-img{width:88px;height:88px;border-radius:50%;display:block;margin:6px auto}
+.author-info__name{text-align:center;font-weight:700;margin-top:6px}
+.author-info__description{text-align:center;color:#666;font-size:13px}
+.card-info-social-icons{margin-top:8px}
+.card-info-social-icons .social-icon{display:inline-block;margin:0 6px;color:#333}
+.article-container{background:linear-gradient(180deg,#ffffff,#fcfcfc);padding:18px;border-radius:8px}
+
+/* 右侧博文面板 */
+.right-panel{width:100%}
+.right-panel .panel-card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.right-panel h3{margin:4px 0 12px 0;font-size:18px}
+.projects-header{display:flex;justify-content:space-between;align-items:center}
+.projects-header h3{margin:0}
+.projects-grid{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.proj-card{border-radius:8px;overflow:hidden;border:1px solid #eee;background:#fff;display:flex;flex-direction:column}
+.proj-thumb img{width:100%;height:auto;display:block}
+.proj-body{padding:12px}
+.proj-title{margin:0 0 6px 0;font-size:18px}
+.proj-desc{color:#666;font-size:13px;margin-bottom:8px}
+.proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.proj-tags span{background:#f1f5f9;padding:6px 8px;border-radius:999px;font-size:12px;color:#344}
+.proj-btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid #eee;text-decoration:none;color:#111;background:#fff;width:100%;text-align:center}
+
+@media (max-width:900px){
+	.layout_page{grid-template-columns:1fr;}
+	.right-panel{order:3}
+}
+/* 技能区域已移除 */
+.tool a{color:#2b8ae5}
+/* Hobbies pills */
+.hobbies{display:flex;flex-wrap:wrap;gap:8px}
+.hobby-pill{background:#f1f5f9;padding:6px 10px;border-radius:999px;color:#344;font-weight:600}
+
+/* Friend links (vertical) */
+.friend-links{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.friend-link{padding:10px;border-radius:8px;background:#fff;border:1px solid #eee}
+.friend-link a{color:#2b8ae5;font-weight:700;text-decoration:none}
+.friend-desc{color:#888;font-size:12px;margin-top:6px}
+#footer{margin-top:16px;text-align:center;color:#777;font-size:13px}
+
+/* small utilities */
+.item-headline{font-weight:700;display:flex;align-items:center;gap:8px}
+
+@media (max-width:900px){.layout_page{flex-direction:column}.aside_content{width:100%}}
+
+/* 背景装饰 */
+.bg-decor{position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;border-radius:10px;pointer-events:none}
+.bg-decor .blob{position:absolute;border-radius:50%;filter:blur(18px);opacity:0.85;transform:translate3d(0,0,0)}
+.bg-decor .b1{width:360px;height:260px;background:linear-gradient(135deg,#6E9CCF 0%, #8FB3D9 100%);left:-40px;top:-40px;animation:move1 12s ease-in-out infinite}
+.bg-decor .b2{width:300px;height:220px;background:linear-gradient(135deg,#9CBF9C 0%, #C8DEC8 100%);right:-60px;top:10px;animation:move2 16s ease-in-out infinite}
+.bg-decor .b3{width:240px;height:180px;background:linear-gradient(135deg,#D9C8A8 0%, #EFE2C8 100%);left:120px;bottom:-40px;animation:move3 18s ease-in-out infinite}
+.bg-decor .dotgrid{position:absolute;left:0;top:0;right:0;bottom:0;background-image:radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);background-size:26px 26px;mix-blend-mode:overlay;opacity:0.6}
+
+@keyframes move1{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(18px) translateX(20px)}100%{transform:translateY(0) translateX(0)}}
+@keyframes move2{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-18px) translateX(-30px)}100%{transform:translateY(0) translateX(0)}}
+@keyframes move3{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(16px) translateX(-16px)}100%{transform:translateY(0) translateX(0)}}
+
+/* 顶部信息前置并保持可见 */
+#page_site-info{position:relative;z-index:2}
+.not_index_bg{position:relative}
+
+

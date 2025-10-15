@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
+	<title>HUNGRY_M0 个人主页</title>
+	<meta name="description" content="95后青年，后端开发者，略懂前端, 个人主页">
+	<meta name="keywords" content="个人主页, Java, Spring, 前端">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="css/bucaicai.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.fancybox@2.1.5/source/jquery.fancybox.css">
+</head>
+<body>
+	<div id="body-wrap">
+		<nav class="not_index_bg" id="nav">
+			<!-- 装饰性背景元素：颜色块与粒子 -->
+			<div class="bg-decor" aria-hidden="true">
+				<span class="blob b1"></span>
+				<span class="blob b2"></span>
+				<span class="blob b3"></span>
+				<span class="dotgrid"></span>
+			</div>
+			<div id="page_site-info">
+				<div id="site-title">
+					<span class="blogtitle"></span>
+				</div>
+			</div>
+		</nav>
+		<main id="content-outer">
+			<div class="layout_page" id="content-inner">
+				<div class="aside_content" id="aside_content">
+					<div class="card-widget card-info">
+						<div class="card-content">
+							<div class="card-info-avatar is-center">
+								<!-- 头像已替换为项目根的 favicon.png（可替换为任意 URL） -->
+								<img class="avatar-img" src="favicon.png" alt="avatar">
+								<!-- 姓名与描述：已使用仓库上下文的合理默认（可替换） -->
+								<div class="author-info__name">HUNGRY_M0</div>
+								<div class="author-info__description">后端开发 · 维护者：chemM0</div>
+							</div>
+							<div class="card-info-social-icons is-center">
+								<a class="social-icon" href="https://github.com/chemM0" target="_blank" rel="noopener noreferrer" title="GitHub">
+									<i class="fa fa-github"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="card-widget card-announcement">
+						<div class="card-content">
+							<div class="item-headline">
+								<i class="fa fa-bullhorn" aria-hidden="true"></i>
+								<span>一言</span>
+							</div>
+							<div id="hitokoto"></div>
+						</div>
+					</div>
+					<div class="card-widget card-announcement">
+						<div class="card-content">
+							<div class="item-headline">
+								<i class="fa fa-calendar" aria-hidden="true"></i>
+								<span>今日诗词</span>
+							</div>
+							<div id="jinrishici-sentence"></div>
+						</div>
+					</div>
+					<div class="card-widget card-webinfo">
+						<div class="card-content">
+							<div class="item-headline">
+								<i class="fa fa-line-chart" aria-hidden="true"></i>
+								<span>站点信息</span>
+							</div>
+							<div class="webinfo">
+								<div class="webinfo-item">
+									<div class="webinfo-site-uv-name">本站访客数 :</div>
+									<div class="webinfo-site-uv-count" id="busuanzi_value_site_uv"></div>
+								</div>
+								<div class="webinfo-item">
+									<div class="webinfo-site-name">本站总访问量 :</div>
+									<div class="webinfo-site-pv-count" id="busuanzi_value_site_pv"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<article id="page">
+					<div class="article-container">
+						<hr>
+						<h2>兴趣爱好</h2>
+						<div class="tool hobbies">
+							<span class="hobby-pill">编程</span>
+							<span class="hobby-pill">摄影</span>
+							<span class="hobby-pill">跑步</span>
+							<span class="hobby-pill">音乐</span>
+						</div>
+                        <br />
+						<hr>
+						<h2>友情链接</h2>
+						<div class="tool friend-links">
+							<div class="friend-link"><a href="http://tooool.org/" target="_blank" rel="noopener noreferrer">程序员导航</a>
+								<div class="friend-desc">丰富的开发者工具与资源集合</div>
+							</div>
+							<div class="friend-link"><a href="https://adzhp.cn/" target="_blank" rel="noopener noreferrer">爱达杂货铺</a>
+								<div class="friend-desc">前端资源与有趣项目</div>
+							</div>
+							<div class="friend-link"><a href="http://ifeve.com/" target="_blank" rel="noopener noreferrer">并发编程网</a>
+								<div class="friend-desc">并发与性能相关文章</div>
+							</div>
+						</div>
+					</div>
+				</article>
+				<!-- 右侧博文区域 -->
+				<aside class="right-panel" id="right_panel">
+					<div class="panel-card">
+						<div class="projects-header">
+							<h3>项目（Projects）</h3><a class="view-all" href="#">查看全部 →</a>
+						</div>
+						<div class="projects-grid">
+							<article class="proj-card">
+								<div class="proj-thumb"><img src="https://via.placeholder.com/360x180?text=WRSS" alt="WRSS"></div>
+								<div class="proj-body">
+									<h4 class="proj-title">WRSS</h4>
+									<div class="proj-desc">WFeed — 一个基于 RSS 的阅读器示例。</div>
+									<div class="proj-tags"><span>HTML5</span><span>Javascript</span></div>
+									<a class="proj-btn" href="#">访问网站</a>
+								</div>
+							</article>
+							<article class="proj-card">
+								<div class="proj-thumb"><img src="https://via.placeholder.com/360x180?text=Homepage" alt="Homepage"></div>
+								<div class="proj-body">
+									<h4 class="proj-title">我的主页</h4>
+									<div class="proj-desc">个人主页模版的演示和定制示例。</div>
+									<div class="proj-tags"><span>React</span><span>TailwindCSS</span><span>Next.js</span></div>
+									<a class="proj-btn" href="#">访问网站</a>
+								</div>
+							</article>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</main>
+		<footer id="footer">
+			<div id="footer-wrap">
+				<div class="copyright">&copy; 2025 HUNGRY_M0</div>
+			</div>
+		</footer>
+	</div>
+	<!-- 库 -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery.fancybox@2.1.5/source/jquery.fancybox.js"></script>
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/instant.page@3.0.0/instantpage.js" type="module"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" async></script>
+	<!-- 已移除音频播放器相关脚本（APlayer/Meting/nplayer） -->
+	<!-- 一言、今日诗词 -->
+	<script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+	<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+	<!-- 看板娘 已移除 -->
+	<!-- 鼠标点击效果 -->
+	<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
+	<script>
+		// 控制台信息
+		console.clear();
+		console.log('%c 模板已注入到 bucaicai.html', 'background:#222;color:#fff');
+		
+		// 打字机效果
+		(function(){
+		    var s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/typed.js@2.0.11'; s.onload = function(){ new Typed('.blogtitle', { strings: ['求知若饥，虚心若愚', 'Stay Hungry Stay Foolish'], startDelay:300, typeSpeed:80, loop:true }); }; document.head.appendChild(s);
+		})();
+		
+		// 技能条渲染（把 data-width 和 data-gradient 应用为样式）
+		(function(){
+		    function renderSkills(){
+		        var els = document.querySelectorAll('.skillbar .skillbar-title');
+		        els.forEach(function(el){
+		            var w = el.getAttribute('data-width') || '60';
+		            var g = el.getAttribute('data-gradient') || '#2196F3';
+		            el.style.width = w + '%';
+		            el.style.background = g;
+		        });
+		    }
+		    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', renderSkills); else renderSkills();
+		})();
+		
+		// 雪花效果（简化版）
+		(function ($) {
+		    $.fn.snow = function (options) {
+		        var $flake = $('<div id="snowbox" />').css({ 'position': 'absolute', 'z-index': '9999', 'top': '-50px' }).html('&#10052;'),
+		            documentHeight = $(document).height(),
+		            documentWidth = $(document).width(),
+		            defaults = { minSize: 10, maxSize: 20, newOn: 1000, flakeColor: '#AFDAEF' },
+		            options = $.extend({}, defaults, options);
+		        var interval = setInterval(function () {
+		            var startPositionLeft = Math.random() * documentWidth - 100,
+		                startOpacity = 0.5 + Math.random(),
+		                sizeFlake = options.minSize + Math.random() * options.maxSize,
+		                endPositionTop = documentHeight - 200,
+		                endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
+		                durationFall = documentHeight * 10 + Math.random() * 5000;
+		            $flake.clone().appendTo('body').css({ left: startPositionLeft, opacity: startOpacity, 'font-size': sizeFlake, color: options.flakeColor }).animate({ top: endPositionTop, left: endPositionLeft, opacity: 0.2 }, durationFall, 'linear', function () { $(this).remove() });
+		        }, options.newOn);
+		    };
+		})(jQuery);
+		$(function (){ $.fn.snow({ minSize:5, maxSize:50, newOn:800 }); });
+		
+	</script>
+</body>
+</html>
