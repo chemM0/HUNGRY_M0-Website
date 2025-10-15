@@ -280,9 +280,9 @@ async function fetchSystem() {
         setText("online-status", "API离线中 ❌");
         const dot = getEl("dot");
         if (dot) dot.style.background = "#f44336";
-        setHTML("focus-card", `
-        <div class="focus-title" style="color:#f44336;">⚠ 连接失败</div>
-        <div class="focus-details">无法获取系统信息：${err.message}</div>`);
+    setHTML("focus-card", `
+    <div class="focus-title focus-title-error">⚠ 连接失败</div>
+    <div class="focus-details">无法获取系统信息：${err.message}</div>`);
 
         // 清空所有指标显示，防止继续显示旧数据
         updateMetric("cpu", "--");
