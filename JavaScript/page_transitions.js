@@ -37,11 +37,19 @@
 
     // 统一的过渡函数：防止重复触发，更新 loader 和百分比，并在 ANIM_DURATION 后导航
     let _transitionInProgress = false;
-    function startTransition(href){
-        if(_transitionInProgress) return; // 忽略重复触发
-        _transitionInProgress = true;
-        // 如果用户偏好减少动画，则直接导航
-        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ location.href = href; return; }
+        function startTransition(href){
+            // If the full-screen transition function is available, use it.
+            if(window.showFullScreenTransition && typeof window.showFullScreenTransition === 'function'){
+                // Play the overlay animation then navigate
+                window.showFullScreenTransition().then(function(){ location.href = href; });
+                return;
+            }
+
+            // Fallback to the original loader bar behavior for older setups.
+            if(_transitionInProgress) return; // 忽略重复触发
+            _transitionInProgress = true;
+            // 如果用户偏好减少动画，则直接导航
+            if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ location.href = href; return; }
 
         const loader = ensureLoader();
         if(loader){ loader.style.opacity = '1'; loader.style.width = '6%'; }

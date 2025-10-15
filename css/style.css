@@ -172,17 +172,64 @@ body:not(.index-page) .refresh-btn {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 6px 18px rgba(31,45,61,0.06);
-		background: rgba(25,118,210,0.12);
-		border: 1px solid rgba(25,118,210,0.12);
+		/* stronger multi-layer shadow for a modern, floating look */
+		box-shadow: 0 8px 18px rgba(31,45,61,0.08), 0 2px 6px rgba(31,45,61,0.04) inset;
+		background: transparent; /* background will be handled by pseudo-element to allow animated fill */
+		border: 0; /* border included in pseudo or hidden for cleaner look */
+		position: fixed;
+	}
+
+	/* pseudo-element used as animated fill/background so the icon can sit on top */
+	.refresh-btn::before {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
 		width: 44px;
 		height: 44px;
+		transform: translate(-50%, -50%) scale(0.92);
+		border-radius: 50%;
+		background: rgba(25,118,210,0.12);
+		/* multi-layer shadow on the pseudo background for depth */
+		box-shadow: 0 10px 24px rgba(31,45,61,0.12), 0 4px 8px rgba(31,45,61,0.06) inset;
+		border: 1px solid rgba(25,118,210,0.12);
+		transition: transform 160ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease, background 160ms ease;
+		z-index: 0;
 	}
+
 	/* hide the textual label but keep aria-label for accessibility */
 	.refresh-btn .refresh-btn__text { display: none !important; }
-	/* center the svg icon and size it appropriately */
-	.refresh-btn .refresh-btn__icon { position: static; transform: none; width: auto; height: auto; display: inline-flex; align-items: center; justify-content: center; }
+
+	/* center the svg icon and size it appropriately; place it above the pseudo background */
+	.refresh-btn .refresh-btn__icon {
+		position: relative;
+		transform: none;
+		width: auto;
+		height: auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1;
+		/* remove desktop-only gray square */
+		background: transparent !important;
+		min-width: 0;
+		min-height: 0;
+		padding: 0;
+	}
 	.refresh-btn .svg { width: 20px; height: 20px; }
+
+	/* on pointer hover (desktop) expand background slightly for affordance */
+	.refresh-btn:hover::before { transform: translate(-50%, -50%) scale(1); }
+
+	/* when JS adds .pressed (refresh_button.js does), show pressed animation and quick scale */
+	.refresh-btn.pressed::before { transform: translate(-50%, -50%) scale(1.06); }
+
+	/* ensure pressed state also gives tactile feedback to the button itself */
+	.refresh-btn.pressed { transform: translateY(1px) scale(0.96); box-shadow: 0 4px 12px rgba(31,45,61,0.06); }
+
+	/* darken the pseudo background briefly on active/pressed for visible feedback */
+	.refresh-btn:active::before, .refresh-btn.pressed::before { background: rgba(25,118,210,0.18); }
+
 	/* affordance: slight lift on hover (desktop emulation) and press effect */
 	.refresh-btn { transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms cubic-bezier(.2,.9,.3,1); }
 	.refresh-btn:hover { transform: translateY(-3px); }
@@ -498,6 +545,23 @@ body:not(.index-page) .refresh-btn {
 		opacity: 1;
 		transform: translateY(0);
 	}
+
+	/* 夜间模式适配（移动端导航面板与二级菜单） */
+	body.dark .top-nav { background: #0f1113 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+	body.dark .nav-menu {
+		background: #0f1113 !important;
+		box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+		color: #e6eef9;
+	}
+	body.dark .nav-menu a { color: #e6eef9; }
+	body.dark .nav-menu a:hover { background: rgba(255,255,255,0.03); color: #64b5f6; }
+	body.dark .nav-menu li.has-submenu > a::after { border-top-color: rgba(255,255,255,0.6); }
+	body.dark .nav-menu li ul {
+		background: rgba(255,255,255,0.02);
+		box-shadow: none;
+		color: #e6eef9;
+	}
+
 }
 
 /* 当移动端导航打开时，阻止页面背景滚动 */
@@ -659,6 +723,49 @@ body.nav-open {
 	animation: gradientShift 8s ease infinite;
 	transition: color 0.6s ease;
 }
+
+/* Fullscreen refresh overlay + spinner (used by refresh_button.js) */
+.page-refresh-overlay {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255,255,255,0); /* start transparent */
+	opacity: 0;
+	pointer-events: none;
+	transition: background 420ms ease, opacity 420ms ease;
+	z-index: 10500; /* above nav and floating buttons */
+}
+.page-refresh-overlay.visible {
+	opacity: 1;
+	pointer-events: auto;
+	background: rgba(255,255,255,0.95);
+}
+.page-refresh-overlay .refresh-spinner {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 4px solid rgba(0,0,0,0.08);
+	border-top-color: #1976d2;
+	box-shadow: 0 6px 18px rgba(31,45,61,0.06);
+	animation: refresh-spin 900ms linear infinite;
+	z-index: 10501;
+}
+
+@keyframes refresh-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* Dark mode variant */
+body.dark .page-refresh-overlay.visible {
+	background: rgba(10,12,14,0.94);
+}
+body.dark .page-refresh-overlay .refresh-spinner {
+	border: 4px solid rgba(255,255,255,0.06);
+	border-top-color: #64b5f6;
+}
+
 
 body.dark .disk-sub {
 	color: #e0e0e0;
