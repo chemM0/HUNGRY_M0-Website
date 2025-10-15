@@ -45,7 +45,9 @@ nav#nav{height:160px;border-radius:10px;background-image:url('https://api.ixiaow
 
 @media (max-width:900px){
 	.layout_page{grid-template-columns:1fr;}
-	.right-panel{order:3}
+	.aside_content{order:1}
+	.right-panel{order:2}
+	#page, article{order:3}
 }
 /* 技能区域已移除 */
 .tool a{color:#2b8ae5}
