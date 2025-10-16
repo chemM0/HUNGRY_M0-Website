@@ -47,7 +47,7 @@ if defined INDEX_STATUS (
 	echo index.html 未发生变化。
 )
 
-REM 默认行为：add, commit, push（把所有改动一起提交）
+REM 默认行为：add, commit, push
 git add .
 git commit -am "update"
 echo.
