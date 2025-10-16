@@ -15,9 +15,6 @@ if "%CURRENT_HOOKS%"=="%HOOKspath%" (
 goto :doPush
 
 :doPush
-REM 让 pre-commit hook 在 git commit 时负责运行更新时间脚本
-REM （避免在 push.bat 中直接调用导致的时序或重复问题）
-REM 默认行为：add, commit, push
 git add .
 git commit -am "update"
 echo.
