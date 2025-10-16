@@ -19,3 +19,5 @@
 	```
 
 这不会在服务器端自动启用钩子；若希望在 CI/部署中也注入更新时间，请告知，我可以提供一个在部署步骤运行 `scripts/update_last_modified.ps1` 的示例命令。
+
+	补充：增加了一个跨平台 wrapper `scripts/update_last_modified.sh`（POSIX sh），当环境中没有 PowerShell Core 时，CI 或 Unix 工作站可使用该脚本作为替代运行更新逻辑。
