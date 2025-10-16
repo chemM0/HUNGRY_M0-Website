@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', function(){
 	const qrClose = modal.querySelector('.qr-close');
 	const qrBackdrop = modal.querySelector('.qr-backdrop');
 
-	// 强制下载：使用 fetch 获取图片并生成 blob，再创建临时链接触发下载
+		// 强制下载：使用 fetch 获取图片并生成 Blob，再创建临时链接触发下载
 	qrDownload.addEventListener('click', async function (ev) {
 		ev.preventDefault();
 		const href = qrDownload.href;
 		if (!href) return;
-		// 如果 href 是锚('#') 或 javascript 之类，回退
+	// 如果 href 是锚('#') 或 javascript:，则回退（不执行下载）
 		if (href === '#' || href.startsWith('javascript:')) return;
 		try {
 			qrDownload.textContent = '下载中...';
@@ -54,12 +54,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		qrImage.src = imgSrc || '';
 		document.getElementById('qrLabel').textContent = label || '扫描二维码加我';
 		if (imgSrc) {
-			// configure download link to the QR image
+			// 配置下载链接为二维码图片
 			qrDownload.href = imgSrc;
 			qrDownload.setAttribute('download', 'qrcode.png');
 			qrDownload.style.display = '';
 		} else if (webUrl) {
-			// if no image, repurpose as open web link
+			// 如果没有图片，则改为在新标签打开 web 链接
 			qrDownload.href = webUrl;
 			qrDownload.removeAttribute('download');
 			qrDownload.style.display = '';
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			qrDownload.style.display = 'none';
 		}
 		modal.classList.add('open');
-		// focus for accessibility
+	// 聚焦以提高无障碍体验
 		qrClose.focus();
 	}
 	function closeModal(){ modal.classList.remove('open'); }
@@ -76,10 +76,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	qrBackdrop.addEventListener('click', closeModal);
 	document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 
-	// Make cards focusable and support keyboard; use event delegation to reliably catch clicks
+	// 使卡片可聚焦并支持键盘；使用事件委托以可靠捕获点击事件
 	const grid = document.querySelector('.contact-grid');
 	if (grid) {
-		// make each card focusable
+	// 使每个卡片可通过键盘聚焦
 		grid.querySelectorAll('.contact-card').forEach(c=>{ if(!c.hasAttribute('tabindex')) c.setAttribute('tabindex', '0'); });
 
 		grid.addEventListener('click', function(e){
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			openModal(qr, web, label);
 		});
 
-		// keyboard support: Enter or Space opens the card
+	// 键盘支持：按 Enter 或 空格 键打开卡片
 		grid.addEventListener('keydown', function(e){
 			if(e.key !== 'Enter' && e.key !== ' ') return;
 			const card = e.target.closest && e.target.closest('.contact-card');

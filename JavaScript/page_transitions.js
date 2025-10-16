@@ -1,7 +1,7 @@
-// 全局页面切换动画脚本：拦截内部链接，先播放退出动画再导航
+// 全局页面切换动画：拦截内部链接，先播放退出动画再导航
 (function(){
-    const ANIM_DURATION = 700; // 单位ms，需与 CSS 中的 transition-duration 保持一致或略长
-    const LOADER_MIN_MS = 400; // loader 最少显示时间
+    const ANIM_DURATION = 700; // 单位：毫秒，需与 CSS 中的 transition-duration 保持一致或略长
+    const LOADER_MIN_MS = 400; // loader 最少显示时间（毫秒）
 
     function isInternalLink(a){
         try{
@@ -10,7 +10,7 @@
         }catch(e){ return false; }
     }
 
-    // 页面加载时先设为进入态，下一帧移除以触发过渡
+    // 页面加载时先添加进入类，下一帧移除以触发进入过渡动画
     document.addEventListener('DOMContentLoaded', ()=>{
         document.body.classList.add('page-enter');
         requestAnimationFrame(()=>{
@@ -20,12 +20,12 @@
         });
     });
 
-    // 创建并插入加载条元素（如果不存在）
+    // 创建并插入加载条元素（如果不存在），并保证包含 .bar 与 .pct 子元素
     function ensureLoader(){
         if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
         let l = document.getElementById('pageLoader');
         if(!l){ l = document.createElement('div'); l.id = 'pageLoader'; document.body.appendChild(l); }
-        // ensure .bar and .pct exist
+    // 确保存在 .bar 与 .pct 元素
         if(!l.querySelector('.bar')){
             const bar = document.createElement('div'); bar.className = 'bar'; l.appendChild(bar);
         }
@@ -35,7 +35,7 @@
         return l;
     }
 
-    // 统一的过渡函数：防止重复触发，更新 loader 和百分比，并在 ANIM_DURATION 后导航
+    // 统一的过渡函数：防止重复触发，更新 loader 条与百分比，并在 ANIM_DURATION 后导航
     let _transitionInProgress = false;
         function startTransition(href){
             // If the full-screen transition function is available, use it.

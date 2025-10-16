@@ -1,4 +1,4 @@
-// Global refresh button handler with fullscreen animation
+// 全局刷新按钮处理器，带全屏动画
 (function(){
     function createOverlay(){
         var existing = document.getElementById('pageRefreshOverlay');
@@ -11,7 +11,7 @@
         spinner.setAttribute('aria-hidden', 'true');
         o.appendChild(spinner);
         document.body.appendChild(o);
-        void o.offsetWidth; // force reflow
+    void o.offsetWidth; // 强制回流（触发布局以确保过渡正常）
         return o;
     }
 
@@ -29,7 +29,7 @@
         requestAnimationFrame(function(){ overlay.classList.add('visible'); });
     }
 
-    // Expose a Promise-based API so other scripts (page_transitions) can reuse the same overlay animation
+    // 暴露基于 Promise 的接口，供其他脚本（如 page_transitions）复用同一遮罩动画
     window.showFullScreenTransition = function(){
         return new Promise(function(resolve){
             playRefreshAnimation(function(){ resolve(); });
@@ -47,12 +47,13 @@
                 playRefreshAnimation(function(){ window.location.reload(); });
             });
         });
-            // Delegate handler: intercept back-prev buttons and other transition links
+            // 事件委托处理：拦截 back-prev 按钮与带过渡的数据链接
             document.addEventListener('click', function(e){
                 var el = e.target;
                 // Walk up to find actionable element
                 while(el && el !== document.documentElement){
-                    // handle elements with class 'back-prev' -> history.back()
+                    // 向上查找可操作元素
+                    // 处理具有类 'back-prev' 的元素 -> history.back()
                     if(el.classList && el.classList.contains('back-prev')){
                         e.preventDefault();
                         if(window.showFullScreenTransition){

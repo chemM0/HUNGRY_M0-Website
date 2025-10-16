@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-16 11:59:52 +0800">
+<html lang="zh" data-last-modified="2025-10-16 12:00:28 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +17,13 @@
 		<script src="vendor/js/typed-2.0.11.min.js" defer></script>
 	</head>
 	<body>
+		<!-- 全屏加载遮罩：会在页面完全加载或超时后淡出并移除 -->
+		<div id="site-loader" class="site-loader" aria-hidden="true">
+			<div class="loader-inner">
+				<div class="loader-spinner" role="img" aria-label="加载中"></div>
+				<div class="loader-text">正在加载…</div>
+			</div>
+		</div>
 		<div id="body-wrap">
 			<nav class="not_index_bg" id="nav">
 				<!-- 装饰性背景元素：颜色块与粒子 -->
@@ -159,9 +166,10 @@
 			</div>
 		</footer>
 		</div>
+		<script src="JavaScript/loader.js" defer></script>
 		<script src="vendor/js/jquery-3.4.1.min.js"></script>
 		<script src="vendor/js/jquery.fancybox-2.1.5.js"></script>
-		<!-- busuanzi removed to avoid layout issues -->
+		<!-- 已移除 busuanzi 以避免布局问题 -->
 		<script src="vendor/js/instantpage-3.0.0.js" type="module"></script>
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
 		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
@@ -284,6 +292,7 @@
 
 	</body>
 </html>
+
 
 
 

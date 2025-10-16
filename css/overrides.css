@@ -7,3 +7,38 @@
 .webinfo-site-name{ font-size:13px; color:#666; }
 .webinfo-site-lastmodified{ font-size:13px; color:#222; text-align:right; }
 .webinfo-site-pv-count{ font-size:13px; color:#222; }
+
+/* Fullscreen site loader styles */
+.site-loader{
+	position:fixed;
+	inset:0;
+	width:100%;
+	height:100%;
+	background:linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.95));
+	color:#fff;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	z-index:99999;
+	transition:opacity 400ms ease, visibility 400ms ease;
+	opacity:1;
+	visibility:visible;
+}
+.site-loader.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+.site-loader .loader-inner{ text-align:center; }
+.loader-spinner{
+	width:78px;
+	height:78px;
+	border-radius:50%;
+	box-sizing:border-box;
+	border:6px solid rgba(255,255,255,0.12);
+	border-top-color: #4FD1C5; /* teal-ish accent */
+	animation:spin 1s linear infinite;
+	margin:0 auto 12px auto;
+}
+.loader-text{ font-size:14px; color:rgba(255,255,255,0.9); }
+
+@keyframes spin{ to { transform:rotate(360deg); } }
+
+/* small devices: reduce size */
+@media (max-width:420px){ .loader-spinner{ width:56px; height:56px; border-width:5px; } }

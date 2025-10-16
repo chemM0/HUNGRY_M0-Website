@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:21536/api/system"; // API地址
+const API_URL = "http://localhost:21536/api/system"; // 后端 API 地址
 const REFRESH_INTERVAL = 1; // 刷新间隔（秒），用于计算网络速率
 const FETCH_TIMEOUT_MS = 8000; // fetch 超时（毫秒）
 let lastNet = {
@@ -6,9 +6,9 @@ let lastNet = {
     rx: 0 // 上一次采样的已接收字节数
 };
 let uptimeSec = 0; // 系统运行秒数（从接口获取并递增）
-let isFirstFetch = true; // 用于第一次请求时跳过速率计算
-let uptimeTimer = null; // 本地用于每秒递增 uptime 的定时器（只有在有有效 uptime 时启动）
-// 聚焦进程追踪：记录当前聚焦进程 pid 和开始聚焦的时间戳（秒）
+let isFirstFetch = true; // 首次请求时跳过上/下行速率计算
+let uptimeTimer = null; // 本地用于每秒递增 uptime 的定时器（仅在后端返回有效 uptime 时启用）
+// 聚焦进程追踪：记录当前被聚焦窗口对应的进程 pid 及其开始聚焦时间（秒）
 let focusedPid = null;
 let focusStartSec = null;
 
@@ -38,7 +38,7 @@ function safeNumber(val, defaultVal = 0) {
 }
 
 /**
- * 将字节数格式化为易读字符串（自动转换为 KB/MB/GB）
+ * 将字节数格式化为可读字符串（自动转换为 KB/MB/GB）
  */
 function formatBytes(bytes) {
     const b = Number(bytes) || 0;
@@ -52,13 +52,12 @@ function formatBytes(bytes) {
 }
 
 /**
- * 从后端 API 拉取系统信息并更新页面显示
- * 包含：
+ * 从后端 API 拉取系统信息并更新页面显示。主要包括：
  * - 在线状态指示
  * - CPU、内存、磁盘使用率显示
  * - 网络上/下行速率计算（MB/s）
- * - 当前焦点进程信息（窗口标题、可执行名、进程 CPU/内存）
- * - uptime（累计秒数）显示更新
+ * - 当前聚焦进程信息（窗口标题、可执行名、进程 CPU/内存）
+ * - uptime（累计秒数）显示与本地递增
  */
 async function fetchSystem() {
     const controller = new AbortController();
