@@ -1,23 +1,23 @@
 @echo off
 color a
 cls
-REM è‡ªåŠ¨å¯ç”¨æœ¬åœ° githooksï¼ˆå¦‚æœªå¯ç”¨åˆ™è®¾ç½®ä¸º .githooksï¼‰
+REM ×Ô¶¯ÆôÓÃ±¾µØ githooks£¨ÈçÎ´ÆôÓÃÔòÉèÖÃÎª .githooks£©
 setlocal
 set HOOKspath=.githooks
 for /f "delims=" %%H in ('git config --get core.hooksPath 2^>nul') do set CURRENT_HOOKS=%%H
 if "%CURRENT_HOOKS%"=="%HOOKspath%" (
-	REM å·²é…ç½® hooks
+	REM ÒÑÅäÖÃ hooks
 ) else (
-	echo æ­£åœ¨å°† .githooks è®¾ç½®ä¸º core.hooksPath...
+	echo ÕıÔÚ½« .githooks ÉèÖÃÎª core.hooksPath...
 	git config core.hooksPath %HOOKspath%
-	echo å·²å¯ç”¨ .githooksã€‚
+	echo ÒÑÆôÓÃ .githooks¡£
 )
 goto :doPush
 
 :doPush
-REM è®© pre-commit hook åœ¨ git commit æ—¶è´Ÿè´£è¿è¡Œæ›´æ–°æ—¶é—´è„šæœ¬
-REM ï¼ˆé¿å…åœ¨ push.bat ä¸­ç›´æ¥è°ƒç”¨å¯¼è‡´çš„æ—¶åºæˆ–é‡å¤é—®é¢˜ï¼‰
-REM é»˜è®¤è¡Œä¸ºï¼šadd, commit, push
+REM ÈÃ pre-commit hook ÔÚ git commit Ê±¸ºÔğÔËĞĞ¸üĞÂÊ±¼ä½Å±¾
+REM £¨±ÜÃâÔÚ push.bat ÖĞÖ±½Óµ÷ÓÃµ¼ÖÂµÄÊ±Ğò»òÖØ¸´ÎÊÌâ£©
+REM Ä¬ÈÏĞĞÎª£ºadd, commit, push
 git add .
 git commit -am "update"
 echo.
