@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-16 16:36:12 +0800">
+<html lang="zh" data-last-modified="2025-10-16 16:36:19 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -314,7 +314,7 @@
 					var el = getEl(id);
 					if(!el) return;
 					var cached = localStorage.getItem(id);
-					if(cached){ el.textContent = cached + ' (缓存)'; }
+					if(cached){ el.textContent = cached; }
 					if(!el.textContent || el.textContent.trim()==='') el.textContent = '加载中...';
 				}catch(e){}
 			});
@@ -355,15 +355,14 @@
 
 			// 如果通过 file:// 打开（本地直接打开 HTML），不要发起远程请求（许多 CDN 会返回 HTML 错误页面），改为使用缓存或显示友好提示
 			if(window.location && window.location.protocol === 'file:'){
-				console.warn('[busuanzi] running under file:// — skip remote requests, use cache if available');
+				console.warn('[busuanzi] running under file:// — skip remote requests; show placeholders');
 				ids.forEach(function(id){
 					var el = getEl(id);
 					if(!el) return;
 					try{
-						var cached = localStorage.getItem(id);
-						if(cached) el.textContent = cached;
-						else el.textContent = '本地打开时统计不可用';
-					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '本地打开时统计不可用'; }
+						// 本地打开时统一显示占位符 "--"，页面中通常会有后缀（如 " 次" 或 " 人"）
+						el.textContent = '--';
+					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '--'; }
 				});
 				return; // 不继续远程尝试
 			}
@@ -405,6 +404,7 @@
 
 	</body>
 </html>
+
 
 
 
