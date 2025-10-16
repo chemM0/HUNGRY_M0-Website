@@ -1,4 +1,3 @@
-
 #!/bin/sh
 # Cross-platform pre-commit hook (POSIX sh)
 # Try pwsh (PowerShell Core), then powershell/powershell.exe (Windows PowerShell)
