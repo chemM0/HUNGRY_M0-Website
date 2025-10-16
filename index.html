@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-last-modified="2025-10-16 00:44:20 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,8 +72,8 @@
 									</div>
 									<div class="webinfo">
 										<div class="webinfo-item">
-											<div class="webinfo-site-uv-name">本站访客数 :</div>
-											<div class="webinfo-site-uv-count" id="busuanzi_value_site_uv"></div>
+											<div class="webinfo-site-name">最后编辑：</div>
+											<div class="webinfo-site-lastmodified" id="site_last_modified">加载中...</div>
 										</div>
 										<div class="webinfo-item">
 											<div class="webinfo-site-name">本站总访问量 :</div>
@@ -161,11 +161,29 @@
 		</div>
 		<script src="vendor/js/jquery-3.4.1.min.js"></script>
 		<script src="vendor/js/jquery.fancybox-2.1.5.js"></script>
-		<script async src="vendor/js/busuanzi-2.3.pure.mini.js"></script>
+		<!-- busuanzi removed to avoid layout issues -->
 		<script src="vendor/js/instantpage-3.0.0.js" type="module"></script>
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
 		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
 		<script>
+		// 显示格式化的最后编辑时间（基于 document.lastModified）
+		(function(){
+			document.addEventListener('DOMContentLoaded', function(){
+				function formatLastModified(s){
+					if(!s) return '未知';
+					var d = new Date(s);
+					if(isNaN(d.getTime())) return s; // 如果无法解析则返回原字符串
+					function pad(n){return n<10? '0'+n : n}
+					return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+				}
+				var el = document.getElementById('site_last_modified');
+				if(el){
+					var git = document.getElementsByTagName('html')[0].getAttribute('data-last-modified');
+					var src = git || document.lastModified || '';
+					el.textContent = formatLastModified(src);
+				}
+			});
+		})();
 		// 实时检测 watchmedo API 状态并更新项目卡状态显示
 		(function(){
 			const API = 'http://localhost:21536/api/system';

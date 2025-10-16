@@ -1,2 +1,9 @@
 /* Overrides to replace inline styles moved from JS/HTML */
 .focus-title-error{ color: #f44336; }
+
+/* Ensure webinfo items render in a tidy two-column style */
+.webinfo{ display:flex; flex-direction:column; gap:6px; }
+.webinfo-item{ display:flex; align-items:center; justify-content:space-between; }
+.webinfo-site-name{ font-size:13px; color:#666; }
+.webinfo-site-lastmodified{ font-size:13px; color:#222; text-align:right; }
+.webinfo-site-pv-count{ font-size:13px; color:#222; }
