@@ -265,9 +265,9 @@
 		</div>
 		
 		<script src="JavaScript/loader.js" defer></script>
-		<script src="vendor/js/jquery-3.4.1.min.js"></script>
-		<script src="JavaScript/ai-prompts.js"></script>
-		<script>
+		<script src="vendor/js/jquery-3.4.1.min.js" defer></script>
+		<script src="JavaScript/ai-prompts.js" defer></script>
+		<script defer>
 			// Render prompt cards
 			document.addEventListener('DOMContentLoaded', function() {
 				const grid = document.getElementById('promptGrid');
@@ -276,6 +276,15 @@
 					AIPrompts.prompts.forEach((prompt, index) => {
 						const card = createPromptCard(prompt, index);
 						grid.appendChild(card);
+					});
+					
+					// Add event listeners for copy buttons
+					document.querySelectorAll('.btn[data-index]').forEach(button => {
+						button.addEventListener('click', function() {
+							const index = parseInt(this.getAttribute('data-index'));
+							const lang = this.getAttribute('data-lang');
+							copyPrompt(index, lang);
+						});
 					});
 				}
 			});
@@ -310,11 +319,11 @@
 						</div>
 					</div>
 					<div class="action-buttons">
-						<button class="btn btn-primary" onclick="copyPrompt(${index})">
+						<button class="btn btn-primary" data-index="${index}" data-lang="zh">
 							<i class="fa fa-copy"></i>
 							复制提示词
 						</button>
-						<button class="btn btn-secondary" onclick="copyPromptEN(${index})">
+						<button class="btn btn-secondary" data-index="${index}" data-lang="en">
 							<i class="fa fa-language"></i>
 							复制英文版
 						</button>
@@ -324,38 +333,30 @@
 				return card;
 			}
 			
-			function copyPrompt(index) {
+			function copyPrompt(index, lang = 'zh') {
 				if (typeof AIPrompts === 'undefined' || !AIPrompts.prompts[index]) {
 					alert('提示词未找到');
 					return;
 				}
 				
 				const prompt = AIPrompts.prompts[index];
-				const textToCopy = prompt.text;
+				const textToCopy = lang === 'en' ? (prompt.textEN || prompt.text) : prompt.text;
+				const message = lang === 'en' ? '英文提示词已复制到剪贴板！' : '中文提示词已复制到剪贴板！';
 				
-				copyToClipboard(textToCopy, '中文提示词已复制到剪贴板！');
-			}
-			
-			function copyPromptEN(index) {
-				if (typeof AIPrompts === 'undefined' || !AIPrompts.prompts[index]) {
-					alert('提示词未找到');
-					return;
-				}
-				
-				const prompt = AIPrompts.prompts[index];
-				const textToCopy = prompt.textEN || prompt.text;
-				
-				copyToClipboard(textToCopy, '英文提示词已复制到剪贴板！');
+				copyToClipboard(textToCopy, message);
 			}
 			
 			function copyToClipboard(text, successMessage) {
+				// Modern Clipboard API (primary method)
 				if (navigator.clipboard && navigator.clipboard.writeText) {
 					navigator.clipboard.writeText(text).then(() => {
 						showNotification(successMessage);
 					}).catch(err => {
+						// Fallback to deprecated method only if modern API fails
 						fallbackCopy(text, successMessage);
 					});
 				} else {
+					// Use deprecated method for older browsers
 					fallbackCopy(text, successMessage);
 				}
 			}
