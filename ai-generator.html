@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh" data-last-modified="2025-10-16 16:36:19 +0800">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link rel="icon" type="image/png" href="favicon.png">
+		<title>AI图片生成器 - HUNGRY_M0</title>
+		<meta name="description" content="AI图片生成器，使用预设提示词生成高质量图片">
+		<meta name="keywords" content="AI, 图片生成, Stable Diffusion, 提示词">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/bucaicai.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/overrides.css">
+		<style>
+			.ai-generator-container {
+				max-width: 1200px;
+				margin: 40px auto;
+				padding: 20px;
+			}
+			
+			.ai-header {
+				text-align: center;
+				margin-bottom: 40px;
+			}
+			
+			.ai-header h1 {
+				font-size: 2.5em;
+				color: #1565c0;
+				margin-bottom: 10px;
+			}
+			
+			.ai-header p {
+				color: #666;
+				font-size: 1.1em;
+			}
+			
+			.prompt-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+				gap: 30px;
+				margin-bottom: 40px;
+			}
+			
+			.prompt-card {
+				background: #fff;
+				border-radius: 12px;
+				padding: 25px;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+				transition: transform 0.3s ease, box-shadow 0.3s ease;
+			}
+			
+			.prompt-card:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+			}
+			
+			.prompt-card h3 {
+				color: #1565c0;
+				margin-bottom: 15px;
+				font-size: 1.4em;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			
+			.prompt-badge {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 4px 12px;
+				border-radius: 20px;
+				font-size: 0.7em;
+				font-weight: normal;
+			}
+			
+			.prompt-category {
+				display: inline-block;
+				background: #e3f2fd;
+				color: #1565c0;
+				padding: 5px 12px;
+				border-radius: 6px;
+				font-size: 0.85em;
+				margin-bottom: 15px;
+			}
+			
+			.prompt-text {
+				background: #f5f5f5;
+				padding: 15px;
+				border-radius: 8px;
+				margin: 15px 0;
+				font-family: 'Courier New', monospace;
+				font-size: 0.95em;
+				line-height: 1.6;
+				color: #333;
+				white-space: pre-wrap;
+				word-break: break-word;
+			}
+			
+			.prompt-specs {
+				margin-top: 15px;
+				padding-top: 15px;
+				border-top: 1px solid #e0e0e0;
+			}
+			
+			.spec-item {
+				display: flex;
+				align-items: center;
+				margin: 8px 0;
+				font-size: 0.9em;
+				color: #666;
+			}
+			
+			.spec-item i {
+				margin-right: 8px;
+				color: #1565c0;
+				width: 20px;
+			}
+			
+			.action-buttons {
+				display: flex;
+				gap: 10px;
+				margin-top: 20px;
+			}
+			
+			.btn {
+				flex: 1;
+				padding: 12px 20px;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 1em;
+				transition: all 0.3s ease;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 8px;
+			}
+			
+			.btn-primary {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+			}
+			
+			.btn-primary:hover {
+				transform: scale(1.05);
+				box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			}
+			
+			.btn-secondary {
+				background: #f5f5f5;
+				color: #333;
+			}
+			
+			.btn-secondary:hover {
+				background: #e0e0e0;
+			}
+			
+			.info-section {
+				background: #fff3e0;
+				border-left: 4px solid #ff9800;
+				padding: 20px;
+				border-radius: 8px;
+				margin: 40px 0;
+			}
+			
+			.info-section h3 {
+				color: #e65100;
+				margin-bottom: 10px;
+			}
+			
+			.info-section ul {
+				margin-left: 20px;
+				line-height: 1.8;
+			}
+			
+			body.dark .prompt-card {
+				background: #2d2d2d;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+			}
+			
+			body.dark .prompt-text {
+				background: #1a1a1a;
+				color: #e0e0e0;
+			}
+			
+			body.dark .ai-header h1 {
+				color: #64b5f6;
+			}
+			
+			body.dark .prompt-card h3 {
+				color: #64b5f6;
+			}
+			
+			body.dark .btn-secondary {
+				background: #424242;
+				color: #e0e0e0;
+			}
+			
+			body.dark .btn-secondary:hover {
+				background: #555;
+			}
+			
+			@media (max-width: 768px) {
+				.prompt-grid {
+					grid-template-columns: 1fr;
+				}
+				
+				.action-buttons {
+					flex-direction: column;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 全屏加载遮罩 -->
+		<div id="site-loader" class="site-loader" aria-hidden="true">
+			<div class="loader-inner">
+				<div class="loader-spinner" role="img" aria-label="加载中"></div>
+				<div class="loader-text">正在加载…</div>
+			</div>
+		</div>
+		<div id="body-wrap">
+			<nav class="not_index_bg" id="nav">
+				<div class="bg-decor" aria-hidden="true">
+					<span class="blob b1"></span>
+					<span class="blob b2"></span>
+					<span class="blob b3"></span>
+					<span class="dotgrid"></span>
+				</div>
+				<div id="page_site-info">
+					<div id="site-title">
+						<span class="blogtitle">AI 图片生成器</span>
+					</div>
+				</div>
+			</nav>
+			<br />
+			<main id="content-outer">
+				<div class="ai-generator-container">
+					<div class="ai-header">
+						<h1>🎨 AI 图片生成器</h1>
+						<p>使用高质量提示词生成专业的AI图片</p>
+					</div>
+					
+					<div class="info-section">
+						<h3>📌 使用说明</h3>
+						<ul>
+							<li>以下提示词已针对马厩场景和氛围感进行优化</li>
+							<li>点击"复制提示词"可将完整提示词复制到剪贴板</li>
+							<li>建议在 Stable Diffusion、Midjourney 或其他AI图像生成工具中使用</li>
+							<li>可根据需要调整参数以获得最佳效果</li>
+						</ul>
+					</div>
+					
+					<div class="prompt-grid" id="promptGrid">
+						<!-- Prompt cards will be inserted here by JavaScript -->
+					</div>
+				</div>
+			</main>
+			<footer id="footer">
+				<div id="footer-wrap">
+					<div class="copyright">&copy; 2025 HUNGRY_M0 | <a href="index.html">返回首页</a></div>
+				</div>
+			</footer>
+		</div>
+		
+		<script src="JavaScript/loader.js" defer></script>
+		<script src="vendor/js/jquery-3.4.1.min.js"></script>
+		<script src="JavaScript/ai-prompts.js"></script>
+		<script>
+			// Render prompt cards
+			document.addEventListener('DOMContentLoaded', function() {
+				const grid = document.getElementById('promptGrid');
+				
+				if (typeof AIPrompts !== 'undefined' && AIPrompts.prompts) {
+					AIPrompts.prompts.forEach((prompt, index) => {
+						const card = createPromptCard(prompt, index);
+						grid.appendChild(card);
+					});
+				}
+			});
+			
+			function createPromptCard(prompt, index) {
+				const card = document.createElement('div');
+				card.className = 'prompt-card';
+				
+				card.innerHTML = `
+					<h3>
+						${prompt.title}
+						<span class="prompt-badge">${prompt.badge}</span>
+					</h3>
+					<div class="prompt-category">${prompt.category}</div>
+					<div class="prompt-text">${prompt.text}</div>
+					<div class="prompt-specs">
+						<div class="spec-item">
+							<i class="fa fa-camera"></i>
+							<span>风格：${prompt.style}</span>
+						</div>
+						<div class="spec-item">
+							<i class="fa fa-lightbulb-o"></i>
+							<span>光照：${prompt.lighting}</span>
+						</div>
+						<div class="spec-item">
+							<i class="fa fa-sliders"></i>
+							<span>对比度：${prompt.contrast}</span>
+						</div>
+						<div class="spec-item">
+							<i class="fa fa-film"></i>
+							<span>氛围：${prompt.atmosphere}</span>
+						</div>
+					</div>
+					<div class="action-buttons">
+						<button class="btn btn-primary" onclick="copyPrompt(${index})">
+							<i class="fa fa-copy"></i>
+							复制提示词
+						</button>
+						<button class="btn btn-secondary" onclick="copyPromptEN(${index})">
+							<i class="fa fa-language"></i>
+							复制英文版
+						</button>
+					</div>
+				`;
+				
+				return card;
+			}
+			
+			function copyPrompt(index) {
+				if (typeof AIPrompts === 'undefined' || !AIPrompts.prompts[index]) {
+					alert('提示词未找到');
+					return;
+				}
+				
+				const prompt = AIPrompts.prompts[index];
+				const textToCopy = prompt.text;
+				
+				copyToClipboard(textToCopy, '中文提示词已复制到剪贴板！');
+			}
+			
+			function copyPromptEN(index) {
+				if (typeof AIPrompts === 'undefined' || !AIPrompts.prompts[index]) {
+					alert('提示词未找到');
+					return;
+				}
+				
+				const prompt = AIPrompts.prompts[index];
+				const textToCopy = prompt.textEN || prompt.text;
+				
+				copyToClipboard(textToCopy, '英文提示词已复制到剪贴板！');
+			}
+			
+			function copyToClipboard(text, successMessage) {
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					navigator.clipboard.writeText(text).then(() => {
+						showNotification(successMessage);
+					}).catch(err => {
+						fallbackCopy(text, successMessage);
+					});
+				} else {
+					fallbackCopy(text, successMessage);
+				}
+			}
+			
+			function fallbackCopy(text, successMessage) {
+				const textArea = document.createElement('textarea');
+				textArea.value = text;
+				textArea.style.position = 'fixed';
+				textArea.style.left = '-999999px';
+				document.body.appendChild(textArea);
+				textArea.focus();
+				textArea.select();
+				
+				try {
+					document.execCommand('copy');
+					showNotification(successMessage);
+				} catch (err) {
+					alert('复制失败，请手动复制');
+				}
+				
+				document.body.removeChild(textArea);
+			}
+			
+			function showNotification(message) {
+				const notification = document.createElement('div');
+				notification.textContent = message;
+				notification.style.cssText = `
+					position: fixed;
+					top: 20px;
+					right: 20px;
+					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+					color: white;
+					padding: 15px 25px;
+					border-radius: 8px;
+					box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+					z-index: 10000;
+					animation: slideIn 0.3s ease;
+				`;
+				
+				document.body.appendChild(notification);
+				
+				setTimeout(() => {
+					notification.style.animation = 'slideOut 0.3s ease';
+					setTimeout(() => {
+						document.body.removeChild(notification);
+					}, 300);
+				}, 2000);
+			}
+			
+			// Add animation styles
+			const style = document.createElement('style');
+			style.textContent = `
+				@keyframes slideIn {
+					from {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+					to {
+						transform: translateX(0);
+						opacity: 1;
+					}
+				}
+				@keyframes slideOut {
+					from {
+						transform: translateX(0);
+						opacity: 1;
+					}
+					to {
+						transform: translateX(400px);
+						opacity: 0;
+					}
+				}
+			`;
+			document.head.appendChild(style);
+		</script>
+	</body>
+</html>
