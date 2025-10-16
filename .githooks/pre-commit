@@ -1,0 +1,11 @@
+#!/usr/bin/env pwsh
+# Pre-commit hook: update index.html last-modified from git and add it to the commit if changed.
+.
+try {
+    $script = Join-Path $PSScriptRoot '..\scripts\update_last_modified.ps1'
+    if (Test-Path $script) {
+        & pwsh -NoProfile -ExecutionPolicy Bypass -File $script
+    }
+} catch {
+    # don't block commit on hook failures
+}
