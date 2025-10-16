@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-16 16:18:05 +0800">
+<html lang="zh" data-last-modified="2025-10-16 16:18:12 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -85,7 +85,13 @@
 										<div class="webinfo-item">
 											<div class="webinfo-site-name">本站总访问量 :</div>
 											<div id="busuanzi_container_site_pv">
-												<div class="webinfo-site-pv-count" id="busuanzi_value_site_pv">加载中...</div>
+												<span id="busuanzi_site_pv">加载中...</span> 次
+											</div>
+										</div>
+										<div class="webinfo-item">
+											<div class="webinfo-site-name">本站今日访问量 :</div>
+											<div id="busuanzi_container_today_site_pv">
+												<span id="busuanzi_today_site_pv">加载中...</span> 次
 											</div>
 										</div>
 									</div>
@@ -292,46 +298,114 @@
 			
 		</script>
 
-		<!-- 使用本地 busuanzi 脚本（vendor/js/busuanzi-2.3.pure.mini.js），并在 5 秒内回退 -->
+		<!-- 加载 busuanzi（官方 CDN），为多个指标提供缓存与 JSONP 回退 -->
 		<script>
 		(function(){
-			var el = document.getElementById('busuanzi_value_site_pv');
-			if(!el) return;
-			var container = document.getElementById('busuanzi_container_site_pv');
-			if(container) container.style.display = 'inline';
-			el.textContent = '加载中...';
-			// 超时回退
-			var timeout = setTimeout(function(){
-				if(el.textContent === '加载中...' || el.textContent === ''){
-					el.textContent = '统计不可用';
-					if(container) container.style.display = 'inline';
-				}
-			}, 5000);
-			// 观察元素变化以便清除超时
-			var mo = new MutationObserver(function(muts){
-				for(var i=0;i<muts.length;i++){
-					var m = muts[i];
-					if((m.type === 'childList' || m.type === 'characterData') && el.textContent && el.textContent !== '加载中...'){
-						clearTimeout(timeout);
-						mo.disconnect();
-						break;
-					}
-				}
+			var ids = [
+				'busuanzi_site_pv','busuanzi_site_uv','busuanzi_page_pv','busuanzi_page_uv',
+				'busuanzi_today_site_pv','busuanzi_today_site_uv','busuanzi_today_page_pv','busuanzi_today_page_uv'
+			];
+
+			function getEl(id){ return document.getElementById(id); }
+
+			// 用 localStorage 的缓存先填充
+			ids.forEach(function(id){
+				try{
+					var el = getEl(id);
+					if(!el) return;
+					var cached = localStorage.getItem(id);
+					if(cached){ el.textContent = cached + ' (缓存)'; }
+					if(!el.textContent || el.textContent.trim()==='') el.textContent = '加载中...';
+				}catch(e){}
 			});
-			mo.observe(el, { childList:true, characterData:true, subtree:true });
-			// 动态加载远程 CDN 脚本（busuanzi）
+
+			var filled = false;
+			var finalTimeout = setTimeout(function(){
+				ids.forEach(function(id){
+					var el = getEl(id);
+					if(!el) return;
+					try{
+						var cached = localStorage.getItem(id);
+						if(cached) el.textContent = cached;
+						else if(!el.textContent || el.textContent.trim()==='') el.textContent = '统计不可用';
+					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '统计不可用'; }
+				});
+				console.warn('[busuanzi] all remote attempts failed');
+			}, 5000);
+
+			var mo = new MutationObserver(function(muts){
+				muts.forEach(function(m){
+					ids.forEach(function(id){
+						var el = getEl(id);
+						if(!el) return;
+						var txt = el.textContent && el.textContent.trim();
+						if(txt && txt !== '加载中...' && txt !== '统计不可用'){
+							try{ localStorage.setItem(id, txt); localStorage.setItem(id+'_ts', Date.now()); }catch(e){}
+							filled = true;
+						}
+					});
+					if(filled){
+						clearTimeout(finalTimeout);
+						try{ if(window.__busuanzi_cb) delete window.__busuanzi_cb; }catch(e){}
+						mo.disconnect();
+					}
+				});
+			});
+			ids.forEach(function(id){ var el = getEl(id); if(el) mo.observe(el, { childList:true, characterData:true, subtree:true }); });
+
+			// 如果通过 file:// 打开（本地直接打开 HTML），不要发起远程请求（许多 CDN 会返回 HTML 错误页面），改为使用缓存或显示友好提示
+			if(window.location && window.location.protocol === 'file:'){
+				console.warn('[busuanzi] running under file:// — skip remote requests, use cache if available');
+				ids.forEach(function(id){
+					var el = getEl(id);
+					if(!el) return;
+					try{
+						var cached = localStorage.getItem(id);
+						if(cached) el.textContent = cached;
+						else el.textContent = '本地打开时统计不可用';
+					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '本地打开时统计不可用'; }
+				});
+				return; // 不继续远程尝试
+			}
+
+			// 加载官方脚本
 			var s = document.createElement('script');
-			s.src = '//busuanzi.ibruce.info/busuanzi.pure.mini.js';
+			s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
 			s.defer = true;
 			s.referrerPolicy = 'no-referrer-when-downgrade';
-			s.onload = function(){ /* vendor 脚本会填充 DOM */ };
-			s.onerror = function(){ clearTimeout(timeout); el.textContent = '统计不可用'; if(container) container.style.display='inline'; };
+			s.onload = function(){ console.log('[busuanzi] official script loaded'); };
+			s.onerror = function(){ console.warn('[busuanzi] official script failed; attempting JSONP fallback'); };
 			document.head.appendChild(s);
+
+			// JSONP 回退
+			var jsonpTimer = setTimeout(function(){
+				if(filled) return;
+				window.__busuanzi_cb = function(data){
+					try{
+						if(data){
+							if(typeof data.site_pv !== 'undefined'){ var el = getEl('busuanzi_site_pv'); if(el) el.textContent = String(data.site_pv); }
+							if(typeof data.site_uv !== 'undefined'){ var el = getEl('busuanzi_site_uv'); if(el) el.textContent = String(data.site_uv); }
+							if(typeof data.page_pv !== 'undefined'){ var el = getEl('busuanzi_page_pv'); if(el) el.textContent = String(data.page_pv); }
+							if(typeof data.page_uv !== 'undefined'){ var el = getEl('busuanzi_page_uv'); if(el) el.textContent = String(data.page_uv); }
+						}
+						// 缓存当前存在的值
+						ids.forEach(function(id){ var el = getEl(id); if(el && el.textContent) try{ localStorage.setItem(id, el.textContent.trim()); localStorage.setItem(id+'_ts', Date.now()); }catch(e){} });
+					}catch(e){}
+					try{ delete window.__busuanzi_cb; }catch(e){}
+				};
+				var j = document.createElement('script');
+				j.src = 'https://api.busuanzi.cc/busuanzi?jsonpCallback=__busuanzi_cb';
+				j.referrerPolicy = 'no-referrer-when-downgrade';
+				j.onerror = function(){ console.warn('[busuanzi] JSONP request failed'); };
+				document.head.appendChild(j);
+			}, 1200);
+
 		})();
 		</script>
 
 	</body>
 </html>
+
 
 
 
