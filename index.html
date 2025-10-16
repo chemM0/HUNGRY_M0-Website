@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-16 16:00:27 +0800">
+<html lang="zh" data-last-modified="2025-10-16 16:00:41 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,7 +84,9 @@
 										</div>
 										<div class="webinfo-item">
 											<div class="webinfo-site-name">本站总访问量 :</div>
-											<div class="webinfo-site-pv-count" id="busuanzi_value_site_pv"></div>
+											<div id="busuanzi_container_site_pv">
+												<div class="webinfo-site-pv-count" id="busuanzi_value_site_pv">加载中...</div>
+											</div>
 										</div>
 									</div>
 						</a>
@@ -290,8 +292,47 @@
 			
 		</script>
 
+		<!-- 使用本地 busuanzi 脚本（vendor/js/busuanzi-2.3.pure.mini.js），并在 5 秒内回退 -->
+		<script>
+		(function(){
+			var el = document.getElementById('busuanzi_value_site_pv');
+			if(!el) return;
+			var container = document.getElementById('busuanzi_container_site_pv');
+			if(container) container.style.display = 'inline';
+			el.textContent = '加载中...';
+			// 超时回退
+			var timeout = setTimeout(function(){
+				if(el.textContent === '加载中...' || el.textContent === ''){
+					el.textContent = '统计不可用';
+					if(container) container.style.display = 'inline';
+				}
+			}, 5000);
+			// 观察元素变化以便清除超时
+			var mo = new MutationObserver(function(muts){
+				for(var i=0;i<muts.length;i++){
+					var m = muts[i];
+					if((m.type === 'childList' || m.type === 'characterData') && el.textContent && el.textContent !== '加载中...'){
+						clearTimeout(timeout);
+						mo.disconnect();
+						break;
+					}
+				}
+			});
+			mo.observe(el, { childList:true, characterData:true, subtree:true });
+			// 动态加载远程 CDN 脚本（busuanzi）
+			var s = document.createElement('script');
+			s.src = '//busuanzi.ibruce.info/busuanzi.pure.mini.js';
+			s.defer = true;
+			s.referrerPolicy = 'no-referrer-when-downgrade';
+			s.onload = function(){ /* vendor 脚本会填充 DOM */ };
+			s.onerror = function(){ clearTimeout(timeout); el.textContent = '统计不可用'; if(container) container.style.display='inline'; };
+			document.head.appendChild(s);
+		})();
+		</script>
+
 	</body>
 </html>
+
 
 
 
