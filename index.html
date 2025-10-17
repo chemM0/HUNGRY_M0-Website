@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 18:21:14 +0800">
+<html lang="zh" data-last-modified="2025-10-17 18:21:38 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -413,7 +413,7 @@
 			// 加载官方脚本
 			var s = document.createElement('script');
 			s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
-			s.defer = true;
+			s.async = true; // ensure the remote counter script runs as soon as fetched
 			s.referrerPolicy = 'no-referrer-when-downgrade';
 			s.onload = function(){ console.log('[busuanzi] official script loaded'); };
 			s.onerror = function(){ console.warn('[busuanzi] official script failed; attempting JSONP fallback'); };
@@ -440,13 +440,14 @@
 				j.referrerPolicy = 'no-referrer-when-downgrade';
 				j.onerror = function(){ console.warn('[busuanzi] JSONP request failed'); };
 				document.head.appendChild(j);
-			}, 1200);
+			}, 800);
 
 		})();
 		</script>
 
 	</body>
 </html>
+
 
 
 
