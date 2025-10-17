@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 17:46:33 +0800">
+<html lang="zh" data-last-modified="2025-10-17 17:54:25 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -287,13 +287,6 @@
 				}
 			}
 
-			// 初始状态
-			document.addEventListener('DOMContentLoaded', function(){
-				const txt = document.querySelector('.proj-thumb.proj-status .status-text');
-				if(txt) txt.textContent = '连接中...';
-				probe();
-				setInterval(probe, INTERVAL);
-			});
 		})();
 		</script>
 		<script>
@@ -451,6 +444,7 @@
 
 	</body>
 </html>
+
 
 
 
