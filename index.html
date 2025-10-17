@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 18:38:49 +0800">
+<html lang="zh" data-last-modified="2025-10-17 18:43:37 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -408,18 +408,15 @@
 				return; // 不继续远程尝试
 			}
 
-			// 加载官方脚本（恢复为：立即加载官方脚本，JSONP 在超时后回退）
+			// 加载官方脚本（只在 onerror 时使用 JSONP 回退以避免重复计数）
 			var s = document.createElement('script');
 			s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
 			s.defer = true;
 			s.referrerPolicy = 'no-referrer-when-downgrade';
-			s.onload = function(){ console.log('[busuanzi] official script loaded'); };
-			s.onerror = function(){ console.warn('[busuanzi] official script failed; attempting JSONP fallback'); };
-			document.head.appendChild(s);
-
-			// JSONP 回退
-			var jsonpTimer = setTimeout(function(){
-				if(filled) return;
+			s.onload = function(){ console.log('[busuanzi] official script loaded'); filled = true; };
+			s.onerror = function(){
+				console.warn('[busuanzi] official script failed; inserting JSONP fallback');
+				// 仅在官方脚本确实出错时插入 JSONP
 				window.__busuanzi_cb = function(data){
 					try{
 						if(data){
@@ -428,7 +425,6 @@
 							if(typeof data.page_pv !== 'undefined'){ var el = getEl('busuanzi_page_pv'); if(el) el.textContent = String(data.page_pv); }
 							if(typeof data.page_uv !== 'undefined'){ var el = getEl('busuanzi_page_uv'); if(el) el.textContent = String(data.page_uv); }
 						}
-						// 缓存当前存在的值
 						ids.forEach(function(id){ var el = getEl(id); if(el && el.textContent) try{ localStorage.setItem(id, el.textContent.trim()); localStorage.setItem(id+'_ts', Date.now()); }catch(e){} });
 					}catch(e){}
 					try{ delete window.__busuanzi_cb; }catch(e){}
@@ -438,13 +434,15 @@
 				j.referrerPolicy = 'no-referrer-when-downgrade';
 				j.onerror = function(){ console.warn('[busuanzi] JSONP request failed'); };
 				document.head.appendChild(j);
-			}, 1200);
+			};
+			document.head.appendChild(s);
 
 		})();
 		</script>
 
 	</body>
 </html>
+
 
 
 
