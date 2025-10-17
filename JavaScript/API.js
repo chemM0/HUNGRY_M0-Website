@@ -8,9 +8,7 @@ let lastNet = {
 let uptimeSec = 0; // 系统运行秒数（从接口获取并递增）
 let isFirstFetch = true; // 首次请求时跳过上/下行速率计算
 let uptimeTimer = null; // 本地用于每秒递增 uptime 的定时器（仅在后端返回有效 uptime 时启用）
-// 聚焦进程追踪：记录当前被聚焦窗口对应的进程 pid 及其开始聚焦时间（秒）
-let focusedPid = null;
-let focusStartSec = null;
+// 聚焦进程信息：显示窗口标题与可执行名（不再记录或显示聚焦时长）
 
 // 辅助：安全读写 DOM 元素
 function getEl(id) {
@@ -150,19 +148,6 @@ async function fetchSystem() {
 
         const normCpuUsage = computeProcessCpuPercent(safeNumber(focus.cpu_usage, 0), cpuArray.length || (navigator.hardwareConcurrency || 1));
 
-        // 聚焦时长逻辑：若 pid 变化则重置计时；否则显示当前聚焦持续秒数
-        const nowSec = Math.floor(Date.now() / 1000);
-        if (pid == null) {
-            focusedPid = null;
-            focusStartSec = null;
-        } else {
-            if (focusedPid !== pid) {
-                focusedPid = pid;
-                focusStartSec = nowSec;
-            }
-        }
-        const focusDurationSec = (focusStartSec != null) ? Math.max(0, nowSec - focusStartSec) : 0;
-
         // 更新 uptime 并刷新显示
         // 仅当后端明确返回有效 uptime 时才显示并启动本地计时器；否则不显示并停止计时
         if (data.uptime != null) {
@@ -265,13 +250,10 @@ async function fetchSystem() {
             }
         }
 
-        // 聚焦卡显示聚焦时长（切换进程重置）
-        const hours = String(Math.floor(focusDurationSec / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((focusDurationSec % 3600) / 60)).padStart(2, '0');
-        const secs = String(focusDurationSec % 60).padStart(2, '0');
+        // 聚焦卡只显示标题与程序名（不再显示聚焦时长）
         setHTML("focus-card", `
     <div class="focus-title">🎯 ${title}</div>
-    <div class="focus-details">程序名：${exe}<br>聚焦时长：${hours}:${mins}:${secs}</div>`);
+    <div class="focus-details">程序名：${exe}</div>`);
     } catch (err) {
         clearTimeout(timeoutId);
         console.error("获取系统信息失败:", err);
