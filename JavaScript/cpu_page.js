@@ -3,7 +3,7 @@
     // 后端 API，本地开发可能运行在 localhost:21536
     // 注意：当页面通过 HTTPS 提供时，浏览器会阻止向 http://localhost 的请求（混合内容）。
     // 优先尝试 https://localhost:21536（若后端或代理支持），否则回退到配置的 HTTP 地址以便本地调试。
-    const API_URL = "http://dd355f42.natappfree.cc/api/system";
+    const API_URL = "https://cn-hk-bgp-4.ofalias.net/api/system";
     const REFRESH_INTERVAL = 1; // 秒
     const MAX_POINTS = 120; // 每个小图保留的数据点数
 
