@@ -1,4 +1,4 @@
-const API_URL = "http://dd355f42.natappfree.cc"; // 后端 API 地址
+const API_URL = "http://dd355f42.natappfree.cc/api/system"; // 后端 API 地址
 const REFRESH_INTERVAL = 1; // 刷新间隔（秒），用于计算网络速率
 const FETCH_TIMEOUT_MS = 8000; // fetch 超时（毫秒）
 let lastNet = {
