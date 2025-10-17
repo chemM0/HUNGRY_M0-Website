@@ -11,40 +11,41 @@
 /* Fullscreen site loader styles */
 .site-loader{
 	position:fixed;
-	inset:0;
-	width:100%;
-	height:100%;
-	background:linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.95));
-	color:#fff;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	z-index:99999;
-	transition:opacity 400ms ease, visibility 400ms ease;
-	opacity:1;
-	visibility:visible;
-}
-.site-loader.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
-.site-loader .loader-inner{ text-align:center; }
-.loader-spinner{
-	width:78px;
-	height:78px;
-	border-radius:50%;
-	box-sizing:border-box;
-	border:6px solid rgba(255,255,255,0.12);
-	border-top-color: #4FD1C5; /* teal-ish accent */
-	animation:spin 1s linear infinite;
-	margin:0 auto 12px auto;
-}
-.loader-text{ font-size:14px; color:rgba(255,255,255,0.9); }
+	#refreshBtn{
+		position: fixed !important;
+		left: 24px !important;
+		top: 72px !important; /* 位于顶部导航下方，避免遮挡 */
+		z-index: 100000 !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		min-width: 150px !important;
+		height: 48px !important;
+		padding: 12.5px 30px !important;
+		border: 0 !important;
+		border-radius: 100px !important;
+		/* 默认为蓝色渐变（未悬停也为蓝） */
+		background: linear-gradient(180deg,#2ba8fb,#1f6fc4) !important;
+		color: #ffffff !important;
+		font-weight: 700 !important;
+		-webkit-transition: all 0.5s !important;
+		transition: all 0.5s !important;
+		box-shadow: 0 12px 34px rgba(43,138,229,0.12) !important;
+	}
 
-@keyframes spin{ to { transform:rotate(360deg); } }
+	#refreshBtn:hover{
+		background-color: #6fc5ff !important;
+		box-shadow: 0 0 20px #6fc5ff50 !important;
+		transform: scale(1.06) !important;
+	}
 
-/* small devices: reduce size */
-@media (max-width:420px){ .loader-spinner{ width:56px; height:56px; border-width:5px; } }
-
-/* 桌面优化：社交按钮不换行，减小高度以避免文本折行 */
-@media (min-width:900px){
+	#refreshBtn:active{
+		background-color: #3d94cf !important;
+		-webkit-transition: all 0.25s !important;
+		transition: all 0.25s !important;
+		box-shadow: none !important;
+		transform: scale(0.98) !important;
+	}
 	.card-info-social-icons .social-icon{ padding:4px 10px; }
 	.card-info-social-icons .social-icon .social-link-text{ white-space:nowrap; line-height:1; font-size:13px; }
 	.card-info-social-icons .social-icon i{ margin-right:6px; font-size:18px }
@@ -100,3 +101,147 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 	.avatar-theme-toggle{ left:6px; top:6px; width:40px; height:22px; padding:2px; }
 	.avatar-theme-toggle .switch-knob{ width:18px; height:18px; left:2px; top:2px; }
 }
+
+/* Refresh button: 重新设计以匹配页面风格，但保留旋转动画（圆角卡片风） */
+.refresh-btn{
+	--btn-bg: linear-gradient(180deg, #ffffff, #f6fbff);
+	--btn-border: rgba(43,138,229,0.12);
+	--accent: #1f6fc4;
+	display:inline-flex;
+	align-items:center;
+	gap:12px;
+	padding:10px 14px;
+	background:var(--btn-bg);
+	border:1px solid var(--btn-border);
+	color:var(--accent);
+	border-radius:14px;
+	font-weight:700;
+	cursor:pointer;
+	position:relative;
+	box-shadow: 0 10px 30px rgba(12,24,40,0.06);
+	transition: transform 180ms ease-out, box-shadow 180ms ease-out, background 180ms ease;
+	-webkit-user-select: none;
+	user-select:none;
+}
+.refresh-btn:focus{ outline: none; box-shadow: 0 10px 28px rgba(31,111,196,0.14); transform: translateY(-1px); }
+.refresh-btn:hover{ transform: translateY(-4px); box-shadow: 0 18px 48px rgba(12,24,40,0.12); }
+
+/* 图标旋转（可在触发刷新时添加 .is-spinning 类来启动动画） */
+.refresh-btn__icon{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:10px; background:transparent; box-shadow:none; }
+.refresh-btn__icon .svg{ display:block; width:18px; height:18px; transition: transform 360ms ease-out; color:var(--accent); }
+.refresh-btn.is-spinning .refresh-btn__icon .svg{ animation: spin 720ms linear infinite; transform-origin: 50% 50%; }
+
+/* 固定在左上角（位于导航下方），使用 Uiverse 风格的圆角按钮样式 */
+
+#refreshBtn{
+	position: fixed !important;
+	left: 24px !important;
+	top: 72px !important;
+	z-index: 100000 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	/* 缩小尺寸以更紧凑 */
+	min-width: 120px !important;
+	height: 40px !important;
+	padding: 8px 18px !important;
+	border: 0 !important;
+	border-radius: 100px !important;
+	background: linear-gradient(180deg,#2ba8fb,#1f6fc4) !important;
+	color: #ffffff !important;
+	font-weight: 700 !important;
+	font-size: 13px !important;
+	-webkit-transition: all 220ms ease !important;
+	transition: all 220ms ease !important;
+	box-shadow: 0 8px 24px rgba(43,138,229,0.12) !important;
+}
+
+#refreshBtn:hover{
+	background-color: #6fc5ff !important;
+	/* 更强的阴影与柔和外发光 */
+	box-shadow: 0 18px 48px rgba(43,138,229,0.18) , 0 0 28px rgba(111,197,255,0.18) !important;
+	transform: translateY(-2px) scale(1.04) !important;
+}
+
+#refreshBtn:active{
+	background-color: #3d94cf !important;
+	-webkit-transition: all 0.25s !important;
+	transition: all 0.25s !important;
+	box-shadow: none !important;
+	transform: scale(0.98) !important;
+}
+
+/* 确保文本与图标在彩色背景下可见，并强制文本居中 */
+#refreshBtn .refresh-btn__text{ color: #fff !important; transform: none !important; margin:0 !important; padding:0 !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; }
+#refreshBtn .refresh-btn__icon{ position: relative !important; transform: none !important; width: 24px !important; height: 24px !important; margin-left:10px !important; }
+#refreshBtn .refresh-btn__icon .svg{ width:16px !important; height:16px !important; fill: #fff !important; stroke: #fff !important; }
+
+/* Force visibility if other rules try to hide or shrink it */
+#refreshBtn{ visibility: visible !important; opacity: 1 !important; transform: none !important; }
+
+/* 当 button 同时拥有 .refresh-btn 类时，强制其背景与文本使用 #refreshBtn 的蓝色主题，避免页面中其他 .refresh-btn 规则覆盖造成白色内层 */
+#refreshBtn.refresh-btn,
+#refreshBtn .refresh-btn{
+	background: linear-gradient(180deg,#2ba8fb,#1f6fc4) !important;
+	border: 0 !important;
+	box-shadow: 0 12px 34px rgba(43,138,229,0.12) !important;
+	color: #ffffff !important;
+}
+
+/* 强制图标容器透明并使用白色图标，这样图标不会显示成灰色圆点 */
+#refreshBtn .refresh-btn__icon{
+	background: transparent !important;
+	box-shadow: none !important;
+	border-radius: 50% !important;
+	width: 28px !important;
+	height: 28px !important;
+	display:inline-flex !important;
+	align-items:center !important;
+	justify-content:center !important;
+	margin-left:10px !important;
+}
+
+#refreshBtn .refresh-btn__icon .svg{
+	fill: #ffffff !important;
+	stroke: #ffffff !important;
+	color: #ffffff !important;
+}
+
+/* 简单的点击脉冲效果 (伪元素) */
+.refresh-btn::after{
+	content: '';
+	position: absolute;
+	pointer-events:none;
+	left:0; right:0; top:0; bottom:0;
+	border-radius:12px;
+	transform: scale(0);
+	opacity:0;
+	transition: transform 360ms cubic-bezier(.22,.9,.29,1), opacity 260ms ease;
+}
+.refresh-btn:active::after{ transform: scale(1.05); opacity:0.06; transition:0s; }
+
+/* 文字与图标微调 */
+.refresh-btn__text{ font-size:14px; color:var(--accent); }
+.refresh-btn__icon{ display:inline-flex; align-items:center; justify-content:center; }
+
+/* Dark mode: invert background / text for the refresh button to keep contrast */
+body.dark .refresh-btn{
+	--btn-bg: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+	--btn-border: rgba(255,255,255,0.06);
+	--accent: #9ecbff;
+	color: var(--accent);
+}
+
+/* Ensure SVG icons inherit current text color */
+.refresh-btn__icon .svg{ fill: currentColor; stroke: currentColor; }
+
+/* Mobile: increase tap target while keeping visual size */
+@media (max-width:600px){
+	.refresh-btn{ padding:12px 16px; border-radius:12px; }
+	.refresh-btn__text{ font-size:15px; }
+	.refresh-btn__icon .svg{ width:20px; height:20px; }
+}
+
+/* Accessibility: visible focus ring for keyboard users */
+.refresh-btn:focus-visible{ box-shadow: 0 0 0 4px rgba(43,138,229,0.12); }
+

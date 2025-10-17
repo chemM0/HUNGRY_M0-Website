@@ -42,9 +42,16 @@
             btn.__refresh_bound = true;
             btn.addEventListener('click', function(e){
                 e.preventDefault();
+                // 添加微交互样式
                 btn.classList.add('pressed');
+                // 启动图标旋转（CSS: .is-spinning）
+                btn.classList.add('is-spinning');
                 setTimeout(function(){ btn.classList.remove('pressed'); }, 160);
-                playRefreshAnimation(function(){ window.location.reload(); });
+                playRefreshAnimation(function(){
+                    // 在真正刷新前短暂移除旋转样式以避免在某些浏览器中残留
+                    try{ btn.classList.remove('is-spinning'); }catch(e){}
+                    window.location.reload();
+                });
             });
         });
             // 事件委托处理：拦截 back-prev 按钮与带过渡的数据链接
