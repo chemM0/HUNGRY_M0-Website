@@ -2,9 +2,11 @@
 // 注意：若页面通过 HTTPS 提供服务，浏览器会阻止向 HTTP 的请求（混合内容）。
 // 这里不硬编码在每次 fetch 前切换协议，而是在请求阶段优先尝试 HTTPS（若可用），
 // 并在失败时回退到原始地址，同时在控制台给出更友好的诊断提示。
-const API_URL = "https://dd355f42.natappfree.cc/api/system"; // 后端 API 地址
+const API_URL = "http://dd355f42.natappfree.cc/api/system"; // 后端 API 地址
 const REFRESH_INTERVAL = 1; // 刷新间隔（秒），用于计算网络速率
 const FETCH_TIMEOUT_MS = 8000; // fetch 超时（毫秒）
+// 连续失败计数，用于退避和给出更明显的诊断提示
+let consecutiveFailures = 0;
 let lastNet = {
     tx: 0, // 上一次采样的已发送字节数
     rx: 0 // 上一次采样的已接收字节数
@@ -108,10 +110,12 @@ async function fetchSystem() {
         }
         const data = await res.json();
 
-        // 更新在线状态 UI（安全写入）
+    // 更新在线状态 UI（安全写入）
         setText("online-status", "电脑在线 ✅");
         const dot = getEl("dot");
         if (dot) dot.style.background = "#4caf50";
+    // 成功后重置连续失败计数
+    consecutiveFailures = 0;
 
     // 计算 CPU 平均占用（数组取平均），保留数值形式用于后续计算
     const cpuArray = data.cpu_usage || [];
@@ -291,6 +295,15 @@ async function fetchSystem() {
     } catch (err) {
         clearTimeout(timeoutId);
         console.error("获取系统信息失败:", err);
+        consecutiveFailures++;
+        // 在页面上显示更明确的诊断信息（当连续失败时）
+        if (consecutiveFailures >= 1) {
+            // 针对证书或 TLS 问题，提供建议（浏览器会把证书错误归为 Failed to fetch）
+            if (typeof location !== 'undefined' && location.protocol === 'https:' && API_URL.startsWith('https:')) {
+                // 将更友好的诊断提示显示到 focus-card 区域，便于用户知道如何处理
+                setHTML("focus-card", `\n    <div class="focus-title focus-title-error">⚠ 连接失败（可能为 TLS/证书问题）</div>\n    <div class="focus-details">无法连接到 API：可能原因包括证书未被信任或证书链不完整（浏览器错误：请查看 Network 面板的 net::ERR_CERT_* 信息）。<br>建议：在服务器上使用受信任的证书（Let's Encrypt 等），或在本地调试时将证书导入系统受信任根。若无法修改后端，可尝试使用同源的反向代理。</div>`);
+            }
+        }
         // 进一步诊断可能的混合内容问题：当页面是 HTTPS 且 API_URL 使用 http:，说明浏览器会阻止请求
         if (typeof location !== 'undefined' && location.protocol === 'https:' && API_URL.startsWith('http:')) {
             console.error('注意：当前页面通过 HTTPS 提供服务，但后端 API 使用 HTTP，这会被浏览器视为混合内容并被阻止。\n' +
@@ -382,6 +395,10 @@ function updateMetric(id, val) {
 (async function pollLoop() {
     while (true) {
         await fetchSystem();
-        await new Promise(r => setTimeout(r, REFRESH_INTERVAL * 1000));
+        // 如果连续失败，使用更长的退避时间（简单线性退避）：
+        // wait = REFRESH_INTERVAL + Math.min(60, consecutiveFailures * 2)
+        const extra = Math.min(60, consecutiveFailures * 2);
+        const waitSec = REFRESH_INTERVAL + extra;
+        await new Promise(r => setTimeout(r, waitSec * 1000));
     }
 })();
