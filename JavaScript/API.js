@@ -1,3 +1,7 @@
+// 后端 API 地址（默认使用 HTTP 隧道）。
+// 注意：若页面通过 HTTPS 提供服务，浏览器会阻止向 HTTP 的请求（混合内容）。
+// 这里不硬编码在每次 fetch 前切换协议，而是在请求阶段优先尝试 HTTPS（若可用），
+// 并在失败时回退到原始地址，同时在控制台给出更友好的诊断提示。
 const API_URL = "http://dd355f42.natappfree.cc/api/system"; // 后端 API 地址
 const REFRESH_INTERVAL = 1; // 刷新间隔（秒），用于计算网络速率
 const FETCH_TIMEOUT_MS = 8000; // fetch 超时（毫秒）
@@ -60,11 +64,41 @@ function formatBytes(bytes) {
 async function fetchSystem() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    // 构建候选地址列表：若当前页面为 HTTPS 且配置的 API 使用 http:，
+    // 则优先尝试替换为 https:（有些反向隧道或网关支持 https）。
+    const candidates = [API_URL];
+    if (typeof location !== 'undefined' && location.protocol === 'https:' && API_URL.startsWith('http:')) {
+        const httpsCandidate = API_URL.replace(/^http:/i, 'https:');
+        // 让 HTTPS 版本优先尝试
+        candidates.unshift(httpsCandidate);
+    }
 
     try {
-        const res = await fetch(API_URL, {
-            signal: controller.signal
-        });
+        let res = null;
+        let lastErr = null;
+        // 逐一尝试候选地址，直到有成功的响应
+        for (const url of candidates) {
+            try {
+                res = await fetch(url, {
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                // 如果 fetch 在网络层面就抛出（比如被浏览器阻止），将进入 catch
+                if (res) break;
+            } catch (e) {
+                lastErr = e;
+                // 如果是混合内容被浏览器阻止的情况（在 HTTPS 页面请求 HTTP），
+                // Chrome/Edge 常常抛出 TypeError。继续尝试下一个候选地址（如 https）。
+                console.warn(`fetch to ${url} failed:`, e);
+                continue;
+            }
+        }
+        clearTimeout(timeoutId);
+
+        if (!res) {
+            // 没有任何候选地址能建立连接，抛出上次错误或通用错误
+            throw lastErr || new Error('无法连接到 API：所有候选地址均失败');
+        }
         clearTimeout(timeoutId);
 
         if (!res.ok) {
@@ -257,6 +291,14 @@ async function fetchSystem() {
     } catch (err) {
         clearTimeout(timeoutId);
         console.error("获取系统信息失败:", err);
+        // 进一步诊断可能的混合内容问题：当页面是 HTTPS 且 API_URL 使用 http:，说明浏览器会阻止请求
+        if (typeof location !== 'undefined' && location.protocol === 'https:' && API_URL.startsWith('http:')) {
+            console.error('注意：当前页面通过 HTTPS 提供服务，但后端 API 使用 HTTP，这会被浏览器视为混合内容并被阻止。\n' +
+                '解决方法：\n' +
+                ' 1) 为后端启用 HTTPS（推荐）并将 API 地址更改为 https://...；\n' +
+                " 2) 在同一域下通过反向代理或本地代理转发 API（例如 Nginx 或本地开发代理）；\n" +
+                ' 3) 临时将页面改为通过 HTTP 提供以便调试（不推荐用于生产）。');
+        }
         // 更详细地在控制台输出错误类型，便于定位（超时、网络、CORS、服务器错误等）
         setText("online-status", "API离线中 ❌");
         const dot = getEl("dot");

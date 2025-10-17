@@ -1,5 +1,8 @@
 // CPU 分核实时图（不依赖外部库）
 (function(){
+    // 后端 API，本地开发可能运行在 localhost:21536
+    // 注意：当页面通过 HTTPS 提供时，浏览器会阻止向 http://localhost 的请求（混合内容）。
+    // 优先尝试 https://localhost:21536（若后端或代理支持），否则回退到配置的 HTTP 地址以便本地调试。
     const API_URL = "http://localhost:21536/api/system";
     const REFRESH_INTERVAL = 1; // 秒
     const MAX_POINTS = 120; // 每个小图保留的数据点数
@@ -120,7 +123,25 @@
         try{
             const controller = new AbortController();
             const t = setTimeout(()=>controller.abort(), 7000);
-            const res = await fetch(API_URL, { signal: controller.signal });
+            // 为了兼容在 HTTPS 页面中运行，尝试使用候选地址列表（优先 https）
+            const candidates = [API_URL];
+            if (typeof location !== 'undefined' && location.protocol === 'https:' && API_URL.startsWith('http:')) {
+                candidates.unshift(API_URL.replace(/^http:/i, 'https:'));
+            }
+
+            let res = null;
+            let lastErr = null;
+            for (const url of candidates) {
+                try {
+                    res = await fetch(url, { signal: controller.signal, mode: 'cors' });
+                    if (res) break;
+                } catch (e) {
+                    lastErr = e;
+                    console.warn(`fetch to ${url} failed:`, e);
+                    continue;
+                }
+            }
+            if (!res) throw lastErr || new Error('fetch failed for all candidates');
             clearTimeout(t);
             if(!res.ok) return;
             const data = await res.json();
