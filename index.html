@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 18:11:18 +0800">
+<html lang="zh" data-last-modified="2025-10-17 18:17:59 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +16,9 @@
 		<link rel="stylesheet" href="css/overrides.css">
 		<link rel="stylesheet" href="css/dark.css">
 		<script src="vendor/js/typed-2.0.11.min.js" defer></script>
+		<!-- 预连接和预加载，减少关键资源的初始阻塞 -->
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+		<link rel="preload" href="vendor/js/instantpage-3.0.0.js" as="script">
 	</head>
 	<body>
 		<!-- 全屏加载遮罩：会在页面完全加载或超时后淡出并移除 -->
@@ -444,6 +447,7 @@
 
 	</body>
 </html>
+
 
 
 
