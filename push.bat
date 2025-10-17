@@ -1,55 +1,55 @@
 @echo off
 color a
 cls
-REM è‡ªåŠ¨å°† githooks é’©å­è·¯å¾„è®¾ç½®ä¸º .githooks
+REM ×Ô¶¯½« githooks ¹³×ÓÂ·¾¶ÉèÖÃÎª .githooks
 setlocal
 set HOOKspath=.githooks
 for /f "delims=" %%H in ('git config --get core.hooksPath 2^>nul') do set CURRENT_HOOKS=%%H
 if "%CURRENT_HOOKS%"=="%HOOKspath%" (
-	REM å·²è®¾ç½® hooksPath ä¸º .githooks
+	REM ÒÑÉèÖÃ hooksPath Îª .githooks
 ) else (
-	echo æ­£åœ¨å°† .githooks è®¾ä¸º core.hooksPath...
+	echo ÕýÔÚ½« .githooks ÉèÎª core.hooksPath...
 	git config core.hooksPath %HOOKspath%
-	echo å·²è®¾ç½® .githooks ä¸º core.hooksPath
+	echo ÒÑÉèÖÃ .githooks Îª core.hooksPath
 )
 goto :doPush
 
 :doPush
-REM æ¯æ¬¡è¿è¡Œ push.bat å‰æ›´æ–° index.html çš„ data-last-modified
-echo æ­£åœ¨æ›´æ–° index.html çš„æœ€åŽä¿®æ”¹æ—¶é—´...
+REM Ã¿´ÎÔËÐÐ push.bat Ç°¸üÐÂ index.html µÄ data-last-modified
+echo ÕýÔÚ¸üÐÂ index.html µÄ×îºóÐÞ¸ÄÊ±¼ä...
 where pwsh >nul 2>nul
 if %ERRORLEVEL%==0 (
-	echo ä½¿ç”¨ pwsh æ‰§è¡Œæ›´æ–°è„šæœ¬
+	echo Ê¹ÓÃ pwsh Ö´ÐÐ¸üÐÂ½Å±¾
 	pwsh -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 ) else (
 	where bash >nul 2>nul
 	if %ERRORLEVEL%==0 (
-		echo ä½¿ç”¨ bash æ‰§è¡Œæ›´æ–°è„šæœ¬
+		echo Ê¹ÓÃ bash Ö´ÐÐ¸üÐÂ½Å±¾
 		bash "%~dp0scripts/update_last_modified.sh"
 	) else (
 		where powershell.exe >nul 2>nul
 		if %ERRORLEVEL%==0 (
-			echo ä½¿ç”¨ Windows PowerShell æ‰§è¡Œæ›´æ–°è„šæœ¬
+			echo Ê¹ÓÃ Windows PowerShell Ö´ÐÐ¸üÐÂ½Å±¾
 			powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 		) else (
-			echo æœªæ‰¾åˆ° pwsh/powershell/bashï¼Œè¯·æ‰‹åŠ¨æ›´æ–°æœ€åŽä¿®æ”¹æ—¶é—´ï¼
+			echo Î´ÕÒµ½ pwsh/powershell/bash£¬ÇëÊÖ¶¯¸üÐÂ×îºóÐÞ¸ÄÊ±¼ä£¡
 		)
 	)
 )
 
-REM å¦‚æžœ index.html æœ‰è¢«ä¿®æ”¹ï¼Œè‡ªåŠ¨ git add
+REM Èç¹û index.html ÓÐ±»ÐÞ¸Ä£¬×Ô¶¯ git add
 set INDEX_STATUS=
 for /f "delims=" %%S in ('git status --porcelain index.html 2^>nul') do set INDEX_STATUS=%%S
 if defined INDEX_STATUS (
-	echo æ£€æµ‹åˆ° index.html å·²è¢«ä¿®æ”¹ï¼Œè‡ªåŠ¨æ·»åŠ åˆ°æš‚å­˜åŒº...
+	echo ¼ì²âµ½ index.html ÒÑ±»ÐÞ¸Ä£¬×Ô¶¯Ìí¼Óµ½ÔÝ´æÇø...
 	git add index.html
 ) else (
-	echo index.html æœªè¢«ä¿®æ”¹
+	echo index.html Î´±»ÐÞ¸Ä
 )
 
-REM é»˜è®¤ä¸ºæ‰§è¡Œ add, commit, push
+REM Ä¬ÈÏÎªÖ´ÐÐ add, commit, push
 git add .
-git commit -am "è‡ªåŠ¨æ›´æ–°"
+git commit -am "×Ô¶¯¸üÐÂ"
 echo.
 git push
 echo.
