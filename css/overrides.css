@@ -52,6 +52,24 @@
 	.contact-btn{ padding:4px 10px; }
 }
 
+/* Fullscreen loader: centered progress bar style (override / improve the simple spinner) */
+#site-loader.site-loader{
+	position: fixed !important;
+	inset: 0 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.98));
+	z-index: 99999 !important;
+	transition: opacity 360ms ease, visibility 360ms ease;
+}
+#site-loader.site-loader.hidden{ opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+#site-loader .loader-inner{ width: min(760px, 86%); max-width: 760px; padding: 28px; box-sizing: border-box; text-align:center; border-radius:12px; background: transparent; }
+#site-loader .loader-text{ margin-top: 10px; color:#666; font-size:15px; }
+#site-loader .loader-progress{ width:100%; height:10px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; margin-top:18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); }
+#site-loader .loader-progress .progress-bar{ width:0%; height:100%; background: linear-gradient(90deg,#2ba8fb,#6fc5ff); transition: width 160ms linear; }
+#site-loader .loader-spinner{ display:none !important; }
+
 /* 强制底部服务条款为蓝色并去掉下划线 */
 .copyright a.force-blue,
 .copyright a.force-blue:visited{
