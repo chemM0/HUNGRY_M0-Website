@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-16 16:36:19 +0800">
+<html lang="zh" data-last-modified="2025-10-16 16:45:10 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<link rel="icon" type="image/png" href="favicon.png">
 		<title>HUNGRY_M0 个人主页</title>
-		<meta name="description" content="95后青年，后端开发者，略懂前端, 个人主页">
+		<meta name="description" content="HUNGRY#末老师 个人主页">
 		<meta name="keywords" content="个人主页, Java, Spring, 前端">
 		<meta name="format-detection" content="telephone=no">
 		<link rel="shortcut icon" href="favicon.ico">
@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/jquery.fancybox.css">
 		<link rel="stylesheet" href="css/overrides.css">
+		<link rel="stylesheet" href="css/dark.css">
 		<script src="vendor/js/typed-2.0.11.min.js" defer></script>
 	</head>
 	<body>
@@ -48,14 +49,20 @@
 								<div class="card-info-avatar is-center">
 									<!-- 头像已替换为项目根的 favicon.png（可替换为任意 URL） -->
 									<img class="avatar-img" src="favicon.png" alt="avatar">
+									<!-- 夜/日 切换按钮：放在头像左上角，id 为 darkToggle，供 JavaScript/dark_theme.js 绑定 -->
+									<!-- 主页上的夜间模式开关已移除 -->
 									<!-- 姓名与描述：已使用仓库上下文的合理默认（可替换） -->
 									<div class="author-info__name">HUNGRY_M0</div>
-									<div class="author-info__description">当前网页版本：v0.1.0</div>
+									<div class="author-info__description">当前网页版本：v0.1.1</div>
 								</div>
 								<div class="card-info-social-icons is-center">
 									<a class="social-icon social-link contact-btn" href="contact.html" title="联系">
 										<i class="fa fa-envelope" aria-hidden="true"></i>
 										<span class="social-link-text">联系我</span>
+									</a>
+									<a class="social-icon social-link contact-btn" href="about.html" title="关于本站">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+										<span class="social-link-text">关于本站</span>
 									</a>
 								</div>
 							</div>
@@ -154,15 +161,7 @@
 							<a class="proj-btn" href="watchmedo.html">查看项目</a>
 						</div>
 					</article>
-					<article class="proj-card">
-						<div class="proj-thumb"><img src="vendor/images/avatar-20200125221102.png" alt="WRSS"></div>
-						<div class="proj-body">
-							<h4 class="proj-title">WRSS</h4>
-							<div class="proj-desc">WFeed — 一个基于 RSS 的阅读器示例。</div>
-							<div class="proj-tags"><span>HTML5</span><span>Javascript</span></div>
-							<a class="proj-btn" href="#">访问网站</a>
-						</div>
-					</article>
+
 				</div>
 			</div>
 		</aside>
@@ -170,18 +169,22 @@
 		</main>
 		<footer id="footer">
 			<div id="footer-wrap">
-				<div class="copyright">&copy; 2025 HUNGRY_M0</div>
+				<div class="copyright">&copy; 2025 HUNGRY_M0&nbsp;&nbsp;|&nbsp;&nbsp;<small><a class="force-blue" href="terms.html">服务条款</a></small></div>
 			</div>
 		</footer>
 		</div>
 		<script src="JavaScript/loader.js" defer></script>
 		<script src="vendor/js/jquery-3.4.1.min.js"></script>
 		<script src="vendor/js/jquery.fancybox-2.1.5.js"></script>
+		<!-- 夜间/日间切换逻辑（确保页面能绑定 #darkToggle） -->
+		<script src="JavaScript/dark_theme.js"></script>
+
 		<!-- 已移除 busuanzi 以避免布局问题 -->
 		<script src="vendor/js/instantpage-3.0.0.js" type="module"></script>
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
 		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
 		<script>
+
 		// 显示格式化的最后编辑时间（基于 document.lastModified）
 		(function(){
 			document.addEventListener('DOMContentLoaded', function(){
@@ -404,6 +407,7 @@
 
 	</body>
 </html>
+
 
 
 

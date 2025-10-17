@@ -42,3 +42,61 @@
 
 /* small devices: reduce size */
 @media (max-width:420px){ .loader-spinner{ width:56px; height:56px; border-width:5px; } }
+
+/* 桌面优化：社交按钮不换行，减小高度以避免文本折行 */
+@media (min-width:900px){
+	.card-info-social-icons .social-icon{ padding:4px 10px; }
+	.card-info-social-icons .social-icon .social-link-text{ white-space:nowrap; line-height:1; font-size:13px; }
+	.card-info-social-icons .social-icon i{ margin-right:6px; font-size:18px }
+	.contact-btn{ padding:4px 10px; }
+}
+
+/* 强制底部服务条款为蓝色并去掉下划线 */
+.copyright a.force-blue,
+.copyright a.force-blue:visited{
+    color: #2b8ae5 !important;
+    text-decoration: none !important;
+}
+.copyright a.force-blue:hover,
+.copyright a.force-blue:focus{
+    color: #1f6fc4 !important;
+    text-decoration: none !important;
+}
+
+/* 头像左上角的夜/日 切换按钮样式（已移除，保留注释以便日后恢复）
+.card-info-avatar{ position: relative; }
+.avatar-theme-toggle{
+	position: absolute;
+	left: 14px;
+	top: 12px;
+	width:44px;
+	height:24px;
+	border-radius:14px;
+	border: none;
+	background: #e6e6e6;
+	display:inline-flex;
+	align-items:center;
+	justify-content:flex-start;
+	padding:2px;
+	cursor:pointer;
+	transition: background-color 220ms ease, box-shadow 220ms ease;
+}
+.avatar-theme-toggle .switch-track{ display:block; width:100%; height:100%; position:relative; }
+.avatar-theme-toggle .switch-knob{ position:absolute; left:2px; top:2px; width:20px; height:20px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,0.12); transition:left 200ms cubic-bezier(.22,.9,.29,1), background-color 180ms ease, transform 200ms ease; }
+.avatar-theme-toggle .switch-knob i{ font-size:12px; color:#333; transition: transform 200ms cubic-bezier(.22,.9,.29,1), color 180ms ease; }
+.avatar-theme-toggle.is-on{ background:#4cd964; }
+.avatar-theme-toggle.is-on .switch-knob{ left: calc(100% - 24px); background:#fff; }
+.avatar-theme-toggle.is-on .switch-knob i{ color:#4cd964; transform: rotate(0deg) scale(1); }
+*/
+
+/* 页面颜色主题过渡（背景/文字） */
+body, html{ transition: background-color 260ms ease, color 260ms ease; }
+body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease; }
+
+/* 更平滑的卡片样式过渡 */
+.card-widget, .card-content, .author-info__name, .author-info__description{ transition: background-color 260ms ease, color 260ms ease, box-shadow 260ms ease; }
+
+@media (max-width:420px){
+	.avatar-theme-toggle{ left:6px; top:6px; width:40px; height:22px; padding:2px; }
+	.avatar-theme-toggle .switch-knob{ width:18px; height:18px; left:2px; top:2px; }
+}

@@ -27,19 +27,29 @@
     function updateButtonLabel(btn){
         if(!btn) return;
         const isDark = (document.body && document.body.classList.contains('dark')) || document.documentElement.classList.contains('dark');
-        // 不直接修改 textContent（会导致重复图标），改为设置 data 属性供 CSS 伪元素使用
-        btn.setAttribute('data-icon', isDark ? '☀️' : '🌙');
-        btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-        // 同步一个类，便于 CSS 更可靠地覆盖样式（提高 specificity）
-        if(isDark) btn.classList.add('is-dark'); else btn.classList.remove('is-dark');
+        // 切换开关的 visual state 和 aria 状态
+        try{
+            var knobIcon = btn.querySelector && btn.querySelector('.switch-knob i');
+            if(knobIcon){
+                knobIcon.classList.remove('fa-sun-o','fa-moon-o');
+                knobIcon.classList.add(isDark ? 'fa-moon-o' : 'fa-sun-o');
+                // 触发动画类
+                knobIcon.classList.add('icon-anim');
+                knobIcon.addEventListener('transitionend', function te(){ knobIcon.classList.remove('icon-anim'); knobIcon.removeEventListener('transitionend', te); });
+            }
+        }catch(e){}
+        btn.setAttribute('aria-checked', isDark ? 'true' : 'false');
+    // 为视觉上的开/关状态添加 is-on 类（便于样式控制）
+    if(isDark) btn.classList.add('is-on'); else btn.classList.remove('is-on');
     }
 
     function bindToggle(){
         const btn = document.getElementById('darkToggle');
         if(!btn) return false;
-        // 如果按钮被放在局部容器内，移动到 body 以确保 fixed 定位相对于视口生效
+        // 如果元素标记了 data-stay="true"，我们不要把它移动到 body（保持在卡片内）
         try{
-            if(btn.parentElement && btn.parentElement !== document.body){
+            var stay = btn.getAttribute && btn.getAttribute('data-stay');
+            if(!stay && btn.parentElement && btn.parentElement !== document.body){
                 document.body.appendChild(btn);
             }
         }catch(e){ /* ignore */ }
@@ -47,7 +57,12 @@
         if(btn.__dark_bound) return true;
         btn.__dark_bound = true;
         updateButtonLabel(btn);
-        const doToggle = (e)=>{ if(e && e.preventDefault) e.preventDefault(); const isDark = !(document.body && document.body.classList.contains('dark')) && !document.documentElement.classList.contains('dark'); setTheme(isDark); updateButtonLabel(btn); };
+        const doToggle = (e)=>{
+            if(e && e.preventDefault) e.preventDefault();
+            const isDark = !(document.body && document.body.classList.contains('dark')) && !document.documentElement.classList.contains('dark');
+            setTheme(isDark);
+            updateButtonLabel(btn);
+        };
         btn.addEventListener('click', doToggle);
         btn.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); doToggle(e); } });
         // 同步初始类
