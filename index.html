@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 18:32:38 +0800">
+<html lang="zh" data-last-modified="2025-10-17 18:36:27 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -410,8 +410,17 @@
 				return; // 不继续远程尝试
 			}
 
-			// 优化加载策略：优先尝试 JSONP（回退），因为它通常能绕过某些 TLS/跨域问题；同时并行加载官方脚本以便在可用时接管
-			function attemptJsonp(){
+			// 加载官方脚本（恢复为：立即加载官方脚本，JSONP 在超时后回退）
+			var s = document.createElement('script');
+			s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
+			s.defer = true;
+			s.referrerPolicy = 'no-referrer-when-downgrade';
+			s.onload = function(){ console.log('[busuanzi] official script loaded'); };
+			s.onerror = function(){ console.warn('[busuanzi] official script failed; attempting JSONP fallback'); };
+			document.head.appendChild(s);
+
+			// JSONP 回退
+			var jsonpTimer = setTimeout(function(){
 				if(filled) return;
 				window.__busuanzi_cb = function(data){
 					try{
@@ -421,6 +430,7 @@
 							if(typeof data.page_pv !== 'undefined'){ var el = getEl('busuanzi_page_pv'); if(el) el.textContent = String(data.page_pv); }
 							if(typeof data.page_uv !== 'undefined'){ var el = getEl('busuanzi_page_uv'); if(el) el.textContent = String(data.page_uv); }
 						}
+						// 缓存当前存在的值
 						ids.forEach(function(id){ var el = getEl(id); if(el && el.textContent) try{ localStorage.setItem(id, el.textContent.trim()); localStorage.setItem(id+'_ts', Date.now()); }catch(e){} });
 					}catch(e){}
 					try{ delete window.__busuanzi_cb; }catch(e){}
@@ -430,31 +440,14 @@
 				j.referrerPolicy = 'no-referrer-when-downgrade';
 				j.onerror = function(){ console.warn('[busuanzi] JSONP request failed'); };
 				document.head.appendChild(j);
-			}
-
-			function attemptOfficial(){
-				if(filled) return;
-				var s = document.createElement('script');
-				s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
-				s.async = true;
-				s.referrerPolicy = 'no-referrer-when-downgrade';
-				s.onload = function(){ console.log('[busuanzi] official script loaded'); };
-				s.onerror = function(){ console.warn('[busuanzi] official script failed'); };
-				document.head.appendChild(s);
-			}
-
-			// 立即优先尝试 JSONP 回退（更可靠），并并行尝试官方脚本；若两者均失败，可在后续重试
-			try{ attemptJsonp(); }catch(e){}
-			try{ attemptOfficial(); }catch(e){}
-
-			// 若短时间内未成功，排队重试官方脚本一次（避免瞬态 525 导致永久失败）
-			setTimeout(function(){ if(!filled) try{ attemptOfficial(); }catch(e){} }, 3000);
+			}, 1200);
 
 		})();
 		</script>
 
 	</body>
 </html>
+
 
 
 
