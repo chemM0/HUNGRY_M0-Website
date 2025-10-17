@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 17:22:14 +0800">
+<html lang="zh" data-last-modified="2025-10-17 17:25:29 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -205,30 +205,12 @@
 		})();
 		// 实时检测 watchmedo API 状态并更新项目卡状态显示
 		(function(){
-			const API = 'http://localhost:21536/api/system';
+			const PORT = 21536;
+			const PATH = '/api/system';
 			const INTERVAL = 3000; // ms
-			const TIMEOUT = 2500; // ms
+			const TIMEOUT = 2500; // ms per attempt
 			let running = false;
-			async function probe(){
-				if(running) return;
-				running = true;
-				const controller = new AbortController();
-				const id = setTimeout(()=>controller.abort(), TIMEOUT);
-				try{
-					const res = await fetch(API, {signal: controller.signal});
-					clearTimeout(id);
-					if(res.ok){
-						updateStatus(true);
-					}else{
-						updateStatus(false);
-					}
-				}catch(e){
-					clearTimeout(id);
-					updateStatus(false);
-				}finally{
-					running = false;
-				}
-			}
+
 			function updateStatus(online){
 				const dot = document.querySelector('.proj-thumb.proj-status .status-dot');
 				const txt = document.querySelector('.proj-thumb.proj-status .status-text');
@@ -243,6 +225,56 @@
 					txt.textContent = '当前API离线 ❌';
 				}
 			}
+
+			function fetchWithTimeout(url, timeout){
+				const controller = new AbortController();
+				const id = setTimeout(()=>controller.abort(), timeout);
+				return fetch(url, {signal: controller.signal, cache: 'no-store'})
+					.finally(()=> clearTimeout(id));
+			}
+
+			async function tryHostsSequential(hosts){
+				for(let host of hosts){
+					// skip empty
+					if(!host) continue;
+					const proto = (location.protocol === 'file:') ? 'http:' : location.protocol;
+					const url = proto + '//' + host + ':' + PORT + PATH;
+					try{
+						const res = await Promise.race([
+							fetchWithTimeout(url, TIMEOUT),
+							new Promise((_, rej)=> setTimeout(()=> rej(new Error('timeout')), TIMEOUT+50))
+						]);
+						if(res && res.ok){
+							return true;
+						}
+					}catch(e){
+						// continue to next host
+					}
+				}
+				return false;
+			}
+
+			async function probe(){
+				if(running) return;
+				running = true;
+				try{
+					// Prepare candidate hosts: prefer page host, then known tunnel, then local addresses
+					const candidates = [];
+					try{ const ph = window.location.hostname; if(ph && ph !== 'localhost' && ph !== '127.0.0.1') candidates.push(ph); }catch(e){}
+					// add known tunnel host used elsewhere (if reachable)
+					candidates.push('dd355f42.natappfree.cc');
+					candidates.push('127.0.0.1');
+					candidates.push('localhost');
+
+					const ok = await tryHostsSequential(candidates);
+					updateStatus(ok);
+				}catch(e){
+					updateStatus(false);
+				}finally{
+					running = false;
+				}
+			}
+
 			// 初始状态
 			document.addEventListener('DOMContentLoaded', function(){
 				const txt = document.querySelector('.proj-thumb.proj-status .status-text');
@@ -407,6 +439,7 @@
 
 	</body>
 </html>
+
 
 
 
