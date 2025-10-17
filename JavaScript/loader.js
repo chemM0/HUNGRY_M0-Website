@@ -5,6 +5,30 @@
   var start = Date.now();
   var progressTimer = null;
   var currentProgress = 0;
+  var minimalCreated = false;
+
+  // 如果页面中还没有真实的 #site-loader，尽早创建一个 minimal loader
+  function ensureMinimalLoader(){
+    try{
+      if(document.getElementById('site-loader')) return;
+      if(document.getElementById('site-loader-minimal')) return;
+      var m = document.createElement('div');
+      m.id = 'site-loader-minimal';
+      m.className = 'site-loader';
+      // inline 样式确保在 CSS 未加载时也能显示
+      m.style.position = 'fixed'; m.style.inset = '0'; m.style.display='flex'; m.style.alignItems='center'; m.style.justifyContent='center';
+      m.style.background='rgba(255,255,255,0.98)'; m.style.zIndex='99999'; m.style.transition='opacity 260ms ease';
+      var inner = document.createElement('div'); inner.className='loader-inner'; inner.style.maxWidth='760px'; inner.style.width='86%'; inner.style.padding='18px'; inner.style.textAlign='center';
+      var text = document.createElement('div'); text.className='loader-text'; text.textContent='正在更新网页内容…'; text.style.color='#666'; text.style.fontSize='15px';
+      var pwrap = document.createElement('div'); pwrap.className='loader-progress'; pwrap.style.width='100%'; pwrap.style.height='8px'; pwrap.style.background='rgba(0,0,0,0.06)'; pwrap.style.borderRadius='999px'; pwrap.style.marginTop='12px';
+      var bar = document.createElement('div'); bar.className='progress-bar'; bar.style.width='6%'; bar.style.height='100%'; bar.style.background='linear-gradient(90deg,#2ba8fb,#6fc5ff)'; bar.style.transition='width 160ms linear';
+      pwrap.appendChild(bar);
+      inner.appendChild(text); inner.appendChild(pwrap);
+      m.appendChild(inner);
+      try{ document.documentElement.appendChild(m); }catch(e){ try{ document.body.appendChild(m); }catch(e){} }
+      minimalCreated = true;
+    }catch(e){ /* ignore */ }
+  }
 
   function hideLoader(reason){
     if(!loader) loader = document.getElementById('site-loader');
@@ -26,7 +50,12 @@
   // 在 DOMContentLoaded 后，若页面资源尚未就绪，继续等 window.load 或超时
   function setup(){
     loader = document.getElementById('site-loader');
-    if(!loader) return;
+    // 如果没有真实的 site-loader，则尝试使用之前创建的 minimal loader
+    if(!loader){
+      var min = document.getElementById('site-loader-minimal');
+      if(min){ loader = min; }
+      else return;
+    }
 
     // 准备进度条元素（如果 markup 中已有 .loader-progress，则使用它）
     var prog = loader.querySelector('.loader-progress');
@@ -124,10 +153,24 @@
 
     // 允许用户通过点击跳过（无障碍友好）
     loader.addEventListener('click', function(){ hideLoader('user.click'); });
+    // 如果存在 minimal loader 且随后真实的 #site-loader 出现，移除 minimal
+    try{
+      if(minimalCreated){
+        var real = document.getElementById('site-loader');
+        var mm = document.getElementById('site-loader-minimal');
+        if(real && mm && real !== mm){ if(mm.parentNode) mm.parentNode.removeChild(mm); minimalCreated = false; }
+      }
+    }catch(e){}
   }
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', setup);
+    // 尝试尽早创建 minimal loader 并初始化（如果 DOM 已存在 loader 则会立即 setup）
+    try{ ensureMinimalLoader(); }catch(e){}
+    try{ setup(); }catch(e){}
+    document.addEventListener('DOMContentLoaded', function(){
+      // 在 DOMContentLoaded 时再次尝试移除 minimal（若真实 loader 出现）并 setup
+      try{ setup(); }catch(e){}
+    });
   } else {
     setup();
   }
