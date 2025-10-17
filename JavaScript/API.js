@@ -2,7 +2,7 @@
 // 注意：若页面通过 HTTPS 提供服务，浏览器会阻止向 HTTP 的请求（混合内容）。
 // 这里不硬编码在每次 fetch 前切换协议，而是在请求阶段优先尝试 HTTPS（若可用），
 // 并在失败时回退到原始地址，同时在控制台给出更友好的诊断提示。
-const API_URL = "http://dd355f42.natappfree.cc/api/system"; // 后端 API 地址
+const API_URL = "tcp://n7a6ecf4.natappfree.cc:20234/api/system"; // 后端 API 地址
 const REFRESH_INTERVAL = 1; // 刷新间隔（秒），用于计算网络速率
 const FETCH_TIMEOUT_MS = 8000; // fetch 超时（毫秒）
 // 连续失败计数，用于退避和给出更明显的诊断提示
