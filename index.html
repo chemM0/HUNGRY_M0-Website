@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-17 17:25:29 +0800">
+<html lang="zh" data-last-modified="2025-10-17 17:35:46 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -222,7 +222,14 @@
 				}else{
 					dot.classList.remove('status-online');
 					dot.classList.add('status-offline');
+					// 当检测到离线时，提供更详尽的提示（如果可能，说明混合内容或跨域问题）
 					txt.textContent = '当前API离线 ❌';
+					// 点击文本可打开实时视奸页面以便手动验证（在新窗口中打开）
+					txt.style.cursor = 'pointer';
+					txt.title = '点击在新窗口打开实时视奸页面以检查 API 是否可达';
+					txt.onclick = function(e){
+						window.open('watchmedo.html', '_blank');
+					};
 				}
 			}
 
@@ -240,14 +247,19 @@
 					const proto = (location.protocol === 'file:') ? 'http:' : location.protocol;
 					const url = proto + '//' + host + ':' + PORT + PATH;
 					try{
+						console.debug('[probe] trying', url);
 						const res = await Promise.race([
 							fetchWithTimeout(url, TIMEOUT),
 							new Promise((_, rej)=> setTimeout(()=> rej(new Error('timeout')), TIMEOUT+50))
 						]);
 						if(res && res.ok){
+							console.debug('[probe] success', url);
 							return true;
+						}else{
+							console.debug('[probe] non-ok response', url, res && res.status);
 						}
 					}catch(e){
+						console.debug('[probe] failed', url, e && e.message);
 						// continue to next host
 					}
 				}
@@ -439,6 +451,7 @@
 
 	</body>
 </html>
+
 
 
 
