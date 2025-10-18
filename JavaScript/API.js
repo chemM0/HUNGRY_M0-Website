@@ -254,7 +254,8 @@ async function fetchSystem() {
                 if (name === 'D' || name === 'D:' || name.endsWith(':D')) return true;
                 return false;
             });
-            if (diskD) {
+            var hasDiskD = !!getEl("diskFillD") || !!getEl("diskTextD") || !!getEl("diskNameD");
+            if (diskD && hasDiskD) {
                 const totalD = safeNumber(diskD.total_space, 0);
                 const availD = safeNumber(diskD.available_space, 0);
                 const usedD = Math.max(0, totalD - availD);
@@ -263,7 +264,7 @@ async function fetchSystem() {
                 setText("diskTextD", `可用: ${formatBytes(availD)} / 总计: ${formatBytes(totalD)} (已用${usedPctD.toFixed(1)}%)`);
                 const fillElD = getEl("diskFillD");
                 if (fillElD) fillElD.style.width = Math.min(100, Math.max(0, usedPctD)) + "%";
-            } else {
+            } else if (hasDiskD) {
                 setText("diskNameD", "--");
                 setText("diskTextD", "可用: -- / 总计: --");
                 const fillElD = getEl("diskFillD");

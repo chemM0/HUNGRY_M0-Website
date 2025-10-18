@@ -92,9 +92,25 @@
             }, false);
     }
 
+    // 移动端滚动时隐藏刷新按钮，停止后再显示
+    function addScrollHideBehavior(){
+        var btn = document.getElementById('refreshBtn');
+        if(!btn) return;
+        var timer = null;
+        function hide(){ btn.classList.add('hidden-on-scroll'); }
+        function show(){ btn.classList.remove('hidden-on-scroll'); }
+        window.addEventListener('scroll', function(){
+            hide();
+            if(timer) clearTimeout(timer);
+            timer = setTimeout(function(){ show(); }, 700);
+        }, { passive: true });
+    }
+
     if(document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
+    // setup scroll-hide behavior regardless (function will check for element presence)
+    try{ addScrollHideBehavior(); }catch(e){}
 })();

@@ -46,9 +46,36 @@
 		box-shadow: none !important;
 		transform: scale(0.98) !important;
 	}
-	.card-info-social-icons .social-icon{ padding:4px 10px; }
-	.card-info-social-icons .social-icon .social-link-text{ white-space:nowrap; line-height:1; font-size:13px; }
-	.card-info-social-icons .social-icon i{ margin-right:6px; font-size:18px }
+	.card-info-social-icons .social-icon{
+	padding:2px 8px;
+	border-radius: 8px;
+	font-size: 13px;
+	min-width: 0;
+	height: 32px;
+	line-height: 1.2;
+	gap: 4px;
+	box-shadow: none;
+	background: #f7fafd;
+	border: 1px solid #e3eaf2;
+	transition: background 0.18s, border 0.18s;
+}
+	.card-info-social-icons .social-icon .social-link-text{
+	white-space:nowrap !important;
+	line-height:1 !important;
+	font-size:12px !important;
+	margin-left:6px !important;
+	display:inline-block !important;
+	vertical-align:middle !important;
+	}
+	.card-info-social-icons .social-icon .social-link-text{
+		max-width: 90px !important;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+	}
+	.card-info-social-icons .social-icon i{
+	margin-right:4px;
+	font-size:16px;
+}
 	.contact-btn{ padding:4px 10px; }
 }
 
@@ -72,6 +99,57 @@
 @keyframes loader-spin{
 	from{ transform: rotate(0deg); }
 	to{ transform: rotate(360deg); }
+}
+
+/* Mobile submenu pop animation: smooth slide+fade for nested ULs */
+@media (max-width: 768px) {
+	/* Ensure menu uses visibility/opacity/transform for transitions (avoid display:none toggles on Edge) */
+	.nav-menu{
+		display:flex !important;
+		visibility: hidden !important;
+		opacity: 0 !important;
+		transform: translateX(-50%) translateY(-6px) !important;
+		pointer-events: none !important;
+		transition: opacity 240ms ease, transform 240ms ease, visibility 0s linear 240ms;
+	}
+
+	.nav-menu.open{
+		visibility: visible !important;
+		opacity: 1 !important;
+		transform: translateX(-50%) translateY(0) !important;
+		pointer-events: auto !important;
+		transition-delay: 0s !important;
+	}
+	/* Make submenu container animate with transform and opacity */
+	.nav-menu li ul{
+		transition: max-height 260ms ease, opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+		transform-origin: top left;
+		transform: translateY(-6px) scaleY(0.98);
+		opacity: 0;
+	}
+
+	.nav-menu li.submenu-open > ul{
+		transform: translateY(0) scaleY(1);
+		opacity: 1;
+	}
+
+		/* Use transition-based staggered fade/slide for submenu items */
+		.nav-menu li ul li{
+			opacity: 0;
+			transform: translateY(-6px);
+			transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+		}
+		.nav-menu li.submenu-open > ul li{ opacity: 1; transform: translateY(0); }
+
+		/* Stagger using nth-child delays (simple, up to 8 items) */
+		.nav-menu li.submenu-open > ul li:nth-child(1){ transition-delay: 40ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(2){ transition-delay: 80ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(3){ transition-delay: 120ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(4){ transition-delay: 160ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(5){ transition-delay: 200ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(6){ transition-delay: 240ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(7){ transition-delay: 280ms; }
+		.nav-menu li.submenu-open > ul li:nth-child(8){ transition-delay: 320ms; }
 }
 
 /* 强制底部服务条款为蓝色并去掉下划线 */
@@ -198,6 +276,65 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 #refreshBtn .refresh-btn__icon{ position: relative !important; transform: none !important; width: 24px !important; height: 24px !important; margin-left:10px !important; }
 #refreshBtn .refresh-btn__icon .svg{ width:16px !important; height:16px !important; fill: #fff !important; stroke: #fff !important; }
 
+/* 强制缩小用户信息区的联系按钮（提高选择器优先级以覆盖模板默认样式） */
+.card-info-social-icons .social-icon.contact-btn,
+.card-info-social-icons a.contact-btn.social-icon {
+	padding: 6px 10px !important;
+	height: 36px !important;
+	min-width: 80px !important;
+		border-radius: 12px !important;
+	background: #fff !important;
+	border: 1px solid rgba(43,138,229,0.08) !important;
+	box-shadow: 0 6px 18px rgba(12,24,40,0.04) !important;
+	font-size: 13px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 8px !important;
+	justify-content: center !important;
+}
+/* override legacy .contact-btn pill style */
+.card-info-social-icons .social-icon.contact-btn.contact-btn,
+.card-info-social-icons a.contact-btn.social-icon.contact-btn{
+	border-radius:12px !important;
+	padding:6px 10px !important;
+}
+.card-info-social-icons .social-icon.contact-btn i{ font-size:16px !important; margin-right:6px !important; }
+.card-info-social-icons .social-icon.contact-btn .social-link-text{ white-space:nowrap !important; line-height:1 !important; }
+
+/* 小屏时减小按钮宽度 */
+@media (max-width:420px){
+	.card-info-social-icons .social-icon.contact-btn{ min-width: 68px !important; height:34px !important; padding:6px 8px !important; }
+	.card-info-social-icons .social-icon .social-link-text{ font-size:11px !important; margin-left:4px !important; }
+	.card-info-social-icons .social-icon i{ font-size:14px !important; }
+}
+
+/* Mobile: move refresh button to bottom-right small floating button, avoid blocking content */
+@media (max-width:900px){
+	#refreshBtn{ 
+		position: fixed !important;
+		left: 16px !important;
+		top: 88px !important; /* below the top nav */
+		right: auto !important;
+		bottom: auto !important;
+		min-width: 44px !important;
+		height: 44px !important;
+		padding: 8px !important;
+		border-radius: 999px !important;
+		box-shadow: 0 10px 26px rgba(0,0,0,0.12) !important;
+		opacity: 0.92 !important;
+		background: linear-gradient(180deg,#2ba8fb,#1f6fc4) !important;
+		z-index: 200000 !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		transition: transform 220ms ease, opacity 220ms ease, right 180ms ease;
+	}
+	#refreshBtn .refresh-btn__text{ display:none !important; }
+	#refreshBtn .refresh-btn__icon{ margin-left:0 !important; width:20px !important; height:20px !important; display:flex !important; align-items:center !important; justify-content:center !important; }
+	/* hidden state for scrolling */
+	#refreshBtn.hidden-on-scroll{ transform: translateX(-48px); opacity: 0 !important; pointer-events: none !important; }
+}
+
 /* Force visibility if other rules try to hide or shrink it */
 #refreshBtn{ visibility: visible !important; opacity: 1 !important; transform: none !important; }
 
@@ -227,6 +364,8 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 	fill: #ffffff !important;
 	stroke: #ffffff !important;
 	color: #ffffff !important;
+	display:block !important;
+	margin:0 !important;
 }
 
 /* 简单的点击脉冲效果 (伪元素) */
@@ -263,6 +402,10 @@ body.dark .refresh-btn{
 	.refresh-btn__text{ font-size:15px; }
 	.refresh-btn__icon .svg{ width:20px; height:20px; }
 }
+
+/* Fix icon centering: remove stray transforms and baseline shifts */
+#refreshBtn .refresh-btn__icon{ line-height: 0 !important; }
+#refreshBtn .refresh-btn__icon .svg{ display:block !important; margin: 0 auto !important; transform: none !important; }
 
 /* Accessibility: visible focus ring for keyboard users */
 .refresh-btn:focus-visible{ box-shadow: 0 0 0 4px rgba(43,138,229,0.12); }
