@@ -30,34 +30,22 @@
     // Ensure loader is exposed to assistive tech / rendering immediately
     try{ loader.removeAttribute('aria-hidden'); }catch(e){}
 
-    // 准备进度条元素（如果 markup 中已有 .loader-progress，则使用它）
-    var prog = loader.querySelector('.loader-progress');
-    if(!prog){
-      // 创建进度条结构并插入到 loader-inner
+    // 准备百分比显示元素（如果 markup 中没有，则创建）
+    var percentEl = loader.querySelector('.loader-percent');
+    if(!percentEl){
       var inner = loader.querySelector('.loader-inner') || loader;
-      var pwrap = document.createElement('div');
-      pwrap.className = 'loader-progress';
-      var bar = document.createElement('div'); bar.className = 'progress-bar';
-      pwrap.appendChild(bar);
-      inner.appendChild(pwrap);
-      prog = pwrap;
+      percentEl = document.createElement('div');
+      percentEl.className = 'loader-percent';
+      inner.appendChild(percentEl);
     }
-    var barEl = prog.querySelector('.progress-bar');
 
-    // helper: set the visual progress using transform (scaleX) for better GPU compositing
-    function setBarProgress(pct){
-      if(!barEl) return;
-      currentProgress = pct;
-      var scale = Math.max(0, Math.min(1, pct/100));
-      // use requestAnimationFrame to schedule paint-friendly update
-      requestAnimationFrame(function(){
-        try{
-          barEl.style.transform = 'scaleX('+scale+')';
-          barEl.style.width = pct + '%'; // fallback for older browsers / disabled transforms
-          barEl.style.opacity = scale > 0 ? '1' : '0';
-        }catch(e){}
-      });
+    function setDisplayProgress(pct){
+      currentProgress = Math.max(0, Math.min(100, pct));
+      if(percentEl){
+        try{ percentEl.textContent = Math.round(currentProgress) + '%'; }catch(e){}
+      }
     }
+    setDisplayProgress(0);
 
     // 尝试基于页面资源的真实加载进度：统计 img, link[rel=stylesheet], script[src], video/audio
     function collectResources(){
@@ -84,23 +72,14 @@
       // 保持最小起步在 5%，最大在 98%（未完成前）
       var pct = total > 0 ? (5 + (doneCount / total) * 90) : 0;
       pct = Math.min(98, Math.max(5, pct));
-      setBarProgress(pct);
+      setDisplayProgress(pct);
     }
 
     if(total === 0){
       // 没有可监控资源，回退到小幅模拟（保持快速感）
-      if(barEl){
-        // 初始先把 scale 设为 0，然后在下一帧推进到起始值，强制浏览器重绘
-        currentProgress = 8;
-        try{
-          barEl.style.transform = 'scaleX(0)';
-          barEl.style.width = '0%';
-          barEl.style.opacity = '0';
-        }catch(e){}
-        requestAnimationFrame(function(){ setBarProgress(currentProgress); });
-      }
+      setDisplayProgress(8);
       if(progressTimer) clearInterval(progressTimer);
-      progressTimer = setInterval(function(){ if(!barEl) return; currentProgress = Math.min(95, currentProgress + (0.5 + Math.random()*0.8)); setBarProgress(currentProgress); }, 180);
+      progressTimer = setInterval(function(){ currentProgress = Math.min(95, currentProgress + (0.5 + Math.random()*0.8)); setDisplayProgress(currentProgress); }, 180);
     } else {
       // 监听每个资源的 load/error 状态
       resources.forEach(function(r){
@@ -127,19 +106,8 @@
         try{ el.addEventListener('load', onLoad); el.addEventListener('error', onError); }catch(e){ /* some elements might not support events */ }
         var resTimeout = setTimeout(function(){ mark(); cleanup(); }, Math.min(4000, LOAD_TIMEOUT));
       });
-      // 初始进度 - 强制在下一帧展示，从而避免样式在主线程阻塞时被合并导致只在最后一刻出现
-      try{
-        // capture target percent then reset to 0 and animate to it on next frame
-        setProgressFromCounts();
-        if(barEl){
-          try{
-            barEl.style.transform = 'scaleX(0)';
-            barEl.style.width = '0%';
-            barEl.style.opacity = '0';
-          }catch(e){}
-          requestAnimationFrame(function(){ setProgressFromCounts(); });
-        }
-      }catch(e){ /* ignore */ }
+      // 初始化时立即更新一次百分比
+      try{ setProgressFromCounts(); }catch(e){ /* ignore */ }
     }
 
     // 如果页面已经完全加载（可能脚本延迟加载），立即隐藏
@@ -151,12 +119,12 @@
     // 当 window load 触发时，消失
     window.addEventListener('load', function(){
       // 把进度直接推进到 100% 并短延时后隐藏
-      try{ setBarProgress(100); }catch(e){}
+      try{ setDisplayProgress(100); }catch(e){}
       setTimeout(function(){ hideLoader('window.load'); }, 260);
     });
 
   // 以防某些资源阻塞较久，设置超时：在超时前推进到 100% 并隐藏
-  setTimeout(function(){ try{ setBarProgress(100); }catch(e){}; hideLoader('timeout'); }, LOAD_TIMEOUT);
+  setTimeout(function(){ try{ setDisplayProgress(100); }catch(e){}; hideLoader('timeout'); }, LOAD_TIMEOUT);
 
     // 允许用户通过点击跳过（无障碍友好）
     loader.addEventListener('click', function(){ hideLoader('user.click'); });
