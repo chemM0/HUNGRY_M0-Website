@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-18 11:34:16 +0800">
+<html lang="zh" data-last-modified="2025-10-18 11:43:48 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -180,7 +180,20 @@
 		<script src="JavaScript/dark_theme.js"></script>
 
 		<!-- 已移除 busuanzi 以避免布局问题 -->
-		<script src="vendor/js/instantpage-3.0.0.js" type="module"></script>
+		<script>
+		// instant.page 仅在通过 http/https 访问时加载，避免 file:// 协议触发 CORS 错误
+		(function(){
+			if(window.location && window.location.protocol === 'file:'){
+				console.warn('[instantpage] Skipped loading under file:// to avoid CORS errors.');
+				return;
+			}
+			var script = document.createElement('script');
+			script.type = 'module';
+			script.src = 'vendor/js/instantpage-3.0.0.js';
+			script.defer = true;
+			document.head.appendChild(script);
+		})();
+		</script>
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
 		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
 		<script>
@@ -441,6 +454,7 @@
 
 	</body>
 </html>
+
 
 
 

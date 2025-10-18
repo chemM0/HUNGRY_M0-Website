@@ -50,7 +50,13 @@
       currentProgress = pct;
       var scale = Math.max(0, Math.min(1, pct/100));
       // use requestAnimationFrame to schedule paint-friendly update
-      requestAnimationFrame(function(){ try{ barEl.style.transform = 'scaleX('+scale+')'; }catch(e){} });
+      requestAnimationFrame(function(){
+        try{
+          barEl.style.transform = 'scaleX('+scale+')';
+          barEl.style.width = pct + '%'; // fallback for older browsers / disabled transforms
+          barEl.style.opacity = scale > 0 ? '1' : '0';
+        }catch(e){}
+      });
     }
 
     // 尝试基于页面资源的真实加载进度：统计 img, link[rel=stylesheet], script[src], video/audio
@@ -86,7 +92,11 @@
       if(barEl){
         // 初始先把 scale 设为 0，然后在下一帧推进到起始值，强制浏览器重绘
         currentProgress = 8;
-        try{ barEl.style.transform = 'scaleX(0)'; }catch(e){}
+        try{
+          barEl.style.transform = 'scaleX(0)';
+          barEl.style.width = '0%';
+          barEl.style.opacity = '0';
+        }catch(e){}
         requestAnimationFrame(function(){ setBarProgress(currentProgress); });
       }
       if(progressTimer) clearInterval(progressTimer);
@@ -122,7 +132,11 @@
         // capture target percent then reset to 0 and animate to it on next frame
         setProgressFromCounts();
         if(barEl){
-          try{ barEl.style.transform = 'scaleX(0)'; }catch(e){}
+          try{
+            barEl.style.transform = 'scaleX(0)';
+            barEl.style.width = '0%';
+            barEl.style.opacity = '0';
+          }catch(e){}
           requestAnimationFrame(function(){ setProgressFromCounts(); });
         }
       }catch(e){ /* ignore */ }
