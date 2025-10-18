@@ -66,8 +66,8 @@
 #site-loader.site-loader.hidden{ opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
 #site-loader .loader-inner{ width: min(760px, 86%); max-width: 760px; padding: 28px; box-sizing: border-box; text-align:center; border-radius:12px; background: transparent; }
 #site-loader .loader-text{ margin-top: 10px; color:#666; font-size:15px; }
-#site-loader .loader-progress{ width:100%; height:10px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; margin-top:18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); }
-#site-loader .loader-progress .progress-bar{ width:0%; height:100%; background: linear-gradient(90deg,#2ba8fb,#6fc5ff); transition: width 160ms linear; }
+#site-loader .loader-progress{ width:100%; height:10px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; margin-top:18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.5); position:relative; }
+#site-loader .loader-progress .progress-bar{ position:absolute; left:0; top:0; bottom:0; width:100%; transform-origin: left center; transform: scaleX(0); height:100%; background: linear-gradient(90deg,#2ba8fb,#6fc5ff); transition: transform 160ms linear; will-change: transform; }
 #site-loader .loader-spinner{ display:none !important; }
 
 /* 强制底部服务条款为蓝色并去掉下划线 */
