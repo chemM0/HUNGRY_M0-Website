@@ -11,21 +11,21 @@ try {
     # This prevents the timestamp being overwritten by the script's own update of index.html.
     # Try pathspec exclusion (modern git)
     $time = git log -1 --format=%cI -- . ":(exclude)index.html" 2>$null
-+    if (-not $time) {
-+        # If exclude not supported or returns nothing, iterate recent commits and pick the first commit that did NOT touch index.html.
-+        $commits = git rev-list --max-count=200 HEAD 2>$null
-+        foreach ($c in $commits) {
-+            $files = git diff-tree --no-commit-id --name-only -r $c 2>$null
-+            if ($files -and ($files -notcontains 'index.html')) {
-+                $time = git show -s --format=%cI $c 2>$null
-+                break
-+            }
-+        }
-+        # Final fallback: use index.html's last commit time if nothing else found
-+        if (-not $time) {
-+            $time = git log -1 --format=%cI -- index.html 2>$null
-+        }
-+    }
+    if (-not $time) {
+        # If exclude not supported or returns nothing, iterate recent commits and pick the first commit that did NOT touch index.html.
+        $commits = git rev-list --max-count=200 HEAD 2>$null
+        foreach ($c in $commits) {
+            $files = git diff-tree --no-commit-id --name-only -r $c 2>$null
+            if ($files -and ($files -notcontains 'index.html')) {
+                $time = git show -s --format=%cI $c 2>$null
+                break
+            }
+        }
+        # Final fallback: use index.html's last commit time if nothing else found
+        if (-not $time) {
+            $time = git log -1 --format=%cI -- index.html 2>$null
+        }
+    }
 @@
     if (-not $time) { exit 0 }
     $time = $time.Trim()
