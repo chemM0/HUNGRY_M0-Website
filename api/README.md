@@ -1,16 +1,17 @@
-Visitors API
+访客统计 API
 =============
 
-This is a tiny PHP endpoint to replace external visitor counters like Busuanzi.
+这是一个用于替代 Busuanzi 等外部访客统计的极简 PHP 接口。
 
-Deployment:
-1. Upload the `api/visitors.php` to your virtual host under `/api/visitors.php`.
-2. Ensure PHP is enabled and writable permissions exist for the `api/` directory (it will create `visitors.json`).
-3. If your static site is hosted on Vercel, set the global JS variable `VISITOR_API_URL` to the full URL of this PHP endpoint in your `index.html` or in a separate script before `JavaScript/visitors.js`.
+部署方法：
+1. 将 `api/visitors.php` 上传到你的虚拟主机（路径为 `/api/visitors.php`）。
+2. 确保主机已开启 PHP 且 `api/` 目录有写权限（脚本会自动创建 `visitors.json` 文件）。
+3. 如果你的静态站部署在 Vercel，请在 `index.html` 或 `JavaScript/visitors.js` 之前插入如下 JS 变量：
+	<script>window.VISITOR_API_URL = '你的 PHP 接口完整地址';</script>
 
-Security:
-- This is intentionally simple. If you want to avoid double counting from bots or refreshes, consider adding IP-based deduplication or cookie-based throttling.
+安全性说明：
+- 本接口为极简实现，未做防刷或去重。如需防止刷量，可自行扩展（如 IP 去重、cookie 限流等）。
 
-API:
-- POST /api/visitors.php: increment counters and return updated JSON
-- GET /api/visitors.php: return JSON with fields `site_pv` and `today_pv`
+API 用法：
+- POST /api/visitors.php：自增计数并返回最新 JSON
+- GET /api/visitors.php：返回当前总访问量和今日访问量（JSON，字段为 `site_pv` 和 `today_pv`）
