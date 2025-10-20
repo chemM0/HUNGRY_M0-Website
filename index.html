@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-20 10:18:54 +0800">
+<html lang="zh" data-last-modified="2025-10-20 10:23:17 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -358,109 +358,13 @@
 			
 		</script>
 
-		<!-- 加载 busuanzi（官方 CDN），为多个指标提供缓存与 JSONP 回退 -->
-		<script>
-		(function(){
-			var ids = [
-				'busuanzi_site_pv','busuanzi_site_uv','busuanzi_page_pv','busuanzi_page_uv',
-				'busuanzi_today_site_pv','busuanzi_today_site_uv','busuanzi_today_page_pv','busuanzi_today_page_uv'
-			];
-
-			function getEl(id){ return document.getElementById(id); }
-
-			// 用 localStorage 的缓存先填充
-			ids.forEach(function(id){
-				try{
-					var el = getEl(id);
-					if(!el) return;
-					var cached = localStorage.getItem(id);
-					if(cached){ el.textContent = cached; }
-					if(!el.textContent || el.textContent.trim()==='') el.textContent = '加载中...';
-				}catch(e){}
-			});
-
-			var filled = false;
-			var finalTimeout = setTimeout(function(){
-				ids.forEach(function(id){
-					var el = getEl(id);
-					if(!el) return;
-					try{
-						var cached = localStorage.getItem(id);
-						if(cached) el.textContent = cached;
-						else if(!el.textContent || el.textContent.trim()==='') el.textContent = '统计不可用';
-					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '统计不可用'; }
-				});
-				console.warn('[busuanzi] all remote attempts failed');
-			}, 5000);
-
-			var mo = new MutationObserver(function(muts){
-				muts.forEach(function(m){
-					ids.forEach(function(id){
-						var el = getEl(id);
-						if(!el) return;
-						var txt = el.textContent && el.textContent.trim();
-						if(txt && txt !== '加载中...' && txt !== '统计不可用'){
-							try{ localStorage.setItem(id, txt); localStorage.setItem(id+'_ts', Date.now()); }catch(e){}
-							filled = true;
-						}
-					});
-					if(filled){
-						clearTimeout(finalTimeout);
-						try{ if(window.__busuanzi_cb) delete window.__busuanzi_cb; }catch(e){}
-						mo.disconnect();
-					}
-				});
-			});
-			ids.forEach(function(id){ var el = getEl(id); if(el) mo.observe(el, { childList:true, characterData:true, subtree:true }); });
-
-			// 如果通过 file:// 打开（本地直接打开 HTML），不要发起远程请求（许多 CDN 会返回 HTML 错误页面），改为使用缓存或显示友好提示
-			if(window.location && window.location.protocol === 'file:'){
-				console.warn('[busuanzi] running under file:// — skip remote requests; show placeholders');
-				ids.forEach(function(id){
-					var el = getEl(id);
-					if(!el) return;
-					try{
-						// 本地打开时统一显示占位符 "--"，页面中通常会有后缀（如 " 次" 或 " 人"）
-						el.textContent = '--';
-					}catch(e){ if(!el.textContent || el.textContent.trim()==='') el.textContent = '--'; }
-				});
-				return; // 不继续远程尝试
-			}
-
-			// 加载官方脚本（只在 onerror 时使用 JSONP 回退以避免重复计数）
-			var s = document.createElement('script');
-			s.src = 'https://api.busuanzi.cc/static/3.6.9/busuanzi.min.js';
-			s.defer = true;
-			s.referrerPolicy = 'no-referrer-when-downgrade';
-			s.onload = function(){ console.log('[busuanzi] official script loaded'); filled = true; };
-			s.onerror = function(){
-				console.warn('[busuanzi] official script failed; inserting JSONP fallback');
-				// 仅在官方脚本确实出错时插入 JSONP
-				window.__busuanzi_cb = function(data){
-					try{
-						if(data){
-							if(typeof data.site_pv !== 'undefined'){ var el = getEl('busuanzi_site_pv'); if(el) el.textContent = String(data.site_pv); }
-							if(typeof data.site_uv !== 'undefined'){ var el = getEl('busuanzi_site_uv'); if(el) el.textContent = String(data.site_uv); }
-							if(typeof data.page_pv !== 'undefined'){ var el = getEl('busuanzi_page_pv'); if(el) el.textContent = String(data.page_pv); }
-							if(typeof data.page_uv !== 'undefined'){ var el = getEl('busuanzi_page_uv'); if(el) el.textContent = String(data.page_uv); }
-						}
-						ids.forEach(function(id){ var el = getEl(id); if(el && el.textContent) try{ localStorage.setItem(id, el.textContent.trim()); localStorage.setItem(id+'_ts', Date.now()); }catch(e){} });
-					}catch(e){}
-					try{ delete window.__busuanzi_cb; }catch(e){}
-				};
-				var j = document.createElement('script');
-				j.src = 'https://api.busuanzi.cc/busuanzi?jsonpCallback=__busuanzi_cb';
-				j.referrerPolicy = 'no-referrer-when-downgrade';
-				j.onerror = function(){ console.warn('[busuanzi] JSONP request failed'); };
-				document.head.appendChild(j);
-			};
-			document.head.appendChild(s);
-
-		})();
-		</script>
+	<!-- 使用本地访客计数后端替代 busuanzi，优先调用本服务器的 API，失败时回退到 localStorage -->
+	<script>window.VISITOR_API_URL = 'https://watchmedo.hungrym0.top/visitors.php';</script>
+	<script src="JavaScript/visitors.js"></script>
 
 	</body>
 </html>
+
 
 
 
