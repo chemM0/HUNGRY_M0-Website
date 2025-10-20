@@ -1,3 +1,26 @@
+@media (max-width: 600px) {
+	.card-info-social-icons .social-icon,
+	.card-info-social-icons .social-icon.contact-btn,
+	.card-info-social-icons a.contact-btn.social-icon {
+		font-size: 16px !important;
+		padding: 12px 18px !important;
+		height: 48px !important;
+		min-width: 120px !important;
+		border-radius: 16px !important;
+		gap: 10px !important;
+		box-shadow: 0 4px 18px rgba(43,138,229,0.10) !important;
+	}
+	.card-info-social-icons .social-icon .social-link-text {
+		font-size: 16px !important;
+		margin-left: 8px !important;
+		font-weight: 500 !important;
+		letter-spacing: 0.02em !important;
+	}
+	.card-info-social-icons .social-icon i {
+		font-size: 20px !important;
+		margin-right: 8px !important;
+	}
+}
 /* Overrides to replace inline styles moved from JS/HTML */
 .focus-title-error{ color: #f44336; }
 

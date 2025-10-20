@@ -49,7 +49,7 @@ if defined INDEX_STATUS (
 
 REM 默认为执行 add, commit, push
 git add .
-git commit -am "自动更新"
+git commit -am "update"
 echo.
 git push
 echo.
