@@ -30,7 +30,96 @@
 	    .corner-buttons .btn:hover, .corner-actions .fab:hover, .corner-actions .mini:hover { transform: translateY(-3px); }
 	
 	    /* 响应式调整 */
-	    @media (max-width:720px){ .corner-buttons{ left:12px; top:12px } .corner-actions{ right:12px; top:12px } }
+		@media (max-width:720px){ .corner-buttons{ left:12px; top:12px } .corner-actions{ right:12px; top:12px } }
+
+		/* 汉堡菜单（仅在移动端显示） */
+		.corner-buttons .desktop-only{ display: inline-flex; }
+		.corner-buttons .mobile-only{ display: none; }
+		/* 默认在桌面隐藏移动菜单，移动端在 media 中显示并动画 */
+		.mobile-quick-menu{ display: none; }
+		@media (max-width:720px){
+			.corner-buttons .desktop-only{ display: none !important; }
+			.corner-buttons .mobile-only{ display: inline-flex !important; }
+
+			/* 汉堡只显示图标以节省空间 */
+			.corner-buttons .mobile-only > span:not(.icon){ display: none; }
+
+			/* 使汉堡按钮样式与右上角 .mini 一致 */
+			#hamburgerBtn{
+				width:40px !important;
+				height:40px !important;
+				padding:0 !important;
+				border-radius:10px !important;
+				background:#fff !important;
+				box-shadow:0 6px 18px rgba(15,23,42,0.06) !important;
+				border:1px solid rgba(15,23,42,0.06) !important;
+				display:inline-flex !important;
+				align-items:center !important;
+				justify-content:center !important;
+				font-size:18px !important;
+			}
+
+			/* 弹出菜单位置与动画（移动端样式） */
+			.mobile-quick-menu{
+				display: block;
+				position: absolute;
+				/* 参考用户截图：将二级菜单移动到左侧较靠下的红框位置 */
+				top: 44px; /* 再上移 20px，使菜单更靠近汉堡 */
+				left: 6px; /* 更靠左，接近红框显示的位置 */
+				min-width: 104px; /* 稍微紧凑以节省空间 */
+				max-width: 140px; /* 保持较窄 */
+				background: transparent;
+				border-radius: 10px;
+				padding: 6px; /* 给容器一点呼吸空间 */
+				box-shadow: 0 6px 18px rgba(15,23,42,0.05);
+				overflow: visible;
+				max-height: 0;
+				opacity: 0;
+				transition: max-height .22s cubic-bezier(.2,.8,.2,1), opacity .14s ease, transform .16s ease;
+				transform-origin: top left;
+				transform: translateY(-6px) scale(.98); /* 微微上移以配合动画 */
+				z-index: 1200;
+			}
+			.mobile-quick-menu.open{
+				max-height: 400px; /* 足够容纳多个项 */
+				opacity: 1;
+				transform: translateY(0) scale(1);
+			}
+			.mobile-quick-menu .menu-item{
+				display:flex;
+				align-items:center;
+				gap:10px;
+				width:100%;
+				box-sizing:border-box;
+				padding:8px 12px; /* 稍微增加内边距以改善可点击区域 */
+				color: #0f172a;
+				text-decoration: none;
+				background: linear-gradient(180deg,#fff,#f6f8ff);
+				border-radius: 12px;
+				margin: 6px 0; /* 每项间距略增，视觉更分离 */
+				border:1px solid rgba(15,23,42,0.06);
+				font-weight:600;
+				white-space:nowrap;
+				font-size:14px;
+				line-height:1.2;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				justify-content:flex-start; /* 图标+文字左对齐 */
+				padding-left:14px;
+			}
+			.mobile-quick-menu .menu-item:focus,
+			.mobile-quick-menu .menu-item:hover{
+				transform: none;
+				box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+			}
+		}
+
+		/* 强制桌面环境隐藏移动菜单与汉堡（以防覆盖或优先级问题） */
+		@media (min-width:721px){
+			.corner-buttons .mobile-only{ display: none !important; }
+			.mobile-quick-menu{ display: none !important; }
+			.corner-buttons .desktop-only{ display: inline-flex !important; }
+		}
 
 	    /* 联系方式文字过暗时在夜间模式提高可读性 */
 	    .contact-label { color:#333; transition: color .28s ease, text-shadow .28s ease; }
@@ -41,18 +130,32 @@
 		<div class="about-wrap">
 			<!-- 左上角按钮组 -->
 			<div class="corner-buttons" role="navigation" aria-label="快速操作">
-				<a class="btn" href="index.html" title="返回主页">
+				<!-- 桌面与较大屏幕显示的原有按钮 -->
+				<a class="btn desktop-only" href="index.html" title="返回主页">
 					<span class="icon">🏠</span>
 					<span>主页</span>
 				</a>
-				<button class="btn" id="backBtn" title="返回上一页">
+				<button class="btn desktop-only" id="backBtn" title="返回上一页">
 					<span class="icon">↩</span>
 					<span>返回</span>
 				</button>
-				<button class="btn" id="refreshBtnCorner" title="刷新页面" aria-label="刷新页面">
+				<button class="btn desktop-only" id="refreshBtnCorner" title="刷新页面" aria-label="刷新页面">
 					<span class="icon">↻</span>
 					<span>刷新</span>
 				</button>
+
+				<!-- 手机端显示的汉堡菜单按钮 -->
+				<button class="btn mobile-only" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileQuickMenu" aria-label="打开快速操作菜单">
+					<span class="icon">☰</span>
+					<span>菜单</span>
+				</button>
+
+				<!-- 手机端弹出菜单（初始隐藏） -->
+				<div id="mobileQuickMenu" class="mobile-quick-menu" role="menu" aria-hidden="true">
+					<a class="menu-item" href="index.html" role="menuitem">🏠 主页</a>
+					<button class="menu-item" id="mobileBackBtn" role="menuitem">↩ 返回</button>
+					<button class="menu-item" id="mobileRefreshBtn" role="menuitem">↻ 刷新</button>
+				</div>
 			</div>
 
 			<!-- 右上角浮动动作按钮 -->
@@ -312,6 +415,64 @@
 
 		const backBtn = document.getElementById('backBtn');
 		if(backBtn){ backBtn.addEventListener('click', function(){ history.back(); }); }
+
+		// 移动端汉堡菜单逻辑
+		const hamburgerBtn = document.getElementById('hamburgerBtn');
+		const mobileMenu = document.getElementById('mobileQuickMenu');
+		const mobileBackBtn = document.getElementById('mobileBackBtn');
+		const mobileRefreshBtn = document.getElementById('mobileRefreshBtn');
+		if(hamburgerBtn && mobileMenu){
+			hamburgerBtn.addEventListener('click', function(e){
+				e.stopPropagation();
+				const open = mobileMenu.classList.toggle('open');
+				mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+				hamburgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+				if(open){
+					const first = mobileMenu.querySelector('.menu-item');
+					if(first && typeof first.focus === 'function') first.focus();
+				}
+			});
+
+			// 点击页面任意处关闭菜单
+			document.addEventListener('click', function(ev){
+				if(!mobileMenu.classList.contains('open')) return;
+				if(mobileMenu.contains(ev.target) || ev.target === hamburgerBtn) return;
+				mobileMenu.classList.remove('open');
+				mobileMenu.setAttribute('aria-hidden', 'true');
+				hamburgerBtn.setAttribute('aria-expanded', 'false');
+			});
+
+			// ESC 关闭
+			document.addEventListener('keydown', function(ev){ if(ev.key === 'Escape' && mobileMenu.classList.contains('open')){
+				mobileMenu.classList.remove('open');
+				mobileMenu.setAttribute('aria-hidden', 'true');
+				hamburgerBtn.setAttribute('aria-expanded', 'false');
+			}
+			});
+
+			// 绑定移动菜单内的返回与刷新（先关闭菜单再执行）
+			if(mobileBackBtn){ mobileBackBtn.addEventListener('click', function(){
+				mobileMenu.classList.remove('open');
+				mobileMenu.setAttribute('aria-hidden', 'true');
+				hamburgerBtn.setAttribute('aria-expanded', 'false');
+				history.back();
+			}); }
+			if(mobileRefreshBtn){ mobileRefreshBtn.addEventListener('click', function(){
+				mobileMenu.classList.remove('open');
+				mobileMenu.setAttribute('aria-hidden', 'true');
+				hamburgerBtn.setAttribute('aria-expanded', 'false');
+				location.reload();
+			}); }
+
+			// 当窗口尺寸变化到桌面布局时，确保菜单关闭
+			window.addEventListener('resize', function(){
+				if(window.innerWidth > 720 && mobileMenu.classList.contains('open')){
+					mobileMenu.classList.remove('open');
+					mobileMenu.setAttribute('aria-hidden', 'true');
+					hamburgerBtn.setAttribute('aria-expanded', 'false');
+				}
+			});
+		}
 	})();
 	</script>
 </html>
