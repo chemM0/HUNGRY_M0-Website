@@ -1,3 +1,340 @@
+body.dark .article-container {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-radius: 8px;
+}
+body.dark .status-text {
+	color: #bdbdbd !important;
+}
+body.dark .proj-desc,
+body.dark .webinfo-site-name,
+body.dark .webinfo-site-lastmodified,
+body.dark .friend-desc,
+body.dark .copyright,
+body.dark .author-info__description {
+	color: #d0d0d0 !important;
+}
+body.dark .proj-title,
+body.dark .item-headline,
+body.dark .author-info__name,
+body.dark .projects-header h3 {
+	color: #fff !important;
+}
+body.dark .proj-card,
+body.dark .panel-card,
+body.dark .card-widget {
+	background: #232323 !important;
+	color: #f0f0f0 !important;
+}
+body.dark .proj-card .proj-title,
+body.dark .proj-card .proj-desc {
+	color: #f0f0f0 !important;
+}
+body.dark .proj-card .proj-desc {
+	color: #d0d0d0 !important;
+}
+body.dark .proj-card .proj-tags span {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark .proj-card .proj-btn {
+	color: #90c8ff !important;
+	border-color: #333 !important;
+}
+body.dark .proj-card .proj-btn:hover {
+	color: #fff !important;
+	background: #333 !important;
+}
+body.dark .proj-card .hot-badge {
+	background: #e55353 !important;
+	color: #fff !important;
+}
+body.dark .projects-header .view-all {
+	color: #90c8ff !important;
+}
+body.dark .projects-header .view-all:hover {
+	color: #fff !important;
+	background: #333 !important;
+}
+
+/* 夜间模式：查看全部项目按钮小描边样式 */
+body.dark .projects-header .view-all {
+	background: transparent !important;
+	border: 1px solid rgba(255,255,255,0.06) !important;
+	color: #90c8ff !important;
+	padding: 6px 10px !important;
+	border-radius: 8px !important;
+}
+body.dark .projects-header .view-all:hover {
+	background: rgba(255,255,255,0.03) !important;
+	border-color: rgba(255,255,255,0.12) !important;
+	color: #fff !important;
+}
+body.dark .friend-links {
+	color: #eaeaea !important;
+}
+body.dark .friend-link {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-color: #333 !important;
+}
+body.dark .friend-link a {
+	color: #90c8ff !important;
+}
+body.dark .friend-link .friend-desc {
+	color: #d0d0d0 !important;
+}
+body.dark .card-info-social-icons .social-icon,
+body.dark .card-info-social-icons .social-link-text {
+	color: #eaeaea !important;
+}
+body.dark .contact-btn {
+	background: #232323 !important;
+	color: #90c8ff !important;
+	border-color: #333 !important;
+}
+body.dark .contact-btn:hover {
+	background: #222 !important;
+	color: #fff !important;
+}
+body.dark .webinfo-site-name {
+	color: #d0d0d0 !important;
+}
+body.dark .webinfo-site-lastmodified {
+	color: #eaeaea !important;
+}
+body.dark .card-widget .fa {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa-bullhorn {
+	color: #e55353 !important;
+}
+body.dark .card-widget .fa-line-chart {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa-info-circle {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa-envelope {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa {
+	filter: drop-shadow(0 0 2px #222);
+}
+body.dark .setting-switch .switch-label {
+	color: #eaeaea !important;
+}
+body.dark .hobbies {
+	color: #eaeaea !important;
+}
+body.dark .hobby-pill {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark .panel-card {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-color: #333 !important;
+}
+body.dark .projects-header h3,
+body.dark .projects-header .view-all {
+	color: #eaeaea !important;
+}
+body.dark .projects-header .view-all {
+	background: #222 !important;
+	color: #90c8ff !important;
+}
+body.dark .projects-header .view-all:hover {
+	background: #333 !important;
+	color: #fff !important;
+}
+body.dark .proj-title {
+	color: #fafafa !important;
+}
+body.dark .proj-desc {
+	color: #bbb !important;
+}
+body.dark .proj-tags span {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark .proj-btn {
+	background: #232323 !important;
+	color: #90c8ff !important;
+	border-color: #333 !important;
+}
+body.dark .proj-btn:hover {
+	background: #333 !important;
+	color: #fff !important;
+}
+body.dark .hot-badge {
+	background: #e55353 !important;
+	color: #fff !important;
+}
+body.dark .friend-links {
+	color: #eaeaea !important;
+}
+body.dark .friend-link {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-color: #333 !important;
+}
+body.dark .friend-link a {
+	color: #90c8ff !important;
+}
+body.dark .friend-desc {
+	color: #aaa !important;
+}
+body.dark .item-headline {
+	color: #eaeaea !important;
+}
+body.dark .webinfo-site-name {
+	color: #bbb !important;
+}
+body.dark .webinfo-site-lastmodified {
+	color: #eaeaea !important;
+}
+body.dark .copyright {
+	color: #888 !important;
+}
+body.dark .card-widget .social-link-text {
+	color: #eaeaea !important;
+}
+body.dark .card-widget .fa {
+	color: #eaeaea !important;
+}
+body.dark .card-widget .fa-bullhorn {
+	color: #e55353 !important;
+}
+body.dark .card-widget .fa-line-chart {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa-info-circle {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa-envelope {
+	color: #90c8ff !important;
+}
+body.dark .card-widget .fa {
+	filter: drop-shadow(0 0 2px #222);
+}
+body.dark .card-widget .author-info__name {
+	color: #fafafa !important;
+}
+body.dark .card-widget .author-info__description {
+	color: #aaa !important;
+}
+body.dark .card-widget .switch-label {
+	color: #eaeaea !important;
+}
+body.dark .card-widget .setting-switch {
+	background: transparent !important;
+}
+body.dark .card-widget .slider {
+	background: #444 !important;
+}
+body.dark .card-widget .switch input:checked + .slider {
+	background: #2b8ae5 !important;
+}
+body.dark .card-widget .slider:before {
+	background: #fff !important;
+}
+body.dark .hobbies {
+	color: #eaeaea !important;
+}
+body.dark .hobby-pill {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark {
+	background: #181818 !important;
+	color: #eaeaea !important;
+}
+
+body.dark .card-widget {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+}
+
+body.dark .card-info-avatar .avatar-img {
+	box-shadow: 0 0 0 2px #333;
+}
+
+body.dark .author-info__name {
+	color: #fafafa !important;
+}
+body.dark .author-info__description {
+	color: #aaa !important;
+}
+body.dark .card-info-social-icons .social-icon,
+body.dark .card-info-social-icons .social-link-text {
+	color: #eaeaea !important;
+}
+body.dark .contact-btn {
+	background: #232323 !important;
+	color: #90c8ff !important;
+	border-color: #333 !important;
+}
+body.dark .contact-btn:hover {
+	background: #222 !important;
+	color: #fff !important;
+}
+body.dark .item-headline {
+	color: #eaeaea !important;
+}
+body.dark .webinfo-site-name {
+	color: #bbb !important;
+}
+body.dark .webinfo-site-lastmodified {
+	color: #eaeaea !important;
+}
+body.dark .friend-link {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-color: #333 !important;
+}
+body.dark .friend-desc {
+	color: #aaa !important;
+}
+body.dark .friend-link a {
+	color: #90c8ff !important;
+}
+body.dark .hobby-pill {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark .proj-card {
+	background: #232323 !important;
+	color: #eaeaea !important;
+	border-color: #333 !important;
+}
+body.dark .proj-title {
+	color: #fafafa !important;
+}
+body.dark .proj-desc {
+	color: #bbb !important;
+}
+body.dark .proj-tags span {
+	background: #222 !important;
+	color: #eaeaea !important;
+}
+body.dark .proj-btn {
+	background: #232323 !important;
+	color: #90c8ff !important;
+	border-color: #333 !important;
+}
+body.dark .proj-btn:hover {
+	background: #222 !important;
+	color: #fff !important;
+}
+body.dark .hot-badge {
+	background: #e55353 !important;
+	color: #fff !important;
+}
+body.dark #footer {
+	color: #888 !important;
+}
 body.dark {
 	background: #121212;
 	color: #e0e0e0;
@@ -120,4 +457,23 @@ body.dark .refresh-btn {
 	--main-color: #e6eef8;
 	border-color: rgba(255,255,255,0.08);
 	box-shadow: 4px 4px rgba(0,0,0,0.6);
+}
+
+/* 左侧社交按钮在夜间模式下（未悬停）样式：深底+蓝边+蓝色图标（仅 dark 模式） */
+body.dark .card-info-social-icons .contact-btn {
+	background: #181818 !important;
+	color: #dcdcdc !important;
+	border: 2px solid #2b8ae5 !important;
+	box-shadow: 0 6px 18px rgba(43,138,229,0.06) !important;
+}
+body.dark .card-info-social-icons .contact-btn i {
+	color: #2b8ae5 !important;
+}
+body.dark .card-info-social-icons .contact-btn .social-link-text {
+	color: #dcdcdc !important;
+}
+body.dark .card-info-social-icons .contact-btn:hover {
+	background: #1f1f1f !important;
+	color: #fff !important;
+	border-color: #1f6fc4 !important;
 }
