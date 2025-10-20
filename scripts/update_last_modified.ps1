@@ -26,7 +26,6 @@ try {
             $time = git log -1 --format=%cI -- index.html 2>$null
         }
     }
-@@
     if (-not $time) { exit 0 }
     $time = $time.Trim()
 
