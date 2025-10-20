@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 - 页面未找到</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <style>
+        body { text-align: center; padding: 80px 20px; font-family: 'Segoe UI', 'Arial', sans-serif; background: linear-gradient(180deg,#f6f8fb 0%, #ffffff 100%); color: #222; }
+        .error-wrapper { max-width: 900px; margin: 0 auto; }
+        .error-code { font-size: 6rem; font-weight: 800; color: #ff6b6b; margin-bottom: 16px; letter-spacing: 2px; }
+        .error-msg { font-size: 2rem; margin-bottom: 8px; font-weight: 700; }
+        .error-desc { margin-bottom: 28px; color: #6b7280; font-size: 1.05rem; line-height: 1.6; }
+        .illustration { width: 140px; height: 140px; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: linear-gradient(135deg,#ffe6e6 0%, #fff1f1 100%); box-shadow: 0 12px 30px rgba(42,64,120,0.06); }
+        .illustration svg { width: 80px; height: 80px; }
+        .error-actions { margin-bottom: 18px; }
+        .error-actions a { display: inline-block; margin: 0 12px; padding: 10px 26px; border-radius: 10px; background: linear-gradient(90deg,#4f46e5 0%, #06b6d4 100%); color: #fff; text-decoration: none; font-weight: 600; box-shadow: 0 8px 24px rgba(79,70,229,0.16); transition: transform .12s ease, box-shadow .12s ease; }
+        .error-actions a.secondary { background: transparent; color: #374151; border: 1px solid #e6e6e6; box-shadow: none; }
+        .error-actions a:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(79,70,229,0.18); }
+        .error-footer { margin-top: 40px; color: #9ca3af; font-size: 0.95rem; }
+        .error-footer a { color: #4f46e5; text-decoration: none; }
+        @media (max-width: 600px) {
+            body { padding: 40px 10px; }
+            .error-code { font-size: 3.5rem; }
+            .error-msg { font-size: 1.25rem; }
+            .illustration { width: 100px; height: 100px; }
+            .illustration svg { width: 64px; height: 64px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-code">404</div>
+    <div class="error-msg">页面未找到</div>
+    <div class="error-desc">你访问的页面不存在、已被删除或地址输入有误。<br>请检查链接或返回主页。</div>
+    <div class="error-actions">
+        <a href="index.html">返回主页</a>
+        <a href="javascript:history.back();">返回上一页</a>
+    </div>
+    <div class="error-footer">HUNGRY_M0 个人网站 | <a href="contact.html">联系站长</a></div>
+</body>
+</html>
