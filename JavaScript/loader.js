@@ -126,6 +126,17 @@
   // 以防某些资源阻塞较久，设置超时：在超时前推进到 100% 并隐藏
   setTimeout(function(){ try{ setDisplayProgress(100); }catch(e){}; hideLoader('timeout'); }, LOAD_TIMEOUT);
 
+  // 在 DOMContentLoaded 后短延迟自动隐藏遮罩，提升首屏响应速度
+  // 保留 window.load 和超时作为回退方案
+  try{
+    setTimeout(function(){
+      if(loader && !loader.classList.contains('hidden')){
+        try{ setDisplayProgress(100); }catch(e){}
+        hideLoader('domcontentloaded-auto');
+      }
+    }, 300);
+  }catch(e){ /* ignore */ }
+
     // 允许用户通过点击跳过（无障碍友好）
     loader.addEventListener('click', function(){ hideLoader('user.click'); });
   }
