@@ -11,7 +11,7 @@
 		box-shadow: 0 4px 18px rgba(43,138,229,0.10) !important;
 	}
 	.card-info-social-icons .social-icon .social-link-text {
-		font-size: 16px !important;
+		font-size: 18px !important;
 		margin-left: 8px !important;
 		font-weight: 500 !important;
 		letter-spacing: 0.02em !important;
@@ -20,6 +20,37 @@
 		font-size: 20px !important;
 		margin-right: 8px !important;
 	}
+}
+
+/* Gradient text utility for colorful headings */
+.gradient-text {
+	background: linear-gradient(90deg, #90caf9, #64b5f6, #1976d2, #90caf9);
+	background-size: 200% 200%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+	display: inline-block;
+	-webkit-animation: gradientShift 3s linear infinite;
+	animation: gradientShift 3s linear infinite;
+}
+
+@keyframes gradientShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@-webkit-keyframes gradientShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+/* In dark mode, slightly increase contrast and add a subtle text-shadow to improve readability */
+body.dark .gradient-text {
+	filter: brightness(1.05);
+	text-shadow: 0 1px 2px rgba(0,0,0,0.35);
 }
 /* Overrides to replace inline styles moved from JS/HTML */
 .focus-title-error{ color: #f44336; }

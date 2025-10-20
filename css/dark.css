@@ -1,3 +1,11 @@
+body.dark .hobby-pill {
+	border: 0.8px solid rgba(255,255,255,0.08) !important;
+	box-sizing: border-box;
+}
+body.dark .proj-tags span {
+	border: 0.8px solid rgba(255,255,255,0.08) !important;
+	box-sizing: border-box;
+}
 body.dark .article-container {
 	background: #232323 !important;
 	color: #eaeaea !important;
@@ -60,7 +68,7 @@ body.dark .projects-header .view-all:hover {
 /* 夜间模式：查看全部项目按钮小描边样式 */
 body.dark .projects-header .view-all {
 	background: transparent !important;
-	border: 1px solid rgba(255,255,255,0.06) !important;
+	border: 0.8px solid rgba(255,255,255,0.06) !important;
 	color: #90c8ff !important;
 	padding: 6px 10px !important;
 	border-radius: 8px !important;
