@@ -23,6 +23,11 @@
     }
 
     async function fetchAndInc(){
+        // 如果是本地 file:// 访问，不统计，只显示本地计数或占位符
+        if(window.location.protocol === 'file:'){
+            updateUI({site_pv: '--', today_pv: '--'});
+            return;
+        }
         try{
             // First: try to POST increment
             const postRes = await fetch(endpoint, { method: 'POST', mode: 'cors' });

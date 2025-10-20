@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-20 10:43:56 +0800">
+<html lang="zh" data-last-modified="2025-10-20 10:59:41 +0800">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -202,7 +202,18 @@
 		})();
 		</script>
 		<script src="vendor/js/lazysizes-5.2.0.min.js" async></script>
-		<script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js"></script>
+		<script>
+		(function(){
+			if(window.location && window.location.protocol === 'file:'){
+				console.warn('[maodian] Skipped loading under file:// to avoid slow CDN fetch.');
+				return;
+			}
+			var s = document.createElement('script');
+			s.src = 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.0.8/js/maodian.js';
+			s.defer = true;
+			document.head.appendChild(s);
+		})();
+		</script>
 		<script>
 
 		// 显示格式化的最后编辑时间（基于 document.lastModified）
@@ -364,6 +375,7 @@
 
 	</body>
 </html>
+
 
 
 
