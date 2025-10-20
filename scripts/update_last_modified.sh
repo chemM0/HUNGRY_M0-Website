@@ -12,7 +12,19 @@ if [ ! -f "$INDEX" ]; then
   exit 0
 fi
 
-TIME=$(git log -1 --format=%ci -- index.html 2>/dev/null || echo "")
+TIME=$(git log -1 --format=%cI -- . "\:(exclude)index.html" 2>/dev/null || echo "")
+if [ -z "$TIME" ]; then
+  # Try iterating recent commits and pick the first that doesn't touch index.html
+  for c in $(git rev-list --max-count=200 HEAD 2>/dev/null); do
+    if ! git diff-tree --no-commit-id --name-only -r "$c" | grep -qx "index.html"; then
+      TIME=$(git show -s --format=%cI "$c" 2>/dev/null || echo "")
+      break
+    fi
+  done
+  if [ -z "$TIME" ]; then
+    TIME=$(git log -1 --format=%cI -- index.html 2>/dev/null || echo "")
+  fi
+fi
 TIME=$(echo "$TIME" | tr -d '\n' | sed -e 's/^[[:space:]]*//;s/[[:space:]]*$//')
 if [ -z "$TIME" ]; then
   exit 0
