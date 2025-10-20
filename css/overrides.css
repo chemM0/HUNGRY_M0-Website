@@ -274,7 +274,7 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 /* 确保文本与图标在彩色背景下可见，并强制文本居中 */
 #refreshBtn .refresh-btn__text{ color: #fff !important; transform: none !important; margin:0 !important; padding:0 !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; }
 #refreshBtn .refresh-btn__icon{ position: relative !important; transform: none !important; width: 24px !important; height: 24px !important; margin-left:10px !important; }
-#refreshBtn .refresh-btn__icon .svg{ width:16px !important; height:16px !important; fill: #fff !important; stroke: #fff !important; }
+#refreshBtn .refresh-btn__icon .svg{ width:20px !important; height:20px !important; fill: #fff !important; stroke: #fff !important; }
 
 /* 强制缩小用户信息区的联系按钮（提高选择器优先级以覆盖模板默认样式） */
 .card-info-social-icons .social-icon.contact-btn,
@@ -291,6 +291,38 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 	align-items: center !important;
 	gap: 8px !important;
 	justify-content: center !important;
+}
+
+/* 磁盘条调整：每个盘独立条目，增加间距并显示盘符 */
+.disk-entry{ 
+	margin: 10px 0; /* 上下间距 */
+}
+.disk-letter{
+	display:inline-block;
+	width:28px;
+	font-weight:700;
+	margin-right:4px;
+	color:var(--accent, #1976d2);
+	text-align:left;
+}
+
+/* 在较小屏幕上稍微减小盘符宽度，避免换行 */
+@media (max-width: 480px){
+	.disk-letter{ width:22px; margin-right:2px; }
+}
+
+/* 磁盘标题行：盘符与名称同一行显示且不换行 */
+.disk-header{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	gap:4px;
+	white-space:nowrap; /* 禁止换行 */
+	width:100%;
+	margin-bottom:4px;
+}
+.disk-header #diskName, .disk-header #diskNameD{
+	display:inline-block;
 }
 /* override legacy .contact-btn pill style */
 .card-info-social-icons .social-icon.contact-btn.contact-btn,

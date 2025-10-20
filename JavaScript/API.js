@@ -232,6 +232,18 @@ async function fetchSystem() {
                 const avail = safeNumber(diskInfo.available_space, 0);
                 const used = Math.max(0, total - avail);
                 const usedPct = total > 0 ? (used / total * 100) : 0;
+                // 尝试提取盘符（例如 'C:' 或 '/mnt/c' 等），用于显示在名称前
+                const diskLetterEl = getEl("diskLetter");
+                let diskLetter = '';
+                try {
+                    const mp = String(diskInfo.mount_point || '').toUpperCase();
+                    if (mp && (mp.length >= 1)) {
+                        // Windows 风格 'C:' 或 '/mnt/c' -> 取首字母
+                        const m = mp.replace(/^\/MNT\//, '').replace(/\\\\/g, '');
+                        diskLetter = (m[0] ? (m[0] + ':') : '');
+                    }
+                } catch (ex) {}
+                if (diskLetterEl) diskLetterEl.textContent = diskLetter;
                 setText("diskName", diskInfo.name || diskInfo.mount_point || "磁盘");
                 setText("diskText", `可用: ${formatBytes(avail)} / 总计: ${formatBytes(total)} (已用${usedPct.toFixed(1)}%)`);
                 const fillEl = getEl("diskFill");
@@ -260,6 +272,17 @@ async function fetchSystem() {
                 const availD = safeNumber(diskD.available_space, 0);
                 const usedD = Math.max(0, totalD - availD);
                 const usedPctD = totalD > 0 ? (usedD / totalD * 100) : 0;
+                // D 盘盘符
+                const diskLetterDEl = getEl("diskLetterD");
+                let diskLetterD = 'D:';
+                try {
+                    const mpD = String(diskD.mount_point || '').toUpperCase();
+                    if (mpD && mpD.length >= 1) {
+                        const mD = mpD.replace(/^\/MNT\//, '').replace(/\\\\/g, '');
+                        diskLetterD = (mD[0] ? (mD[0] + ':') : diskLetterD);
+                    }
+                } catch (ex) {}
+                if (diskLetterDEl) diskLetterDEl.textContent = diskLetterD;
                 setText("diskNameD", diskD.name || diskD.mount_point || "D盘");
                 setText("diskTextD", `可用: ${formatBytes(availD)} / 总计: ${formatBytes(totalD)} (已用${usedPctD.toFixed(1)}%)`);
                 const fillElD = getEl("diskFillD");

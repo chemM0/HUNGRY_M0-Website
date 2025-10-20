@@ -51,11 +51,27 @@
 			<div class="focus-title">💽 磁盘空间</div>
 			<div class="disk-details">
 				<!-- 主磁盘（第一个磁盘） -->
-				<div id="diskName">--</div>
-				<div class="disk-bar">
-					<div id="diskFill" class="disk-fill"></div>
+				<div class="disk-entry">
+					<div class="disk-header">
+						<span class="disk-letter" id="diskLetter">C:</span>
+						<div id="diskName">--</div>
+					</div>
+					<div class="disk-bar">
+						<div id="diskFill" class="disk-fill"></div>
+					</div>
+					<div id="diskText">可用: -- / 总计: --</div>
 				</div>
-				<div id="diskText">可用: -- / 总计: --</div>
+				<!-- D 盘卡片（已恢复） -->
+				<div class="disk-entry">
+					<div class="disk-header">
+						<span class="disk-letter" id="diskLetterD">D:</span>
+						<div id="diskNameD">--</div>
+					</div>
+					<div class="disk-bar">
+						<div id="diskFillD" class="disk-fill"></div>
+					</div>
+					<div id="diskTextD">可用: -- / 总计: --</div>
+				</div>
 				<!-- D 盘子条目（已移除） -->
 			</div>
 		</div>
