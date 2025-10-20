@@ -15,7 +15,14 @@
 	    .corner-buttons .btn .icon { width:18px;height:18px; display:inline-block; }
 	
 	    .corner-actions { position: fixed; top: 20px; right: 20px; display:flex; gap:12px; align-items:center; z-index:1000; }
-	    .corner-actions .fab { width:48px; height:48px; border-radius:12px; background: linear-gradient(135deg,#4f46e5,#06b6d4); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 30px rgba(79,70,229,0.18); cursor:pointer; border:none; }
+		.corner-actions .fab { width:48px; height:48px; border-radius:12px; background: linear-gradient(135deg,#4f46e5,#06b6d4); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 30px rgba(79,70,229,0.18); cursor:pointer; border:none; }
+		/* 指定夜间切换按钮尺寸和动画（仅影响 #darkToggleCorner，不改变 .mini） */
+		#darkToggleCorner { width:40px !important; height:40px !important; border-radius:10px !important; padding:0; font-size:18px; position:relative; overflow:hidden; transition: transform .18s ease, background .32s, box-shadow .32s; }
+		#darkToggleCorner .icon-moon, #darkToggleCorner .icon-sun { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(1); transition:opacity .28s, transform .28s; }
+		#darkToggleCorner .icon-sun{ opacity:0; transform:translate(-50%,-50%) scale(.8) rotate(-20deg); }
+		body.dark #darkToggleCorner{ background: linear-gradient(135deg,#222,#3b4252) !important; color:#ffe066 !important; box-shadow: 0 8px 24px rgba(0,0,0,0.22); }
+		body.dark #darkToggleCorner .icon-moon{ opacity:0; transform:translate(-50%,-50%) scale(.8) rotate(20deg); }
+		body.dark #darkToggleCorner .icon-sun{ opacity:1; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
 	    .corner-actions .mini { width:40px; height:40px; border-radius:10px; background:#fff; box-shadow:0 6px 18px rgba(15,23,42,0.06); border:1px solid rgba(15,23,42,0.06); display:flex; align-items:center; justify-content:center; cursor:pointer; }
 	
 	    /* 使触控区更大 */
@@ -24,6 +31,10 @@
 	
 	    /* 响应式调整 */
 	    @media (max-width:720px){ .corner-buttons{ left:12px; top:12px } .corner-actions{ right:12px; top:12px } }
+
+	    /* 联系方式文字过暗时在夜间模式提高可读性 */
+	    .contact-label { color:#333; transition: color .28s ease, text-shadow .28s ease; }
+	    body.dark .contact-label { color: #eaf6ff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.45); }
 	    </style>
 	</head>
 	<body class="contact-page">
@@ -46,7 +57,10 @@
 
 			<!-- 右上角浮动动作按钮 -->
 			<div class="corner-actions" aria-hidden="false">
-				<button class="fab" id="darkToggleCorner" aria-label="切换夜间模式">🌙</button>
+								<button class="fab" id="darkToggleCorner" aria-label="切换夜间模式">
+									<span class="icon-moon">🌙</span>
+									<span class="icon-sun">☀️</span>
+								</button>
 				<button class="mini" id="openMenu" title="更多操作">⋯</button>
 			</div>
 			<div class="about-card">
@@ -260,20 +274,39 @@
 			let menuEl = null;
 			menuBtn.addEventListener('click', (e)=>{
 				e.stopPropagation();
-				if(menuOpen){ if(menuEl) menuEl.remove(); menuEl = null; menuOpen = false; return; }
+				if(menuOpen){
+					if(menuEl){
+						menuEl.style.maxHeight = '0px';
+						menuEl.style.opacity = '0';
+						setTimeout(()=>{ if(menuEl) menuEl.remove(); menuEl = null; }, 320);
+					}
+					menuOpen = false;
+					return;
+				}
 				const list = [
 					{ label: '主页', href: 'index.html' },
 					{ label: '关于', href: 'about.html' },
 					{ label: '服务条款', href: 'terms.html' }
 				];
-				let html = '<div class="quick-menu" style="position:fixed;top:72px;right:20px;background:#fff;padding:8px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,0.08);z-index:1200;">';
+				let html = '<div class="quick-menu" style="position:fixed;top:72px;right:20px;background:#fff;padding:8px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,0.08);z-index:1200;overflow:hidden;max-height:0;opacity:0;transition:max-height 0.32s cubic-bezier(.4,0,.2,1),opacity 0.32s;">';
 				for(const it of list) html += `<a href="${it.href}" style="display:block;padding:6px 12px;color:#111;text-decoration:none;">${it.label}</a>`;
 				html += '</div>';
 				const tmp = document.createElement('div'); tmp.innerHTML = html; document.body.appendChild(tmp.firstChild); menuEl = document.querySelector('.quick-menu'); menuOpen = true;
 				setTimeout(()=>{
-					const onDoc = function(ev){ if(!menuEl) return; if(!menuEl.contains(ev.target) && ev.target !== menuBtn) { menuEl.remove(); menuEl=null; menuOpen=false; document.removeEventListener('click', onDoc); } };
+					if(menuEl){
+						menuEl.style.maxHeight = menuEl.scrollHeight + 'px';
+						menuEl.style.opacity = '1';
+					}
+					const onDoc = function(ev){
+						if(!menuEl) return;
+						if(!menuEl.contains(ev.target) && ev.target !== menuBtn){
+							menuEl.style.maxHeight = '0px';
+							menuEl.style.opacity = '0';
+							setTimeout(()=>{ if(menuEl) menuEl.remove(); menuEl=null; menuOpen=false; document.removeEventListener('click', onDoc); }, 320);
+						}
+					};
 					document.addEventListener('click', onDoc);
-				}, 50);
+				}, 30);
 			});
 		}
 
