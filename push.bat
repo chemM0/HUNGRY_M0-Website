@@ -1,59 +1,59 @@
 @echo off
 color a
 cls
-REM ????? githooks ????Â¡Â¤??????? .githooks
+REM ????? githooks ?????¡è??????? .githooks
 setlocal
 @echo off
 color a
 cls
-REM æ£€æŸ¥ githooks æ˜¯å¦æŒ‡å‘ .githooks
+REM ¼ì²é githooks ÊÇ·ñÖ¸Ïò .githooks
 setlocal
 set HOOKspath=.githooks
 for /f "delims=" %%H in ('git config --get core.hooksPath 2^>nul') do set CURRENT_HOOKS=%%H
 if "%CURRENT_HOOKS%"=="%HOOKspath%" (
-	REM hooksPath å·²ç»æŒ‡å‘ .githooks
+	REM hooksPath ÒÑ¾­Ö¸Ïò .githooks
 ) else (
-	echo æ­£åœ¨å°† core.hooksPath è®¾ç½®ä¸º .githooks...
+	echo ÕıÔÚ½« core.hooksPath ÉèÖÃÎª .githooks...
 	git config core.hooksPath %HOOKspath%
-	echo å·²å°† .githooks è®¾ç½®ä¸º core.hooksPath
+	echo ÒÑ½« .githooks ÉèÖÃÎª core.hooksPath
 )
 goto :doPush
 
 :doPush
-REM åœ¨ push.bat ä¸­æ›´æ–° index.html çš„ data-last-modified
-echo æ­£åœ¨æ›´æ–° index.html çš„ data-last-modified...
+REM ÔÚ push.bat ÖĞ¸üĞÂ index.html µÄ data-last-modified
+echo ÕıÔÚ¸üĞÂ index.html µÄ data-last-modified...
 where pwsh >nul 2>nul
 if %ERRORLEVEL%==0 (
-	echo æ£€æµ‹åˆ° pwshï¼Œä½¿ç”¨ pwsh æ‰§è¡Œ update_last_modified.ps1
+	echo ¼ì²âµ½ pwsh£¬Ê¹ÓÃ pwsh Ö´ĞĞ update_last_modified.ps1
 	pwsh -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 ) else (
 	where bash >nul 2>nul
 	if %ERRORLEVEL%==0 (
-		echo æ£€æµ‹åˆ° bashï¼Œä½¿ç”¨ bash æ‰§è¡Œ update_last_modified.sh
+		echo ¼ì²âµ½ bash£¬Ê¹ÓÃ bash Ö´ĞĞ update_last_modified.sh
 		bash "%~dp0scripts/update_last_modified.sh"
 	) else (
 		where powershell.exe >nul 2>nul
 		if %ERRORLEVEL%==0 (
-			echo æ£€æµ‹åˆ° Windows PowerShellï¼Œä½¿ç”¨ powershell.exe æ‰§è¡Œ update_last_modified.ps1
+			echo ¼ì²âµ½ Windows PowerShell£¬Ê¹ÓÃ powershell.exe Ö´ĞĞ update_last_modified.ps1
 			powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 		) else (
-			echo æœªæ‰¾åˆ° pwsh/powershell/bashï¼Œè¯·æ‰‹åŠ¨è¿è¡Œ scripts\update_last_modified.ps1 æˆ– scripts\update_last_modified.sh
+			echo Î´ÕÒµ½ pwsh/powershell/bash£¬ÇëÊÖ¶¯ÔËĞĞ scripts\update_last_modified.ps1 »ò scripts\update_last_modified.sh
 		)
 	)
 )
 
-REM å¦‚æœ index.html è¢«ä¿®æ”¹åˆ™ git add
-echo æ­£åœ¨æ£€æµ‹ index.html æ˜¯å¦å·²æ›´æ”¹å¹¶æ·»åŠ åˆ°æš‚å­˜åŒº...
+REM Èç¹û index.html ±»ĞŞ¸ÄÔò git add
+echo ÕıÔÚ¼ì²â index.html ÊÇ·ñÒÑ¸ü¸Ä²¢Ìí¼Óµ½Ôİ´æÇø...
 set INDEX_STATUS=
 for /f "delims=" %%S in ('git status --porcelain index.html 2^>nul') do set INDEX_STATUS=%%S
 if defined INDEX_STATUS (
-	echo index.html æœ‰å˜åŠ¨ï¼Œæ­£åœ¨æ·»åŠ åˆ°æš‚å­˜åŒº...
+	echo index.html ÓĞ±ä¶¯£¬ÕıÔÚÌí¼Óµ½Ôİ´æÇø...
 	git add index.html
 ) else (
-	echo index.html æœªæ›´æ”¹
+	echo index.html Î´¸ü¸Ä
 )
 
-REM æ‰§è¡Œ add, commit, push
+REM Ö´ĞĞ add, commit, push
 git add .
 git commit -am "update"
 echo.
