@@ -146,4 +146,17 @@
   } else {
     setup();
   }
+  // 页面恢复时（包括 bfcache/persisted），确保隐藏并移除 loader，以免遮罩残留
+  function cleanupSiteLoader(){
+    try{
+      if(progressTimer){ clearInterval(progressTimer); progressTimer = null; }
+      var el = document.getElementById('site-loader');
+      if(!el) return;
+      if(!el.classList.contains('hidden')) el.classList.add('hidden');
+      setTimeout(function(){ if(el && el.parentNode) el.parentNode.removeChild(el); }, 600);
+    }catch(e){}
+  }
+
+  window.addEventListener('pageshow', function(e){ cleanupSiteLoader(); });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') cleanupSiteLoader(); });
 })();

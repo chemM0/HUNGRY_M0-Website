@@ -89,4 +89,20 @@
 
     // 支持 programmatic navigation: window.navigateWithTransition(url)
     window.navigateWithTransition = function(url){ startTransition(url); };
+
+    // 在页面从后退缓存或从不可见恢复为可见时，清理残留的 loader/过渡状态，避免加载动画卡住
+    function removeTransitionArtifacts(){
+        try{
+            var el = document.getElementById('pageLoader');
+            if(el){
+                el.classList.add('hidden');
+                el.style.opacity = '0';
+                setTimeout(function(){ if(el && el.parentNode) el.parentNode.removeChild(el); }, ANIM_DURATION + 80);
+            }
+        }catch(e){}
+        try{ _transitionInProgress = false; }catch(e){}
+    }
+
+    window.addEventListener('pageshow', function(e){ removeTransitionArtifacts(); });
+    document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') removeTransitionArtifacts(); });
 })();

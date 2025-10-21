@@ -113,4 +113,17 @@
     }
     // setup scroll-hide behavior regardless (function will check for element presence)
     try{ addScrollHideBehavior(); }catch(e){}
+
+    // 清理回到页面时可能残留的全屏刷新覆盖层
+    function cleanupRefreshOverlay(){
+        try{
+            var ov = document.getElementById('pageRefreshOverlay');
+            if(!ov) return;
+            ov.classList.remove('visible');
+            ov.style.opacity = '0';
+            setTimeout(function(){ if(ov && ov.parentNode) ov.parentNode.removeChild(ov); }, 400);
+        }catch(e){}
+    }
+    window.addEventListener('pageshow', function(){ cleanupRefreshOverlay(); });
+    document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') cleanupRefreshOverlay(); });
 })();
