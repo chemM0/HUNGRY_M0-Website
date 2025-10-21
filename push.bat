@@ -1,55 +1,57 @@
 @echo off
 color a
 cls
-REM ×Ô¶¯½« githooks ¹³×ÓÂ·¾¶ÉèÖÃÎª .githooks
+REM ï¿½Ô¶ï¿½ï¿½ï¿½ githooks ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª .githooks
 setlocal
 set HOOKspath=.githooks
 for /f "delims=" %%H in ('git config --get core.hooksPath 2^>nul') do set CURRENT_HOOKS=%%H
 if "%CURRENT_HOOKS%"=="%HOOKspath%" (
-	REM ÒÑÉèÖÃ hooksPath Îª .githooks
+	REM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ hooksPath Îª .githooks
 ) else (
-	echo ÕýÔÚ½« .githooks ÉèÎª core.hooksPath...
+	echo ï¿½ï¿½ï¿½Ú½ï¿½ .githooks ï¿½ï¿½Îª core.hooksPath...
 	git config core.hooksPath %HOOKspath%
-	echo ÒÑÉèÖÃ .githooks Îª core.hooksPath
+	echo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ .githooks Îª core.hooksPath
 )
 goto :doPush
 
 :doPush
-REM Ã¿´ÎÔËÐÐ push.bat Ç°¸üÐÂ index.html µÄ data-last-modified
-echo ÕýÔÚ¸üÐÂ index.html µÄ×îºóÐÞ¸ÄÊ±¼ä...
+REM Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ push.bat Ç°ï¿½ï¿½ï¿½ï¿½ index.html ï¿½ï¿½ data-last-modified
+echo ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ index.html ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Ê±ï¿½ï¿½...
 where pwsh >nul 2>nul
 if %ERRORLEVEL%==0 (
-	echo Ê¹ÓÃ pwsh Ö´ÐÐ¸üÐÂ½Å±¾
+	echo Ê¹ï¿½ï¿½ pwsh Ö´ï¿½Ð¸ï¿½ï¿½Â½Å±ï¿½
 	pwsh -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 ) else (
 	where bash >nul 2>nul
 	if %ERRORLEVEL%==0 (
-		echo Ê¹ÓÃ bash Ö´ÐÐ¸üÐÂ½Å±¾
+		echo Ê¹ï¿½ï¿½ bash Ö´ï¿½Ð¸ï¿½ï¿½Â½Å±ï¿½
 		bash "%~dp0scripts/update_last_modified.sh"
 	) else (
 		where powershell.exe >nul 2>nul
 		if %ERRORLEVEL%==0 (
-			echo Ê¹ÓÃ Windows PowerShell Ö´ÐÐ¸üÐÂ½Å±¾
+			echo Ê¹ï¿½ï¿½ Windows PowerShell Ö´ï¿½Ð¸ï¿½ï¿½Â½Å±ï¿½
 			powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\update_last_modified.ps1"
 		) else (
-			echo Î´ÕÒµ½ pwsh/powershell/bash£¬ÇëÊÖ¶¯¸üÐÂ×îºóÐÞ¸ÄÊ±¼ä£¡
+			echo Î´ï¿½Òµï¿½ pwsh/powershell/bashï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Ê±ï¿½ä£¡
 		)
 	)
 )
 
-REM Èç¹û index.html ÓÐ±»ÐÞ¸Ä£¬×Ô¶¯ git add
+REM ï¿½ï¿½ï¿½ index.html ï¿½Ð±ï¿½ï¿½Þ¸Ä£ï¿½ï¿½Ô¶ï¿½ git add
 set INDEX_STATUS=
 for /f "delims=" %%S in ('git status --porcelain index.html 2^>nul') do set INDEX_STATUS=%%S
 if defined INDEX_STATUS (
-	echo ¼ì²âµ½ index.html ÒÑ±»ÐÞ¸Ä£¬×Ô¶¯Ìí¼Óµ½ÔÝ´æÇø...
+	echo ï¿½ï¿½âµ½ index.html ï¿½Ñ±ï¿½ï¿½Þ¸Ä£ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½Ý´ï¿½ï¿½ï¿½...
 	git add index.html
 ) else (
-	echo index.html Î´±»ÐÞ¸Ä
+	echo index.html Î´ï¿½ï¿½ï¿½Þ¸ï¿½
 )
 
-REM Ä¬ÈÏÎªÖ´ÐÐ add, commit, push
+REM Ä¬ï¿½ï¿½ÎªÖ´ï¿½ï¿½ add, commit, push
 git add .
 git commit -am "update"
+echo.
+git pull --rebase
 echo.
 git push
 echo.
