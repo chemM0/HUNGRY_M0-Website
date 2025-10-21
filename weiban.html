@@ -28,7 +28,6 @@
             <li><a href="#step-0"><span class="step-num">0</span><span class="step-title">前言</span></a></li>
             <li><a href="#step-1"><span class="step-num">1</span><span class="step-title">准备</span></a></li>
             <li><a href="#step-2"><span class="step-num">2</span><span class="step-title">安装</span></a></li>
-              <!-- 第三步已移除 -->
             <li><a href="#step-3"><span class="step-num">3</span><span class="step-title">使用</span></a></li>
           </ul>
         </nav>
@@ -38,6 +37,7 @@
               <p>欢迎使用“安全微伴刷课”项目页面。<b>这不是我个人开发的项目，而是一个开源项目</b>，旨在为大家提供安全、便捷的刷课服务。</p>
               <p>因为我认为大学本该是一个自由探索的地方，而不是单纯的应试机器，我们可以省去很多时间用于研究自己热爱的东西，就比如你现在正在查看的这个网页。</p>
               <p>本项目中涉及的开源原文地址会在下文提及，如有侵权请联系删除。</p>
+              <p><b>孙中山先生有云：“行易知难。”所以你不需要弄明白下面讲的这些到底是个什么东西，跟着教程做就行了😄</b></p>
               <p>直入主题吧！</p>
             </section>
           <section id="step-1" class="doc-step">
@@ -49,13 +49,12 @@
             <h3>二：安装</h3>
             <p>首先你需要安装一个用户脚本管理器<a href="https://microsoftedge.microsoft.com/addons/detail/%E8%84%9A%E6%9C%AC%E7%8C%AB/liilgpjgabokdklappibcjfablkpcekh" target="_blank" rel="noopener">脚本猫</a>。</p>
             <img src="assets/pictures/scriptcat.png" alt="脚本猫浏览器扩展图标" class="img-limited">
-            <p>如果你无法访问这个链接或加载缓慢，可以<a href="files/scriptcat-v1.1.1-chrome.zip" target="_blank" rel="noopener noreferrer">点击此处</a>来下载一份zip浏览器扩展包，再在<a href="edge://extensions/" target="_blank" rel="noopener noreferrer">此界面</a>的左下角开启下图所示的两个选项，将刚刚下载的文件拖动到浏览器内完成安装。</p>
+            <p>如果你无法访问这个链接或加载缓慢，可以<a href="files/scriptcat-v1.1.1-chrome.zip" target="_blank" rel="noopener noreferrer">点击此处</a>来下载一份zip浏览器扩展包，再在<a href="edge://extensions/" target="_blank" rel="noopener noreferrer" onclick="openSpecialURL('edge://extensions/'); return false;">此界面</a>的左下角开启下图所示的两个选项，将刚刚下载的文件拖动到浏览器内完成安装。</p>
             <img src="assets/pictures/devmode.png" alt="打开开发者模式" class="img-limited">
-            <p><b>孙中山先生有云：“行易知难。”所以你不需要弄明白这到底是个什么东西，跟着教程做就行了😄</b></p>
             <br />
-            <p>随后我们安装刷课的核心脚本<a href="https://scriptcat.org/zh-CN/script-show-page/4055" target="_blank" rel="noopener">微伴助手</a>，跟着流程走完即可，确认完成之后进入下一步</p>
+            <p>随后我们安装刷课的核心脚本<a href="https://scriptcat.org/zh-CN/script-show-page/4055" target="_blank" rel="noopener">微伴助手</a>，跟着流程走完即可，确认完成之后就可以进入下一步。</p>
+            <p>如果你无法访问这个链接或加载缓慢，可以<a id="wb-download" href="files/微伴助手.js" target="_blank" download>点击下载</a>微伴助手的脚本文件，然后打开<a href="extension://liilgpjgabokdklappibcjfablkpcekh/src/options.html#/" target="_blank" onclick="openSpecialURL('extension://liilgpjgabokdklappibcjfablkpcekh/src/options.html#/'); return false;">此界面</a>，将你刚才下载的微伴助手文件拖进来完成安装。</p>
           </section>
-            <!-- 第三步：配置 已移除 -->
           <section id="step-3" class="doc-step">
             <h3>三：使用</h3>
             <p>最激动人心的环节！马上就要解放双手了！！</p>
@@ -64,8 +63,11 @@
             <p>登录成功后从首页进入你要刷的课程，在显示了课程章节的界面<b class="inline-danger">点击浏览器左上角刷新网页按钮</b>，如果没有刷新按钮可以按<b>电脑键盘上的F5键</b>，部分电脑需要同时按Fn+F5组合键。</p>
             <p>前面的流程都没有问题的话，脚本的输出日志会显示在网页的右下角，如图：</p>
             <img src="assets/pictures/course.png" alt="微伴助手脚本输出日志" class="img-limited img-wide">
-            <p>根据你的需求，我们现在先把课程刷完。点击<b class="inline-success">完成所有课程</b>按钮，开始脚本自动学习！</p>
+            <p>根据自己的需求，我们现在先把课程刷完。点击<b class="inline-success">完成所有课程</b>按钮，开始脚本自动学习！</p>
             <img src="assets/pictures/log.png" alt="完成所有课程按钮位置示意图" class="img-limited img-wide">
+            <p>安全微伴为了防止恶意刷课，每15秒才能学习一节课程。<del>虽然我感觉这防了跟没防似的</del></p>
+            <p>然后你现在可以让它挂在那儿，把时间花在自己的事情上。大约十几分钟就会全部刷完所有课程，最后自动停止。</p>
+            <p>不过自动考试和刷课的操作有些许不同，我们需要先手动操作，开始一次考试。进入到考试界面之后，点击右下角脚本输出日志下方的<b style="color: orange;">开始考试</b>按钮</p>
           </section>
         </div>
       </div>
@@ -74,5 +76,58 @@
   <script src="JavaScript/loader.js" defer></script>
   <script src="JavaScript/dark_theme.js" defer></script>
   <script src="JavaScript/steps_nav.js" defer></script>
+  <script>
+    // 尝试直接打开特殊协议(例如 edge:// 或 extension://)，若被浏览器阻止则复制到剪贴板供用户手动粘贴
+    function openSpecialURL(url) {
+      // 优先通过模拟用户点击的锚点来触发浏览器对特殊协议的处理
+      try {
+        var a = document.createElement('a');
+        a.href = url;
+        a.rel = 'noopener';
+        a.style.display = 'none';
+        // 在某些环境下 target='_blank' 会被浏览器阻止为 about:blank#blocked，但通过 click 有更高成功率
+        a.target = '_blank';
+        document.body.appendChild(a);
+        var clicked = false;
+        a.click();
+        clicked = true;
+        // 移除临时元素
+        setTimeout(function(){
+          a.remove();
+        }, 1000);
+        // 若成功执行 click，则不做额外处理
+        return;
+      } catch (e) {
+        // fallthrough to clipboard fallback
+      }
+      // 失败回退：复制链接到剪贴板或弹出提示
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(function(){
+          alert('浏览器阻止了自动打开特殊地址，链接已复制到剪贴板，请粘贴到地址栏打开。');
+        }).catch(function(){
+          prompt('请手动复制以下链接并粘贴到地址栏打开：', url);
+        });
+      } else {
+        prompt('请手动复制以下链接并粘贴到地址栏打开：', url);
+      }
+    }
+
+    // 强制下载微伴助手脚本，避免浏览器直接预览
+    document.addEventListener('DOMContentLoaded', function () {
+      var dl = document.getElementById('wb-download');
+      if (dl) {
+        dl.addEventListener('click', function (e) {
+          e.preventDefault();
+          var url = this.href;
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = '微伴助手.js';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
+      }
+    });
+  </script>
 </body>
 </html>
