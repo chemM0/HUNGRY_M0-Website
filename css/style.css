@@ -368,6 +368,14 @@ body:not(.index-page) .refresh-btn {
 	}
 }
 
+/* 防止移动端横向滚动（左右滑动），只允许纵向滚动 */
+@media (max-width:900px) {
+	html, body { overflow-x: hidden !important; }
+	/* 确保 docs 内容不会超出容器宽度 */
+	.docs-content, .docs-layout, .docs-container { max-width: 100%; box-sizing: border-box; }
+	.docs-content img { max-width: 100%; height: auto; }
+}
+
 /* Make main content padding smaller to avoid excessive whitespace on mobile */
 @media (max-width:600px) {
 	body {

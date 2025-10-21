@@ -99,3 +99,109 @@
 
 /* small accessibility focus */
 .docs-nav a:focus { outline: 2px solid rgba(11,105,211,0.12); outline-offset: 3px; }
+
+/* 美化 微伴 页面中的特殊协议按钮组 */
+.special-link-controls { display: inline-flex; gap: 8px; align-items: center; }
+.special-link-controls .open-special-link,
+.special-link-controls .copy-special-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border-radius: 10px;
+	font-weight: 700;
+	text-decoration: none;
+		border: 1px solid rgba(11,105,211,0.10);
+		background: linear-gradient(180deg, #fff, #f7fbff);
+		color: #0b69d3;
+	cursor: pointer;
+	transition: transform .14s ease, box-shadow .14s ease, background .12s ease;
+}
+	.special-link-controls .open-special-link:hover,
+	.special-link-controls .copy-special-link:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,105,211,0.06); }
+	.special-link-controls .open-special-link { /* make open link look like text link */
+		background: transparent;
+		border: none;
+		padding: 0;
+		color: #0b69d3;
+		text-decoration: underline;
+		font-weight: 700;
+	}
+	.special-link-controls button.copy-special-link { border: 0; background: #0b69d3; color: #fff; padding: 8px 12px; border-radius: 10px; }
+.special-link-controls .copy-special-link:active, .special-link-controls .open-special-link:active { transform: translateY(0); }
+
+/* 兼容移动端：较窄屏幕的按钮占满宽度显示为块级 */
+@media (max-width:600px) {
+	.special-link-controls { flex-direction: column; align-items: stretch; gap: 6px; }
+	.special-link-controls .open-special-link, .special-link-controls .copy-special-link { width: 100%; text-align: center; }
+}
+
+/* From Uiverse.io by Galahhad - simplified copy button + tooltip */
+.copy {
+	--button-bg: #353434;
+	--button-hover-bg: #464646;
+	--button-text-color: #CCCCCC;
+	--button-hover-text-color: #8bb9fe;
+	--button-border-radius: 10px;
+	--button-diameter: 36px;
+	--button-outline-width: 1px;
+	--button-outline-color: rgb(141, 141, 141);
+	--tooltip-bg: #f4f3f3;
+	--toolptip-border-radius: 4px;
+	--tooltip-font-family: Menlo, Roboto Mono, monospace;
+	--tooltip-font-size: 12px;
+	--tootip-text-color: rgb(50, 50, 50);
+	--tooltip-padding-x: 7px;
+	--tooltip-padding-y: 7px;
+	--tooltip-offset: 8px;
+}
+.copy {
+	box-sizing: border-box;
+	width: var(--button-diameter);
+	height: var(--button-diameter);
+	border-radius: var(--button-border-radius);
+	background-color: var(--button-bg);
+	color: var(--button-text-color);
+	border: none;
+	cursor: pointer;
+	position: relative;
+	outline: none;
+}
+.tooltip {
+	position: absolute;
+	opacity: 0;
+	visibility: 0;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
+	font: var(--tooltip-font-size) var(--tooltip-font-family);
+	color: var(--tootip-text-color);
+	background: var(--tooltip-bg);
+	padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+	border-radius: var(--toolptip-border-radius);
+	pointer-events: none;
+	transition: all 0.12s ease;
+}
+.tooltip::before { content: attr(data-text-initial); }
+.tooltip::after {
+	content: "";
+	position: absolute;
+	bottom: calc(var(--tooltip-padding-y) / 2 * -1);
+	width: var(--tooltip-padding-y);
+	height: var(--tooltip-padding-y);
+	background: inherit;
+	left: 50%;
+	transform: translateX(-50%) rotate(45deg);
+	z-index: -999;
+	pointer-events: none;
+}
+.copy svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.checkmark { display: none; }
+.copy:hover .tooltip, .copy:focus .tooltip { opacity: 1; visibility: visible; top: calc((100% + var(--tooltip-offset)) * -1); }
+.copy:focus .tooltip::before { content: attr(data-text-end); }
+.copy:focus .clipboard { display: none; }
+.copy:focus .checkmark { display: block; }
+.copy:hover, .copy:focus { background-color: var(--button-hover-bg); }
+.copy:active { outline: var(--button-outline-width) solid var(--button-outline-color); }
+.copy:hover svg { color: var(--button-hover-text-color); }
