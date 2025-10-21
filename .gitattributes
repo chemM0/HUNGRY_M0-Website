@@ -1,0 +1,14 @@
+# Enforce UTF-8 encoding for common text files
+*.html text working-tree-encoding=UTF-8
+*.css text working-tree-encoding=UTF-8
+*.js text working-tree-encoding=UTF-8
+*.ts text working-tree-encoding=UTF-8
+*.json text working-tree-encoding=UTF-8
+*.md text working-tree-encoding=UTF-8
+*.ps1 text working-tree-encoding=UTF-8
+*.sh text eol=lf
+# Batch files on Windows historically used OEM/GBK; recommend UTF-8 but keep option
+*.bat text working-tree-encoding=UTF-8
+
+# Ensure shell scripts use LF in repository
+scripts/* text eol=lf
