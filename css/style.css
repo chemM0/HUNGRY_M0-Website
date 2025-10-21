@@ -368,6 +368,20 @@ body:not(.index-page) .refresh-btn {
 	}
 }
 
+/* Make main content padding smaller to avoid excessive whitespace on mobile */
+@media (max-width:600px) {
+	body {
+		padding: calc(var(--nav-height) + 12px) 12px 12px;
+	}
+	.docs-container {
+		margin: 18px auto;
+		padding: 8px;
+	}
+	.docs-content { padding: 14px; }
+	/* Improve line length and text on small screens */
+	.doc-step p, .doc-step h3 { text-align: left; }
+}
+
 /* 导航栏样式 */
 .top-nav {
 	position: fixed;

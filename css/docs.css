@@ -1,0 +1,94 @@
+/* docs.css - tutorial two-column layout for weiban.html */
+:root { --docs-accent: #0b69d3; --docs-bg: #ffffff; --docs-border: #e8eef7; }
+
+.docs-container { max-width: 1100px; margin: 30px auto; padding: 12px; }
+
+.docs-layout { display: grid; grid-template-columns: 260px 1fr; gap: 28px; align-items: start; }
+
+/* HERO (commented out - removed from page but kept for reference)
+.hero { background: transparent; padding: 28px 12px 18px; margin-bottom: 18px; }
+.hero-inner { display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; }
+.hero-main { font-size: 42px; margin: 0; background: linear-gradient(90deg,#ff77d9,#b36bff); -webkit-background-clip:text; background-clip:text; color: transparent; font-weight:800; }
+.hero-sub { color: #49606f; max-width: 820px; margin: 8px auto 18px; line-height:1.7; }
+.hero-cards { display:flex; gap:18px; justify-content:center; margin-top:16px; }
+.card { background: #fff; padding:10px 16px; border-radius:12px; box-shadow: 0 6px 20px rgba(23,42,77,0.06); color:#21435b; font-weight:700; }
+*/
+
+/* buttons */
+.btn { display:inline-block; padding:10px 14px; border-radius:8px; text-decoration:none; font-weight:700; }
+/* .btn-main and .btn-secondary styles removed (hero removed). Restore from earlier commit if needed. */
+
+@media (max-width:900px) { .hero-main { font-size: 28px; } .docs-layout{gap:16px;} .hero-cards{flex-wrap:wrap;gap:10px;} }
+
+.docs-nav { position: sticky; top: calc(var(--nav-height) + 24px); background: var(--docs-bg); border: 1px solid var(--docs-border); border-radius: 10px; padding: 12px; box-shadow: 0 6px 20px rgba(12,32,68,0.04); }
+.docs-nav ul { list-style: none; margin: 0; padding: 6px; }
+.docs-nav li { margin: 8px 0; }
+.docs-nav a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #24303b; padding: 8px 10px; border-radius: 8px; transition: background .18s ease, transform .12s ease; }
+.docs-nav a:hover { background: rgba(11,105,211,0.06); transform: translateX(3px); }
+.docs-nav .step-num { display:inline-flex; width:30px; height:30px; align-items:center; justify-content:center; border-radius:50%; background:#f2f7ff; color:var(--docs-accent); font-weight:700; }
+.docs-nav a.active { background: linear-gradient(90deg,#f3f8ff,#fbfdff); color: var(--docs-accent); box-shadow: 0 6px 18px rgba(11,105,211,0.05); }
+.docs-nav a.active .step-num { background: var(--docs-accent); color: #fff; }
+
+.docs-content { background: var(--docs-bg); border-radius: 10px; padding: 22px; border: 1px solid var(--docs-border); box-shadow: 0 4px 14px rgba(12,32,68,0.04); margin-top:6px; }
+.doc-step { padding: 18px 10px; margin-bottom: 22px; text-align: left; border-left: 3px solid transparent; transition: border-color .18s ease, background .12s ease; }
+.doc-step:hover { background: #fbfdff; border-left-color: rgba(11,105,211,0.08); }
+.doc-step h3 { margin-top: 0; color: #0f2a44; font-size: 20px; }
+
+/* paragraph and link polish */
+.doc-step p { line-height: 1.75; color: #33414e; }
+.doc-step a { color: var(--docs-accent); text-decoration: underline; text-underline-offset: 4px; }
+
+/* Ensure images inside the docs content remain responsive and not oversized */
+.docs-content img {
+	/* Limit images on wide screens to avoid oversized media */
+	max-width: 300px;
+	width: auto;
+	height: auto;
+	display: block;
+	margin: 8px 0;
+}
+
+/* On narrow viewports allow images to scale down to container width */
+@media (max-width: 480px) {
+	.docs-content img { max-width: 100%; }
+}
+
+/* Optional: class to explicitly limit screenshots */
+.docs-content img.img-limited { max-width: 300px; }
+
+/* anchor offset to avoid being hidden under top nav */
+.doc-step:target { scroll-margin-top: calc(var(--nav-height) + 20px); }
+
+/* responsive */
+@media (max-width: 900px) {
+	.docs-layout { grid-template-columns: 1fr; gap: 14px; }
+	/* enable sticky on mobile so it stays visible while scrolling */
+	.docs-nav {
+		position: -webkit-sticky; /* Safari */
+		position: sticky;
+		top: calc(var(--nav-height) + 6px);
+		z-index: 10200;
+		display: flex;
+		overflow-x: auto;
+		padding: 8px 6px;
+		margin-bottom: 12px;
+		/* enable smooth native momentum scrolling on iOS */
+		-webkit-overflow-scrolling: touch;
+		/* backdrop-filter has limited support; add -webkit- prefix for Safari */
+		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: blur(6px);
+	}
+	.docs-nav ul { display:flex; gap:8px; margin: 0; }
+	.docs-nav li { white-space: nowrap; }
+	/* make nav items compact and touch-friendly */
+	.docs-nav a { padding: 8px 10px; border-radius: 8px; font-size: 14px; }
+	.docs-nav .step-num { width: 30px; height: 30px; font-size: 14px; }
+	/* reduce docs-content padding on small screens */
+	.docs-content { padding: 16px; }
+	.doc-step { padding: 14px 8px; }
+	.doc-step h3 { font-size: 18px; }
+	.doc-step p { font-size: 15px; }
+}
+
+/* small accessibility focus */
+.docs-nav a:focus { outline: 2px solid rgba(11,105,211,0.12); outline-offset: 3px; }
