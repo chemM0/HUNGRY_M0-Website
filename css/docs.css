@@ -56,6 +56,10 @@
 /* Optional: class to explicitly limit screenshots */
 .docs-content img.img-limited { max-width: 300px; }
 
+/* Slightly larger variant for horizontal screenshots to improve readability */
+.docs-content img.img-wide { max-width: 420px; }
+
+
 /* anchor offset to avoid being hidden under top nav */
 .doc-step:target { scroll-margin-top: calc(var(--nav-height) + 20px); }
 
@@ -72,8 +76,7 @@
 		overflow-x: auto;
 		padding: 8px 6px;
 		margin-bottom: 12px;
-		/* enable smooth native momentum scrolling on iOS */
-		-webkit-overflow-scrolling: touch;
+		/* momentum scrolling is now native; vendor-specific property removed */
 		/* backdrop-filter has limited support; add -webkit- prefix for Safari */
 		-webkit-backdrop-filter: blur(6px);
 		backdrop-filter: blur(6px);
