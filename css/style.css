@@ -370,6 +370,7 @@ body:not(.index-page) .refresh-btn {
 
 /* 防止移动端横向滚动（左右滑动），只允许纵向滚动 */
 @media (max-width:900px) {
+	/* keep overall page from horizontal overflow but allow side-axis gestures on nav bar */
 	html, body { overflow-x: hidden !important; }
 	/* 确保 docs 内容不会超出容器宽度 */
 	.docs-content, .docs-layout, .docs-container { max-width: 100%; box-sizing: border-box; }
@@ -379,7 +380,8 @@ body:not(.index-page) .refresh-btn {
 /* Make main content padding smaller to avoid excessive whitespace on mobile */
 @media (max-width:600px) {
 	body {
-		padding: calc(var(--nav-height) + 12px) 12px 12px;
+		/* add a small right padding to avoid fixed UI or platform scrollbars overlapping text */
+		padding: calc(var(--nav-height) + 12px) 14px 12px 14px;
 	}
 	.docs-container {
 		margin: 18px auto;

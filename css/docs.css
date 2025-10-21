@@ -30,6 +30,22 @@
 .docs-nav a.active .step-num { background: var(--docs-accent); color: #fff; }
 
 .docs-content { background: var(--docs-bg); border-radius: 10px; padding: 22px; border: 1px solid var(--docs-border); box-shadow: 0 4px 14px rgba(12,32,68,0.04); margin-top:6px; }
+
+/* Prevent nested containers from hijacking scroll.
+   Note: `overscroll-behavior: contain` can prevent natural scroll chaining on some
+   mobile browsers and may lead to unexpected 'snap back' behaviour. Use the
+   default `auto` so the page can scroll smoothly on touch devices. */
+.docs-content, .docs-container, .docs-layout {
+	overscroll-behavior: auto;
+	/* allow vertical panning but avoid preventing normal scroll chaining */
+	touch-action: pan-y;
+}
+
+/* Allow grid children to shrink below their content intrinsic width so long
+   images or long content won't force the layout to overflow horizontally. */
+.docs-layout > * {
+    min-width: 0;
+}
 .doc-step { padding: 18px 10px; margin-bottom: 22px; text-align: left; border-left: 3px solid transparent; transition: border-color .18s ease, background .12s ease; }
 .doc-step:hover { background: #fbfdff; border-left-color: rgba(11,105,211,0.08); }
 .doc-step h3 { margin-top: 0; color: #0f2a44; font-size: 20px; }
@@ -38,10 +54,11 @@
 .doc-step p { line-height: 1.75; color: #33414e; }
 .doc-step a { color: var(--docs-accent); text-decoration: underline; text-underline-offset: 4px; }
 
-/* Ensure images inside the docs content remain responsive and not oversized */
+/* Ensure images inside the docs content remain responsive and do not cause
+   horizontal overflow. Specific classes like .img-wide/.img-limited can still
+   constrain sizes on larger viewports (they are defined later). */
 .docs-content img {
-	/* Limit images on wide screens to avoid oversized media */
-	max-width: 300px;
+	max-width: 100%;
 	width: auto;
 	height: auto;
 	display: block;
@@ -50,7 +67,10 @@
 
 /* On narrow viewports allow images to scale down to container width */
 @media (max-width: 480px) {
-	.docs-content img { max-width: 100%; }
+	.docs-content img { max-width: 100%; height: auto; display: block; }
+	/* On very small screens limit wide images more aggressively */
+	.docs-content img.img-wide { max-width: 100%; }
+	.docs-content img.img-limited { max-width: 100%; }
 }
 
 /* Optional: class to explicitly limit screenshots */
@@ -76,8 +96,11 @@
 		position: sticky;
 		top: calc(var(--nav-height) + 6px);
 		z-index: 10200;
-		display: flex;
+		display: block; /* use block wrapper; inner UL will handle flex and horizontal scrolling */
+		/* allow horizontal scrolling for touch devices */
 		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		touch-action: pan-x;
 		padding: 8px 6px;
 		margin-bottom: 12px;
 		/* momentum scrolling is now native; vendor-specific property removed */
@@ -85,13 +108,13 @@
 		-webkit-backdrop-filter: blur(6px);
 		backdrop-filter: blur(6px);
 	}
-	.docs-nav ul { display:flex; gap:8px; margin: 0; }
+	.docs-nav ul { display:flex; gap:8px; margin: 0; white-space: nowrap; }
 	.docs-nav li { white-space: nowrap; }
 	/* make nav items compact and touch-friendly */
 	.docs-nav a { padding: 8px 10px; border-radius: 8px; font-size: 14px; }
 	.docs-nav .step-num { width: 30px; height: 30px; font-size: 14px; }
-	/* reduce docs-content padding on small screens */
-	.docs-content { padding: 16px; }
+	/* reduce docs-content padding on small screens and give extra right padding to avoid overlay/scrollbar */
+	.docs-content { padding: 16px 18px; }
 	.doc-step { padding: 14px 8px; }
 	.doc-step h3 { font-size: 18px; }
 	.doc-step p { font-size: 15px; }
@@ -134,7 +157,29 @@
 @media (max-width:600px) {
 	.special-link-controls { flex-direction: column; align-items: stretch; gap: 6px; }
 	.special-link-controls .open-special-link, .special-link-controls .copy-special-link { width: 100%; text-align: center; }
+	/* slightly more right padding for very small screens to avoid right-side fixed UI elements */
+	.docs-content { padding-right: 22px; }
 }
+
+/* Further reduce image sizes specifically for small/mobile viewports so screenshots
+   and wide images don't overflow or push the layout horizontally on phones.
+   Desktop and wider viewports will keep their original max-widths. */
+@media (max-width: 600px) {
+	.docs-content img,
+	.docs-content img.img-wide,
+	.docs-content img.img-limited {
+		/* use viewport-relative max to allow small margins on very narrow screens */
+		max-width: 92% !important;
+		height: auto;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+/* Utility text color classes replacing inline styles */
+.text-danger-strong { color: darkred; font-weight: 700; }
+.text-warning-inline { color: orange; font-weight: 700; }
 
 /* From Uiverse.io by Galahhad - simplified copy button + tooltip */
 .copy {
