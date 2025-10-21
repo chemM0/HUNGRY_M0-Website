@@ -59,6 +59,10 @@
 /* Slightly larger variant for horizontal screenshots to improve readability */
 .docs-content img.img-wide { max-width: 420px; }
 
+/* utility classes to replace inline color styles for docs */
+.inline-danger { color: darkred; font-weight: 700; }
+.inline-success { color: green; font-weight: 700; }
+
 
 /* anchor offset to avoid being hidden under top nav */
 .doc-step:target { scroll-margin-top: calc(var(--nav-height) + 20px); }
