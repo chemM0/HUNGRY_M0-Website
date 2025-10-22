@@ -99,7 +99,6 @@
 		display: block; /* use block wrapper; inner UL will handle flex and horizontal scrolling */
 		/* allow horizontal scrolling for touch devices */
 		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
 		touch-action: pan-x;
 		padding: 8px 6px;
 		margin-bottom: 12px;

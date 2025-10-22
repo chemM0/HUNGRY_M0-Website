@@ -62,6 +62,11 @@ body.dark .gradient-text {
 .webinfo-site-lastmodified{ font-size:13px; color:#222; text-align:right; }
 .webinfo-site-pv-count{ font-size:13px; color:#222; }
 
+/* Classes used in docs to replace inline color attributes */
+.doc-inline-green { color: green; font-weight: 700; }
+.doc-inline-blue { color: blue; font-weight: 700; text-decoration: underline; }
+.doc-inline-gold { color: darkgoldenrod; font-weight: 700; }
+
 /* Fullscreen site loader styles */
 .site-loader{
 	position:fixed;
