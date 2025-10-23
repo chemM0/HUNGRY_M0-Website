@@ -390,7 +390,7 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 	padding:6px 10px !important;
 }
 .card-info-social-icons .social-icon.contact-btn i{ font-size:16px !important; margin-right:6px !important; }
-.card-info-social-icons .social-icon.contact-btn .social-link-text{ white-space:nowrap !important; line-height:1 !important; }
+.card-info_social-icons .social-icon.contact-btn .social-link-text{ white-space:nowrap !important; line-height:1 !important; }
 
 /* 小屏时减小按钮宽度 */
 @media (max-width:420px){
@@ -500,4 +500,307 @@ body.dark .refresh-btn{
 
 /* Accessibility: visible focus ring for keyboard users */
 .refresh-btn:focus-visible{ box-shadow: 0 0 0 4px rgba(43,138,229,0.12); }
+
+/* Redesigned refresh button styles */
+#refreshBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5722, #ff9800);
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#refreshBtn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+#refreshBtn:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 600px) {
+    #refreshBtn {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+/* High-specificity modern variant that overrides older desktop/top-left styles */
+/* modern-refresh: match site pill/button style on desktop, circular icon on small screens */
+button.refresh-btn.modern-refresh,
+button#refreshBtn.modern-refresh {
+	/* Follow existing site variables for a consistent look */
+	--btn-bg: linear-gradient(180deg, #ffffff, #f6fbff);
+	--btn-border: rgba(43,138,229,0.12);
+	--accent: #1f6fc4;
+
+	position: fixed !important;
+	left: 24px !important;
+	top: 72px !important;
+	right: auto !important;
+	bottom: auto !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 10px !important;
+	padding: 10px 14px !important;
+	min-width: 120px !important;
+	height: auto !important;
+	border-radius: 14px !important;
+	background: var(--btn-bg) !important;
+	color: var(--accent) !important;
+	border: 1px solid var(--btn-border) !important;
+	box-shadow: 0 10px 30px rgba(12,24,40,0.06) !important;
+	font-weight: 700 !important;
+	z-index: 11000 !important;
+}
+
+/* Uiverse-like skewed pill appearance on wider screens */
+@media (min-width: 900px) {
+	button.refresh-btn.modern-refresh {
+		transform: skew(-21deg);
+		background: #fff !important;
+		padding: 10px 20px !important;
+		width: 140px !important;
+		height: 44px !important;
+		border-radius: 12px !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		font-size: 15px !important;
+		font-weight: 700 !important;
+		color: var(--accent) !important;
+		box-shadow: 0 8px 20px rgba(12,24,40,0.06) !important;
+		position: fixed !important;
+		left: 24px !important;
+		top: 72px !important;
+	}
+
+	button.refresh-btn.modern-refresh .refresh-btn__text { display: inline-block !important; transform: skew(21deg); }
+	button.refresh-btn.modern-refresh .refresh-btn__icon { margin-left: 8px !important; transform: skew(21deg); }
+
+	/* hover background pseudo-element (dark fill) */
+	button.refresh-btn.modern-refresh { position: relative; overflow: hidden; }
+	button.refresh-btn.modern-refresh::before{
+		content: '';
+		position: absolute;
+		top: 0; bottom: 0; left: 0; right: 100%;
+		background: var(--accent, #1f6fc4);
+		opacity: 0;
+		z-index: 0;
+		transition: all 0.45s ease;
+	}
+	button.refresh-btn.modern-refresh:hover{ color: #fff !important; }
+	button.refresh-btn.modern-refresh:hover::before{ left: 0; right: 0; opacity: 1; }
+
+	/* ensure content sits above pseudo background */
+	button.refresh-btn.modern-refresh > * { position: relative; z-index: 1; }
+}
+
+button.refresh-btn.modern-refresh .svg { width: 18px !important; height: 18px !important; fill: currentColor !important; }
+button.refresh-btn.modern-refresh .refresh-btn__text { color: var(--accent) !important; }
+button.refresh-btn.modern-refresh.pressed { transform: translateY(1px) scale(0.98) !important; }
+button.refresh-btn.modern-refresh.is-spinning .refresh-btn__icon .svg { animation: spin 720ms linear infinite; transform-origin: 50% 50%; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width:600px){
+	/* On mobile, follow site pattern: compact circular icon positioned near nav (left/top) */
+	button.refresh-btn.modern-refresh{
+		left: 8px !important;
+		top: calc(var(--nav-height) + 10px) !important;
+		right: auto !important;
+		bottom: auto !important;
+		width: 44px !important;
+		height: 44px !important;
+		padding: 0 !important;
+		border-radius: 999px !important;
+		min-width: 0 !important;
+		box-shadow: 0 8px 18px rgba(31,45,61,0.08) !important;
+		background: rgba(31,111,196,0.08) !important;
+	}
+	button.refresh-btn.modern-refresh .refresh-btn__text{ display:none !important; }
+	button.refresh-btn.modern-refresh .svg{ width:20px !important; height:20px !important; }
+}
+
+/* Strong layout reset to avoid conflicts from other #refreshBtn rules */
+button.refresh-btn.modern-refresh,
+button#refreshBtn.modern-refresh {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	flex-direction: row !important;
+	white-space: nowrap !important;
+	writing-mode: horizontal-tb !important; /* force horizontal text flow */
+	text-orientation: mixed !important;
+	overflow: hidden !important;
+}
+
+/* Ensure the visible text is not translucent or duplicated by other rules */
+button.refresh-btn.modern-refresh .refresh-btn__text{
+	opacity: 1 !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	padding: 0 6px !important;
+}
+
+/* If older rules applied transforms to inner elements, undo them for modern-refresh */
+button.refresh-btn.modern-refresh .refresh-btn__text,
+button.refresh-btn.modern-refresh .refresh-btn__icon{
+	transform: none !important;
+}
+
+/* Ensure text flows horizontally and is not affected by vertical-writing rules */
+button.refresh-btn.modern-refresh .refresh-btn__text,
+#refreshBtn.modern-refresh .refresh-btn__text,
+button#refreshBtn.modern-refresh .refresh-btn__text {
+	display: inline-block !important;
+	writing-mode: horizontal-tb !important;
+	text-orientation: mixed !important;
+	white-space: nowrap !important;
+	letter-spacing: normal !important;
+	-webkit-transform: none !important;
+	-ms-transform: none !important;
+	transform: none !important;
+	line-height: 1.1 !important;
+	vertical-align: middle !important;
+}
+
+/* Fallback: if any ancestor set writing-mode, explicitly reset it here */
+button.refresh-btn.modern-refresh, #refreshBtn.modern-refresh { writing-mode: horizontal-tb !important; }
+
+/* Prevent pseudo-element artifacts from previous rules interfering */
+button.refresh-btn.modern-refresh::after,
+button.refresh-btn.modern-refresh::before{
+	backface-visibility: hidden;
+}
+
+/* Defensive: hide any pseudo-element content on refresh button that might insert '+' */
+button.refresh-btn.modern-refresh::before,
+button.refresh-btn.modern-refresh::after,
+#refreshBtn::before,
+#refreshBtn::after{
+	content: none !important;
+}
+
+/* Disable common-ligatures and font-feature-settings which sometimes turn sequences into decorative glyphs */
+button.refresh-btn.modern-refresh .refresh-btn__text,
+#refreshBtn .refresh-btn__text{
+	font-variant-ligatures: none !important;
+	-webkit-font-feature-settings: "liga" 0, "clig" 0 !important;
+	font-feature-settings: "liga" 0, "clig" 0 !important;
+	text-rendering: optimizeLegibility; /* keep readable */
+}
+
+/* === Defensive final override: force perfect centering and ensure SVG is visible === */
+/* This block intentionally has very high specificity and !important to override legacy rules */
+#refreshBtn.modern-refresh,
+button#refreshBtn.modern-refresh,
+button.refresh-btn.modern-refresh {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
+	padding: 8px 14px !important;
+	min-width: 44px !important;
+	height: auto !important;
+	border-radius: 14px !important;
+	background: var(--btn-bg) !important;
+	color: var(--accent, #1f6fc4) !important;
+	-webkit-transform: none !important;
+	-ms-transform: none !important;
+	transform: none !important;
+}
+
+#refreshBtn.modern-refresh .refresh-btn__text,
+button.refresh-btn.modern-refresh .refresh-btn__text{
+	display: inline-block !important;
+	text-align: center !important;
+	line-height: 1 !important;
+	vertical-align: middle !important;
+	margin: 0 !important;
+	padding: 0 6px !important;
+	color: inherit !important;
+}
+
+#refreshBtn.modern-refresh .refresh-btn__icon,
+button.refresh-btn.modern-refresh .refresh-btn__icon{
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 24px !important;
+	height: 24px !important;
+	margin: 0 !important;
+	background: transparent !important;
+}
+
+#refreshBtn.modern-refresh .refresh-btn__icon .svg,
+button.refresh-btn.modern-refresh .refresh-btn__icon .svg{
+	display: block !important;
+	width: 18px !important;
+	height: 18px !important;
+	fill: currentColor !important;
+	stroke: none !important;
+	color: inherit !important;
+}
+
+/* Make sure text is visible on small screens unless intentionally hidden by design */
+@media (max-width:900px){
+	/* Mobile: show only icon (hide any visible text) */
+	#refreshBtn.modern-refresh .refresh-btn__text,
+	button.refresh-btn.modern-refresh .refresh-btn__text,
+	/* Also cover plain #refreshBtn or .refresh-btn when present */
+	#refreshBtn .refresh-btn__text,
+	.refresh-btn .refresh-btn__text { display: none !important; }
+
+	#refreshBtn.modern-refresh .refresh-btn__icon,
+	button.refresh-btn.modern-refresh .refresh-btn__icon,
+	#refreshBtn .refresh-btn__icon,
+	.refresh-btn .refresh-btn__icon { margin-left: 0 !important; }
+}
+
+/* Hover micro-interaction for desktop: slight lift + icon rotate/scale */
+button.refresh-btn.modern-refresh,
+button#refreshBtn.modern-refresh,
+#refreshBtn.modern-refresh,
+.refresh-btn.modern-refresh,
+.refresh-btn {
+	transition: transform 200ms cubic-bezier(.2,.9,.2,1), box-shadow 200ms ease !important;
+}
+
+button.refresh-btn.modern-refresh:hover,
+button#refreshBtn.modern-refresh:hover,
+#refreshBtn.modern-refresh:hover,
+.refresh-btn.modern-refresh:hover,
+.refresh-btn:hover {
+	transform: translateY(-4px) scale(1.02) !important;
+	box-shadow: 0 18px 40px rgba(31,111,196,0.12) !important;
+}
+
+/* Icon subtle rotation/scale on hover */
+button.refresh-btn.modern-refresh:hover .refresh-btn__icon .svg,
+button#refreshBtn.modern-refresh:hover .refresh-btn__icon .svg,
+#refreshBtn.modern-refresh:hover .refresh-btn__icon .svg,
+.refresh-btn.modern-refresh:hover .refresh-btn__icon .svg,
+.refresh-btn:hover .refresh-btn__icon .svg {
+	transform: rotate(18deg) scale(1.06) !important;
+	transition: transform 260ms cubic-bezier(.2,.9,.2,1) !important;
+}
 

@@ -1,109 +1,92 @@
-// 全局刷新按钮处理器，带全屏动画
+// Modernize existing refresh buttons and ensure click works reliably
 (function(){
-    function createOverlay(){
-        var existing = document.getElementById('pageRefreshOverlay');
-        if(existing) return existing;
-        var o = document.createElement('div');
-        o.id = 'pageRefreshOverlay';
-        o.className = 'page-refresh-overlay';
-        var spinner = document.createElement('div');
-        spinner.className = 'refresh-spinner';
-        spinner.setAttribute('aria-hidden', 'true');
-        o.appendChild(spinner);
-        document.body.appendChild(o);
-    void o.offsetWidth; // 强制回流（触发布局以确保过渡正常）
-        return o;
-    }
+    function enhanceButton(btn){
+        if(!btn || btn.__modernized) return;
+        btn.__modernized = true;
 
-    function playRefreshAnimation(cb){
-        var overlay = createOverlay();
-        if(overlay.classList.contains('visible')) return cb && cb();
-        var done = false;
-        function finish(){ if(done) return; done = true; cb && cb(); }
-        overlay.addEventListener('transitionend', function onEnd(e){
-            if(e.target !== overlay) return;
-            overlay.removeEventListener('transitionend', onEnd);
-            finish();
+        // keep accessible label
+        var aria = btn.getAttribute('aria-label') || '刷新页面';
+
+                // Replace inner HTML: visible short text + icon (text will be hidden on small screens)
+                btn.innerHTML =
+                                '<span class="refresh-btn__text">刷新</span>' +
+                                '<span class="refresh-btn__icon" aria-hidden="true">' +
+                                    '<svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+                                        '<path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/>' +
+                                    '</svg>' +
+                                '</span>';
+
+                // ensure accessible label is on the button (screen readers) but not visible
+                try{ btn.setAttribute('aria-label', aria); }catch(e){}
+
+        // Defensive cleanup: remove any stray text nodes that contain only plus signs or whitespace
+        Array.prototype.slice.call(btn.childNodes).forEach(function(node){
+                if(node.nodeType === Node.TEXT_NODE && /^[\s\+]+$/.test(node.nodeValue)){
+                        node.parentNode.removeChild(node);
+                }
         });
-        setTimeout(finish, 900); // fallback
-        requestAnimationFrame(function(){ overlay.classList.add('visible'); });
-    }
 
-    // 暴露基于 Promise 的接口，供其他脚本（如 page_transitions）复用同一遮罩动画
-    window.showFullScreenTransition = function(){
-        return new Promise(function(resolve){
-            playRefreshAnimation(function(){ resolve(); });
+        // mark for CSS to apply modern look
+        btn.classList.add('modern-refresh');
+
+        function doReload(){
+            // quick micro-interaction
+            btn.classList.add('pressed');
+            btn.classList.add('is-spinning');
+            // small delay so user sees feedback; then reload
+            setTimeout(function(){
+                try{ btn.classList.remove('is-spinning'); }catch(e){}
+                // use normal reload
+                window.location.reload();
+            }, 260);
+        }
+
+        btn.addEventListener('click', function(e){
+            e.preventDefault();
+            doReload();
         });
-    };
 
-    function init(){
-        document.querySelectorAll('.refresh-btn').forEach(function(btn){
-            if(btn.__refresh_bound) return;
-            btn.__refresh_bound = true;
-            btn.addEventListener('click', function(e){
+        // keyboard accessibility: Enter / Space
+        btn.addEventListener('keydown', function(e){
+            if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
                 e.preventDefault();
-                // 添加微交互样式
-                btn.classList.add('pressed');
-                // 启动图标旋转（CSS: .is-spinning）
-                btn.classList.add('is-spinning');
-                setTimeout(function(){ btn.classList.remove('pressed'); }, 160);
-                playRefreshAnimation(function(){
-                    // 在真正刷新前短暂移除旋转样式以避免在某些浏览器中残留
-                    try{ btn.classList.remove('is-spinning'); }catch(e){}
-                    window.location.reload();
+                doReload();
+            }
+        });
+
+        // Observe future mutations in case other scripts inject stray text nodes (e.g. '+')
+        try{
+            var mo = new MutationObserver(function(mutations){
+                mutations.forEach(function(m){
+                    if(m.type === 'childList' && m.addedNodes && m.addedNodes.length){
+                        Array.prototype.slice.call(m.addedNodes).forEach(function(node){
+                            if(node.nodeType === Node.TEXT_NODE && /^[\s\+]+$/.test(node.nodeValue)){
+                                node.parentNode && node.parentNode.removeChild(node);
+                            }
+                        });
+                    }
                 });
             });
-        });
-            // 事件委托处理：拦截 back-prev 按钮与带过渡的数据链接
-            document.addEventListener('click', function(e){
-                var el = e.target;
-                // Walk up to find actionable element
-                while(el && el !== document.documentElement){
-                    // 向上查找可操作元素
-                    // 处理具有类 'back-prev' 的元素 -> history.back()
-                    if(el.classList && el.classList.contains('back-prev')){
-                        e.preventDefault();
-                        if(window.showFullScreenTransition){
-                            window.showFullScreenTransition().then(function(){ history.back(); });
-                        }else{ history.back(); }
-                        return;
-                    }
-
-                    // handle elements which have data-transition="back" or data-transition="link:..."
-                    var dt = el.getAttribute && el.getAttribute('data-transition');
-                    if(dt){
-                        e.preventDefault();
-                        if(dt === 'back'){
-                            if(window.showFullScreenTransition){ window.showFullScreenTransition().then(function(){ history.back(); }); }
-                            else { history.back(); }
-                            return;
-                        }
-                        // data-transition="link:somepage.html"
-                        if(dt.indexOf('link:') === 0){
-                            var href = dt.slice(5);
-                            if(window.showFullScreenTransition){ window.showFullScreenTransition().then(function(){ window.location.href = href; }); }
-                            else { window.location.href = href; }
-                            return;
-                        }
-                    }
-
-                    el = el.parentNode;
-                }
-            }, false);
+            mo.observe(btn, { childList: true, subtree: false });
+            // store to allow future disconnect if needed
+            btn.__refresh_observer = mo;
+        }catch(e){ /* ignore if MutationObserver unavailable */ }
     }
 
-    // 移动端滚动时隐藏刷新按钮，停止后再显示
-    function addScrollHideBehavior(){
-        var btn = document.getElementById('refreshBtn');
-        if(!btn) return;
-        var timer = null;
-        function hide(){ btn.classList.add('hidden-on-scroll'); }
-        function show(){ btn.classList.remove('hidden-on-scroll'); }
-        window.addEventListener('scroll', function(){
-            hide();
-            if(timer) clearTimeout(timer);
-            timer = setTimeout(function(){ show(); }, 700);
-        }, { passive: true });
+    function init(){
+        // enhance any existing #refreshBtn or elements with .refresh-btn
+        var els = Array.prototype.slice.call(document.querySelectorAll('#refreshBtn, .refresh-btn'));
+        if(els.length === 0){
+            // If none exist, create a single modern button (fallback)
+            var btn = document.createElement('button');
+            btn.id = 'refreshBtn';
+            btn.className = 'refresh-btn modern-refresh';
+            btn.setAttribute('aria-label', '刷新页面');
+            document.body.appendChild(btn);
+            els.push(btn);
+        }
+
+        els.forEach(function(b){ enhanceButton(b); });
     }
 
     if(document.readyState === 'loading') {
@@ -111,19 +94,4 @@
     } else {
         init();
     }
-    // setup scroll-hide behavior regardless (function will check for element presence)
-    try{ addScrollHideBehavior(); }catch(e){}
-
-    // 清理回到页面时可能残留的全屏刷新覆盖层
-    function cleanupRefreshOverlay(){
-        try{
-            var ov = document.getElementById('pageRefreshOverlay');
-            if(!ov) return;
-            ov.classList.remove('visible');
-            ov.style.opacity = '0';
-            setTimeout(function(){ if(ov && ov.parentNode) ov.parentNode.removeChild(ov); }, 400);
-        }catch(e){}
-    }
-    window.addEventListener('pageshow', function(){ cleanupRefreshOverlay(); });
-    document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') cleanupRefreshOverlay(); });
 })();
