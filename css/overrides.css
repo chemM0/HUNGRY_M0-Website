@@ -399,6 +399,36 @@ body.dark, html.dark{ transition: background-color 260ms ease, color 260ms ease;
 	.card-info-social-icons .social-icon i{ font-size:14px !important; }
 }
 
+/* Mobile: show only refresh icon, hide the text — desktop unchanged */
+@media (max-width: 600px) {
+	/* 隐藏按钮中的文字，仅保留图标 */
+	#refreshBtn .refresh-btn__text {
+		display: none !important;
+	}
+
+	/* 收紧按钮尺寸，只容纳图标 */
+	#refreshBtn {
+		min-width: 44px !important; /* 保持足够点击面积 */
+		height: 44px !important;
+		padding: 6px !important;
+		left: 12px !important; /* 在小屏上稍微靠内侧 */
+		top: 64px !important; /* 微调避开导航 */
+		border-radius: 12px !important;
+		box-shadow: 0 8px 20px rgba(12,24,40,0.08) !important;
+	}
+
+	/* 图标居中并放大以便可见 */
+	#refreshBtn .refresh-btn__icon{
+		margin-left: 0 !important;
+		width: 28px !important;
+		height: 28px !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	}
+	#refreshBtn .refresh-btn__icon .svg{ width:18px !important; height:18px !important; }
+}
+
 /* Mobile: move refresh button to bottom-right small floating button, avoid blocking content */
 @media (max-width:900px){
 	#refreshBtn{ 
@@ -488,6 +518,20 @@ body.dark .refresh-btn{
 .refresh-btn__icon .svg{ fill: currentColor; stroke: currentColor; }
 
 /* Mobile: increase tap target while keeping visual size */
+
+/* Small clickable note below metric value (used under CPU card) */
+.metric-note{
+	font-size:11px; /* 更小以避免换行 */
+	color: #6b778c !important; /* 一直保持灰色 */
+	margin-top:6px;
+	-webkit-user-select: none;
+	user-select: none;
+	white-space: nowrap; /* 防止换行 */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: default; /* 文本本身不表现为链接 */
+}
+.metric-box.clickable .metric-note{ cursor: default; }
 @media (max-width:600px){
 	.refresh-btn{ padding:12px 16px; border-radius:12px; }
 	.refresh-btn__text{ font-size:15px; }
@@ -802,5 +846,46 @@ button#refreshBtn.modern-refresh:hover .refresh-btn__icon .svg,
 .refresh-btn:hover .refresh-btn__icon .svg {
 	transform: rotate(18deg) scale(1.06) !important;
 	transition: transform 260ms cubic-bezier(.2,.9,.2,1) !important;
+}
+
+/* Final defensive override: ensure text hidden on small screens for all variants */
+@media (max-width: 600px){
+	/* match many selector variations to ensure high specificity */
+	#refreshBtn.modern-refresh .refresh-btn__text,
+	button#refreshBtn.modern-refresh .refresh-btn__text,
+	button.refresh-btn.modern-refresh .refresh-btn__text,
+	#refreshBtn .refresh-btn__text,
+	.refresh-btn .refresh-btn__text,
+	button.refresh-btn .refresh-btn__text {
+		display: none !important;
+		visibility: hidden !important;
+		width: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		overflow: hidden !important;
+		line-height: 0 !important;
+		font-size: 0 !important;
+	}
+
+	/* Ensure icon remains visible and centered */
+	#refreshBtn.modern-refresh .refresh-btn__icon,
+	button.refresh-btn.modern-refresh .refresh-btn__icon,
+	#refreshBtn .refresh-btn__icon,
+	.refresh-btn .refresh-btn__icon {
+		margin-left: 0 !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		width: 28px !important;
+		height: 28px !important;
+	}
+
+	/* tighten the button to icon size while keeping tap-target (visual size smaller but clickable) */
+	#refreshBtn, button#refreshBtn, button.refresh-btn {
+		min-width: 44px !important;
+		height: 44px !important;
+		padding: 6px !important;
+		border-radius: 999px !important;
+	}
 }
 
