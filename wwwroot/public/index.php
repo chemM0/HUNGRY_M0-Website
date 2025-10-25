@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="https://www.hungrym0.top/favicon.png">
     <title>HUNGRY_M0 实时视奸</title>
     
     <!-- Tailwind CSS -->
@@ -42,6 +42,27 @@
                 opacity: 0.5;
             }
         }
+        /* 炫彩品牌文字（gradient-text）样式 */
+        .brand { display: inline-flex; align-items: center; text-decoration: none; }
+        .brand-logo img { height: 2rem; width: 2rem; border-radius: 0.375rem; }
+        .brand-text { display: inline-flex; flex-direction: column; line-height: 1; }
+        .gradient-text {
+            /* 多色线性渐变，背景尺寸大一些以便平移动画 */
+            background: linear-gradient(90deg, #ff7a18, #af002d 30%, #7b2ff7 60%, #319197 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            /* 平滑循环动画，沿水平方向移动渐变 */
+            animation: gradientShift 6s linear infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -50,8 +71,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-gray-900">Watch Me Do</h1>
-                    <span class="ml-4 text-sm text-gray-500">设备监控系统</span>
+                    <a href="index.php" class="brand">
+                        <span class="brand-logo"><img src="https://www.hungrym0.top/favicon.png" alt="logo"></span>
+                        <span class="ml-3 brand-text">
+                            <span class="gradient-text text-2xl font-bold">HUNGRY#末老师</span>
+                            <span class="text-sm text-gray-500">设备监控系统</span>
+                        </span>
+                    </a>
                 </div>
                 <div class="flex items-center space-x-4">
                     <a href="../admin/" class="text-sm text-gray-600 hover:text-gray-900">管理后台</a>
