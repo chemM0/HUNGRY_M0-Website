@@ -104,6 +104,59 @@
         .timeline-duration {
             font-family: 'Courier New', monospace;
         }
+        
+        /* 防止移动端横向溢出的通用修复 */
+        /* box-sizing 和图片/图表自适应 */
+        *, *::before, *::after { box-sizing: border-box; }
+        img, svg, canvas { max-width: 100%; height: auto; }
+
+        /* 让 flex 和 grid 子项可以收缩，避免长单词或固定宽度导致溢出 */
+        .flex > * { min-width: 0; }
+        .grid > * { min-width: 0; }
+
+        /* 针对更窄屏幕禁用横向滚动（若有极端情况可隐藏溢出） */
+        @media (max-width: 1024px) {
+            html, body { max-width: 100%; overflow-x: hidden; }
+        }
+        
+        /* ===== 手机端微调：减小字号、卡片内边距、图表高度与侧边栏宽度 ===== */
+        @media (max-width: 640px) {
+            /* 缩小根字号，让 rem 基准变小，整体文本更紧凑 */
+            html { font-size: 14px; }
+
+            /* 标题与内容的轻度缩放，使用 !important 覆盖 Tailwind CDN 的类 */
+            .text-3xl { font-size: 1.4rem !important; }
+            .text-xl  { font-size: 1rem !important; }
+            .text-lg  { font-size: 0.95rem !important; }
+            .text-sm  { font-size: 0.78rem !important; }
+
+            /* 卡片内边距缩小，避免窄屏时显得臃肿 */
+            .p-6 { padding: 0.9rem !important; }
+            .py-8 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+
+            /* 侧边栏在移动端更窄 */
+            #sidebar { max-width: 220px !important; width: 220px !important; }
+            .w-64 { width: 14rem !important; }
+
+            /* 缩短图表高度，避免覆盖过多竖向空间 */
+            .chart-container { height: 220px !important; }
+            #realtime-chart { height: 240px !important; }
+
+            /* 时间轴与点位更紧凑 */
+            .timeline-item { padding-left: 1.6rem !important; padding-bottom: 0.8rem !important; }
+            .timeline-dot { left: -0.35rem !important; top: 0.35rem !important; width: 0.9rem !important; height: 0.9rem !important; }
+
+            /* 页眉和品牌文字微调 */
+            #device-name { font-size: 1.05rem !important; }
+            .brand-text .gradient-text { font-size: 1rem !important; }
+
+            /* 调整通用横向内边距，以便内容在小屏上更合适 */
+            .px-4 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+
+            /* 折叠一些较大的列表项间距 */
+            .space-y-4 > * + * { margin-top: 0.75rem !important; }
+            .space-y-3 > * + * { margin-top: 0.6rem !important; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -127,7 +180,7 @@
     </nav>
 
     <!-- 主内容 -->
-    <div class="flex max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- 左侧边栏 -->
         <aside id="sidebar" class="w-64 mr-6 flex-shrink-0 lg:block hidden">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-4 space-y-4">
@@ -184,8 +237,8 @@
         <!-- 手机端遮罩层 -->
         <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
 
-        <!-- 主内容区域 -->
-        <div class="flex-1">
+    <!-- 主内容区域 -->
+    <div class="flex-1 min-w-0">
             <!-- 加载状态 -->
             <div id="loading" class="text-center py-12">
                 <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -234,6 +287,29 @@
                 </div>
             </div>
 
+            <!-- 设备概览 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <p class="text-sm text-gray-500">计算机名称</p>
+                        <p class="mt-1 text-lg font-semibold text-gray-900" id="computer-name">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">在线状态</p>
+                        <p class="mt-1 text-lg font-semibold" id="online-status">
+                            <span class="inline-flex items-center">
+                                <span class="w-3 h-3 rounded-full mr-2" id="status-indicator"></span>
+                                <span id="status-text">-</span>
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">最后上报</p>
+                        <p class="mt-1 text-lg font-semibold text-gray-900" id="last-seen">-</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- 实时信息卡片 -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <!-- 当前聚焦应用 -->
@@ -257,29 +333,6 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">网络流量</h3>
                     <div id="network-stats" class="space-y-3">
                         <p class="text-gray-500 text-center py-4">加载中...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 设备概览 -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <p class="text-sm text-gray-500">计算机名称</p>
-                        <p class="mt-1 text-lg font-semibold text-gray-900" id="computer-name">-</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">在线状态</p>
-                        <p class="mt-1 text-lg font-semibold" id="online-status">
-                            <span class="inline-flex items-center">
-                                <span class="w-3 h-3 rounded-full mr-2" id="status-indicator"></span>
-                                <span id="status-text">-</span>
-                            </span>
-                        </p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">最后上报</p>
-                        <p class="mt-1 text-lg font-semibold text-gray-900" id="last-seen">-</p>
                     </div>
                 </div>
             </div>

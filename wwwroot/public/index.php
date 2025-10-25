@@ -63,6 +63,28 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        /* ===== 手机端字体与间距适配（覆盖 Tailwind 的部分类） ===== */
+        @media (max-width: 640px) {
+            /* 稍微降低根字号，使 rem 基准变小，整体文本更紧凑 */
+            html { font-size: 14px; }
+
+            /* 常见标题与卡片文本的轻度缩放，使用 !important 以覆盖 Tailwind CDN 的样式 */
+            .text-4xl { font-size: 1.6rem !important; }    /* 原本较大的主标题 */
+            .text-2xl { font-size: 1.25rem !important; }
+            .text-xl  { font-size: 1rem !important; }
+            .text-lg  { font-size: 0.95rem !important; }
+
+            /* 调整页眉中的品牌文字，避免 logo 旁过大的文字 */
+            .brand-text .gradient-text { font-size: 1.125rem !important; }
+
+            /* 页面主标题单独微调以保证换行效果更好 */
+            #page-title { font-size: 1.9rem !important; }
+
+            /* 缩小卡片内 padding，让卡片在窄屏时显得不那么臃肿 */
+            .p-6 { padding: 0.9rem !important; }
+            .py-8 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">

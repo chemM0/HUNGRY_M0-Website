@@ -511,17 +511,17 @@ function renderAppListWithPagination() {
                 </div>
                 <div class="text-right ml-4">
                     <p class="text-sm font-semibold text-gray-900">${app.usage_formatted}</p>
-                    <p class="text-xs text-gray-500">${app.percentage}%</p>
+                    <p class="text-xs text-gray-500">${formatPercent(app.percentage)}%</p>
                 </div>
             </div>
             
             <div class="ml-8">
                 <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                    <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: ${app.percentage}%"></div>
+                    <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: ${formatPercent(app.percentage)}%"></div>
                 </div>
                 
                 <div class="flex justify-between text-xs text-gray-500">
-                    <span>CPU: ${app.avg_cpu}%</span>
+                    <span>CPU: ${formatPercent(app.avg_cpu)}%</span>
                     <span>内存: ${app.avg_memory_formatted}</span>
                 </div>
             </div>
@@ -948,7 +948,7 @@ function renderFocusedApp(processes) {
                         <p class="text-sm text-gray-600 mt-1">${escapeHtml(focusedApp.window_title)}</p>
                         <div class="flex items-center space-x-4 mt-2">
                             <span class="text-xs text-gray-500">
-                                <span class="font-semibold">CPU:</span> ${focusedApp.cpu_usage}%
+                                <span class="font-semibold">CPU:</span> ${formatPercent(focusedApp.cpu_usage)}%
                             </span>
                             <span class="text-xs text-gray-500">
                                 <span class="font-semibold">内存:</span> ${focusedApp.memory_formatted}
@@ -1057,6 +1057,13 @@ function formatBytes(bytes) {
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// 格式化百分比到小数点后两位（传入任何可解析为数字的值）
+function formatPercent(value) {
+    const n = parseFloat(value);
+    if (isNaN(n)) return '0.00';
+    return n.toFixed(2);
 }
 
 // 加载Giscus评论配置
@@ -1193,7 +1200,8 @@ function initRealtimeChart() {
                 let result = params[0].name + '<br/>';
                 params.forEach(function(item) {
                     const unit = item.seriesName === '应用数' ? '个' : '%';
-                    result += item.marker + item.seriesName + ': ' + item.value + unit + '<br/>';
+                    const display = unit === '%' ? formatPercent(item.value) : item.value;
+                    result += item.marker + item.seriesName + ': ' + display + unit + '<br/>';
                 });
                 return result;
             }
