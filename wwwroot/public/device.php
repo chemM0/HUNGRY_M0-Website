@@ -290,7 +290,8 @@
             <!-- 设备概览 -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
+                    <!-- 手机端隐藏计算机名称（隐私保护），从 sm 断点开始显示 -->
+                    <div class="hidden sm:block">
                         <p class="text-sm text-gray-500">计算机名称</p>
                         <p class="mt-1 text-lg font-semibold text-gray-900" id="computer-name">-</p>
                     </div>
@@ -303,7 +304,8 @@
                             </span>
                         </p>
                     </div>
-                    <div>
+                    <!-- 手机端隐藏最后上报时间，desktop/大屏仍然可见 -->
+                    <div class="hidden sm:block">
                         <p class="text-sm text-gray-500">最后上报</p>
                         <p class="mt-1 text-lg font-semibold text-gray-900" id="last-seen">-</p>
                     </div>
@@ -329,7 +331,7 @@
                 </div>
 
                 <!-- 网络流量 -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden sm:block">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">网络流量</h3>
                     <div id="network-stats" class="space-y-3">
                         <p class="text-gray-500 text-center py-4">加载中...</p>
