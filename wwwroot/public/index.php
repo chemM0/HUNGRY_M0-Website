@@ -85,6 +85,30 @@
             .p-6 { padding: 0.9rem !important; }
             .py-8 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
         }
+
+        /* ===== 首页设备卡片：前端覆盖设备名显示为单行小字（不修改 JS） ===== */
+        /* 仅作用于首页设备列表的卡片内的计算机名称位置，保留 DOM 内容但隐藏原文本，使用 ::after 显示固定提示 */
+        #devices-grid .device-card .flex > div > p.text-sm.text-gray-500.mt-1 {
+            position: relative;
+            color: transparent !important; /* 隐藏原文本，但保留在 DOM 以免影响脚本 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 1.25rem; /* 为 ::after 提供垂直空间 */
+        }
+
+        #devices-grid .device-card .flex > div > p.text-sm.text-gray-500.mt-1::after {
+            content: "点击查看详情";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #6B7280; /* text-gray-500 */
+            font-size: 0.78rem;
+            line-height: 1.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -126,22 +150,8 @@
                         </svg>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-500">总设备数</p>
-                        <p class="text-2xl font-bold text-gray-900" id="total-devices">0</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
                         <p class="text-sm font-medium text-gray-500">在线设备</p>
-                        <p class="text-2xl font-bold text-green-600" id="online-devices">0</p>
+                        <p class="text-2xl font-bold text-green-600"><span id="online-devices">0</span>/<span id="total-devices">0</span></p>
                     </div>
                 </div>
             </div>

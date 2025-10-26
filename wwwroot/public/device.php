@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://www.hungrym0.top/favicon.png">
     <title>设备详情 - Watch Me Do</title>
     
     <!-- Tailwind CSS -->
@@ -157,6 +158,10 @@
             .space-y-4 > * + * { margin-top: 0.75rem !important; }
             .space-y-3 > * + * { margin-top: 0.6rem !important; }
         }
+
+        /* ===== 仅前端显示覆盖：详情页的计算机名称在非桌面尺寸显示为小字号提示（不修改 JS） ===== */
+        /* 仅在宽度小于 lg（1024px）时覆盖显示为提示文字，桌面端（lg+) 不应用此覆盖 */
+        /* 计算机名称已从前端移除（仅视觉/HTML），相关脚本保持不变 */
     </style>
 </head>
 <body class="bg-gray-50">
@@ -290,11 +295,7 @@
             <!-- 设备概览 -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- 手机端隐藏计算机名称（隐私保护），从 sm 断点开始显示 -->
-                    <div class="hidden sm:block">
-                        <p class="text-sm text-gray-500">计算机名称</p>
-                        <p class="mt-1 text-lg font-semibold text-gray-900" id="computer-name">-</p>
-                    </div>
+                    <!-- 计算机名称（前端已移除，脚本保持不变） -->
                     <div>
                         <p class="text-sm text-gray-500">在线状态</p>
                         <p class="mt-1 text-lg font-semibold" id="online-status">
@@ -304,8 +305,8 @@
                             </span>
                         </p>
                     </div>
-                    <!-- 手机端隐藏最后上报时间，desktop/大屏仍然可见 -->
-                    <div class="hidden sm:block">
+                    <!-- 将最后上报在手机端也显示（恢复到可见） -->
+                    <div class="block">
                         <p class="text-sm text-gray-500">最后上报</p>
                         <p class="mt-1 text-lg font-semibold text-gray-900" id="last-seen">-</p>
                     </div>
