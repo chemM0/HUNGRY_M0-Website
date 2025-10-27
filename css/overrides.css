@@ -1019,10 +1019,14 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-form .gb-row textarea{ resize:vertical; min-height:72px; }
 .guestbook-form .gb-row input:focus,
 .guestbook-form .gb-row textarea:focus{ border-color:#1f6fc4; box-shadow:0 0 0 3px rgba(31,111,196,0.12); }
-.guestbook-form .gb-actions{ display:flex; justify-content:flex-end; }
+.guestbook-form .gb-actions{ display:flex; justify-content:flex-end; align-items:center; gap:12px; }
 .guestbook-form .gb-submit{ display:inline-flex; align-items:center; justify-content:center; padding:8px 14px; border-radius:10px; border:0; font-weight:700; color:#fff; background:linear-gradient(180deg,#2ba8fb,#1f6fc4); cursor:pointer; box-shadow:0 10px 24px rgba(31,111,196,.14); transition:transform .16s ease, box-shadow .16s ease, filter .16s ease; }
 .guestbook-form .gb-submit:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(31,111,196,.18); filter:brightness(1.05); }
 .guestbook-form .gb-submit[disabled]{ opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+.guestbook-form .gb-anon{ margin:4px 0 6px; }
+.guestbook-form .gb-anon-label{ font-size:12px; color:#546079; -webkit-user-select:none; user-select:none; cursor:pointer; display:inline-flex; align-items:center; }
+.guestbook-form .gb-anon-label input{ margin-right:6px; vertical-align:middle; }
+.guestbook-form input.is-disabled{ opacity:.7; }
 .guestbook-list{ list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
 .guestbook-item{ display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid rgba(12,24,40,0.08); background:#fafcff; border-radius:10px; overflow:hidden; }
 .guestbook-item .gb-avatar{ width:32px; height:32px; border-radius:50%; background:#e6f0ff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#1f6fc4; margin-top:2px; }
@@ -1036,8 +1040,9 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-item .gb-head > .gb-region{ flex:0 1 auto; min-width:0; }
 .guestbook-item .gb-time{ opacity:.8; white-space:nowrap; }
 .guestbook-item .gb-region{ opacity:.8; white-space:nowrap; }
-.guestbook-item .gb-head .gb-del{ margin-left:auto; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:4px 6px; border-radius:6px; flex:0 0 auto; align-self:flex-start; }
-.guestbook-item .gb-head .gb-del:hover{ background:#ffe6e3; }
+.guestbook-item .gb-head .gb-del{ display:none; }
+.guestbook-item .gb-text .gb-del{ display:inline; margin-left:8px; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:0 4px; border-radius:6px; vertical-align:baseline; }
+.guestbook-item .gb-text .gb-del:hover{ background:#ffe6e3; }
 .guestbook-item .gb-text{ font-size:14px; color:#1b2a41; word-break:break-word; }
 
 /* 暗色适配 */

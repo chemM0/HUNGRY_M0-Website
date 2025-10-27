@@ -12,7 +12,8 @@
   function getInputs(scope){
     const name = scope.querySelector('input[name="name"]');
     const msg = scope.querySelector('textarea[name="message"]');
-    return {name, msg};
+    const anon = scope.querySelector('input[name="anonymous"]');
+    return {name, msg, anon};
   }
 
   function renderItems(items){
@@ -31,9 +32,8 @@
             <div class="gb-head">
               <span class="gb-name">${esc(it.name||'匿名')}</span>
               <span class="gb-time">${esc(it.time||'')}</span>${region}
-              <button class="gb-del" data-id="${esc(it.id)}" title="删除该留言">删除</button>
             </div>
-            <div class="gb-text">${esc(it.message||'')}</div>
+            <div class="gb-text"><span class="gb-msg">${esc(it.message||'')}</span><button class="gb-del" data-id="${esc(it.id)}" title="删除该留言">删除</button></div>
           </div>`;
         list.appendChild(li);
       });
@@ -62,23 +62,24 @@
   async function submit(e){
     e.preventDefault();
     const form = e.currentTarget;
-    const {name, msg} = getInputs(form);
+    const {name, msg, anon} = getInputs(form);
     const btn = form.querySelector('.gb-submit');
     const nameVal = (name && name.value) || '';
     const messageVal = (msg && msg.value) || '';
+    const isAnon = !!(anon && anon.checked);
     if(!messageVal.trim()) return;
     btn && (btn.disabled = true);
     try{
       const res = await fetch(API, {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({name: nameVal, message: messageVal})
+        body: JSON.stringify({name: isAnon ? '' : nameVal, message: messageVal})
       });
       const text = await res.text();
       let data; try{ data = JSON.parse(text); }catch(_){ throw new Error(`提交失败：非 JSON 响应`); }
       if(!data.ok) throw new Error(data.error||'提交失败');
       // 记住昵称
-      try{ localStorage.setItem('gb_name', nameVal); }catch(_){}
+      try{ if(!isAnon) localStorage.setItem('gb_name', nameVal); }catch(_){ }
       // 清空消息框
       if(msg) msg.value = '';
       await load();
@@ -111,16 +112,26 @@
     if(btn){ e.preventDefault(); onDelete(btn.getAttribute('data-id')); }
   });
 
-  // 名称记忆
+  // 名称记忆 + 匿名切换禁用昵称输入
   try{
     const saved = localStorage.getItem('gb_name');
-    if(saved){
-      forms.forEach(f=>{ const ins = getInputs(f); if(ins.name) ins.name.value = saved; });
-    }
+    if(saved){ forms.forEach(f=>{ const ins = getInputs(f); if(ins.name) ins.name.value = saved; }); }
   }catch(_){ }
 
   // 绑定提交
   forms.forEach(f=> f.addEventListener('submit', submit));
+  // 匿名切换：禁用/启用名字输入
+  function bindAnonToggle(f){
+    const {name, anon} = getInputs(f);
+    if(!name || !anon) return;
+    const apply = () => {
+      if(anon.checked){ name.disabled = true; name.classList.add('is-disabled'); }
+      else { name.disabled = false; name.classList.remove('is-disabled'); }
+    };
+    anon.addEventListener('change', apply);
+    apply();
+  }
+  forms.forEach(bindAnonToggle);
   load();
 
   // 移动端抽屉开关

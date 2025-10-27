@@ -101,7 +101,7 @@
 									<div class="author-info__description">当前网页版本：v0.3.4</div>
 								</div>
 								<div class="card-info-social-icons is-center">
-									<a class="social-icon social-link contact-btn" href="contact.html" title="联系">
+									<a class="social-icon social-link contact-btn" id="contactMailBtn" href="#" title="联系">
 										<i class="fa fa-envelope" aria-hidden="true"></i>
 										<span class="social-link-text">联系我</span>
 									</a>
@@ -137,6 +137,7 @@
 										<textarea id="gb_message" name="message" rows="3" placeholder="想说点什么…" maxlength="300" required aria-label="留言内容"></textarea>
 									</div>
 									<div class="gb-actions">
+										<label class="gb-anon-label"><input type="checkbox" id="gb_anonymous" name="anonymous"> 匿名</label>
 										<button type="submit" class="gb-submit">发布</button>
 									</div>
 								</form>
@@ -526,7 +527,7 @@
 				<form id="guestbookFormSheet" class="guestbook-form" autocomplete="off" data-gb="sheet">
 					<div class="gb-row gb-input"><i class="fa fa-user" aria-hidden="true"></i><input type="text" id="gb_name_sheet" name="name" placeholder="昵称" maxlength="24" required aria-label="昵称"></div>
 					<div class="gb-row gb-textarea"><i class="fa fa-pencil" aria-hidden="true"></i><textarea id="gb_message_sheet" name="message" rows="4" placeholder="想说点什么…" maxlength="300" required aria-label="留言内容"></textarea></div>
-					<div class="gb-actions"><button type="submit" class="gb-submit">发布</button></div>
+					<div class="gb-actions"><label class="gb-anon-label"><input type="checkbox" id="gb_anonymous_sheet" name="anonymous"> 匿名</label><button type="submit" class="gb-submit">发布</button></div>
 				</form>
 				<ul id="guestbookListSheet" class="guestbook-list" aria-live="polite" aria-busy="false"></ul>
 			</div>
@@ -591,6 +592,27 @@
 			const last = focusables[focusables.length-1];
 			if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
 			else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+		});
+	})();
+	</script>
+
+	<!-- 联系我：快捷邮件（mailto，不再跳转 contact.html） -->
+	<script>
+	(function(){
+		document.addEventListener('DOMContentLoaded', function(){
+			var btn = document.getElementById('contactMailBtn');
+			if(!btn) return;
+			btn.addEventListener('click', function(e){
+				e.preventDefault();
+				var recipient = '';
+				try{ recipient = (window.SITE_CONTACT_EMAIL || btn.getAttribute('data-email') || '').trim(); }catch(_){/* ignore */}
+				var subject = '来自 HUNGRY_M0 主页的联系';
+				var body = '你好，我想联系你。' + '\n\n来自页面：' + (location.href||'') + '\n时间：' + new Date().toLocaleString();
+				var base = 'mailto:' + (recipient ? encodeURIComponent(recipient) : '');
+				var url = base + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+				// 直接触发系统邮件客户端
+				window.location.href = url;
+			});
 		});
 	})();
 	</script>
