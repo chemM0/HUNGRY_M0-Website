@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-27T11:34:37+08:00">
+<html lang="zh" data-last-modified="2025-10-27T11:41:45+08:00">
 	<head>
 	<meta charset="UTF-8">
 	<title>HUNGRY_M0 主页</title>
@@ -123,10 +123,21 @@
 						<div class="card-widget card-announcement">
 							<div class="card-content">
 								<div class="item-headline">
-									<i class="fa fa-bullhorn" aria-hidden="true"></i>
-									<span>一言</span>
+									<i class="fa fa-commenting" aria-hidden="true"></i>
+									<span>留言板</span>
 								</div>
-								<div id="hitokoto">「私はあなたを許さない」</div>
+								<form id="guestbookForm" class="guestbook-form" autocomplete="off">
+									<div class="gb-row">
+										<input type="text" id="gb_name" name="name" placeholder="昵称" maxlength="24" required aria-label="昵称">
+									</div>
+									<div class="gb-row">
+										<textarea id="gb_message" name="message" rows="3" placeholder="想说点什么…" maxlength="300" required aria-label="留言内容"></textarea>
+									</div>
+									<div class="gb-actions">
+										<button type="submit" class="gb-submit">发布</button>
+									</div>
+								</form>
+								<ul id="guestbookList" class="guestbook-list" aria-live="polite" aria-busy="false"></ul>
 							</div>
 						</div>
 						<!-- 今日诗词 模块 已移除 -->
@@ -496,6 +507,9 @@
 	<!-- 使用本地访客计数后端替代 busuanzi，优先调用本服务器的 API，失败时回退到 localStorage -->
 	<script>window.VISITOR_API_URL = 'https://watchmedo.hungrym0.top/visitors.php';</script>
 	<script src="JavaScript/visitors.js"></script>
+	<!-- 留言板 API 地址（同域部署时为 wwwroot/api/guestbook.php；如放其它域，请改此处） -->
+	<script>window.GUESTBOOK_API_URL = window.GUESTBOOK_API_URL || 'https://watchmedo.hungrym0.top/guestbook.php';</script>
+	<script src="JavaScript/guestbook.js"></script>
 
 	<!-- 项目弹窗交互脚本：打开/关闭、ESC、遮罩关闭、焦点管理 -->
 	<script>
@@ -561,6 +575,7 @@
 
 	</body>
 </html>
+
 
 
 

@@ -1005,4 +1005,33 @@ body.dark .card-widget, body.dark .panel-card{
 /* 分割线更细腻 */
 hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, rgba(31,111,196,0.22), transparent); }
 
+/* === 留言板样式（与现有卡片风格统一） === */
+.card-widget.card-guestbook .guestbook-form{ display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+.guestbook-form .gb-row input,
+.guestbook-form .gb-row textarea{
+	width:100%; box-sizing:border-box; border:1px solid rgba(12,24,40,0.08); background:#ffffff; border-radius:10px; padding:10px 12px; font-size:14px; color:#1f2633; outline:none; transition:border-color 160ms ease, box-shadow 160ms ease;
+}
+.guestbook-form .gb-row textarea{ resize:vertical; min-height:72px; }
+.guestbook-form .gb-row input:focus,
+.guestbook-form .gb-row textarea:focus{ border-color:#1f6fc4; box-shadow:0 0 0 3px rgba(31,111,196,0.12); }
+.guestbook-form .gb-actions{ display:flex; justify-content:flex-end; }
+.guestbook-form .gb-submit{ display:inline-flex; align-items:center; justify-content:center; padding:8px 14px; border-radius:10px; border:0; font-weight:700; color:#fff; background:linear-gradient(180deg,#2ba8fb,#1f6fc4); cursor:pointer; box-shadow:0 10px 24px rgba(31,111,196,.14); transition:transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+.guestbook-form .gb-submit:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(31,111,196,.18); filter:brightness(1.05); }
+.guestbook-form .gb-submit[disabled]{ opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+.guestbook-list{ list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.guestbook-item{ display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid rgba(12,24,40,0.08); background:#fafcff; border-radius:10px; }
+.guestbook-item .gb-avatar{ width:32px; height:32px; border-radius:50%; background:#e6f0ff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#1f6fc4; }
+.guestbook-item .gb-main{ flex:1; min-width:0; }
+.guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; }
+.guestbook-item .gb-name{ font-weight:700; color:#1b2a41; }
+.guestbook-item .gb-time{ opacity:.8; }
+.guestbook-item .gb-text{ font-size:14px; color:#1b2a41; word-break:break-word; }
+
+/* 暗色适配 */
+body.dark .guestbook-form .gb-row input,
+body.dark .guestbook-form .gb-row textarea{ background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.08); color:#eaf2ff; }
+body.dark .guestbook-item{ background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.06); }
+body.dark .guestbook-item .gb-name{ color:#eaf2ff; }
+body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
+
 
