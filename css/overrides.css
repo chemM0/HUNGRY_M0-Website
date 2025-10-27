@@ -1052,18 +1052,6 @@ body.dark .guestbook-item{ background:rgba(255,255,255,0.04); border-color:rgba(
 body.dark .guestbook-item .gb-name{ color:#eaf2ff; }
 body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
 
-/* 移动端：留言板变为全屏底部抽屉 */
-.gb-open-btn{ display:none; margin-top:10px; padding:8px 12px; border-radius:10px; border:1px solid rgba(31,111,196,0.18); background:#f6fbff; color:#1f6fc4; font-weight:700; }
-@media (max-width: 720px){
-	.card-widget.card-announcement.card-guestbook .guestbook-form,
-	.card-widget.card-announcement.card-guestbook .guestbook-list{ display:none; }
-	.card-widget.card-announcement.card-guestbook .gb-open-btn{ display:inline-flex; align-items:center; gap:6px; }
-}
-
-/* 抽屉样式（与项目弹窗风格统一） */
-.gb-sheet{ position:fixed; inset:0; display:none; z-index:100001; }
-.gb-sheet.is-open{ display:block; }
-
 /* Desktop 微调：更紧凑的排版与更小字号 */
 @media (min-width: 1024px){
 	.guestbook-item{ padding:6px 8px; border-radius:8px; gap:8px; }
@@ -1072,16 +1060,51 @@ body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
 	.guestbook-item .gb-text{ font-size:12.5px; }
 	.guestbook-list .guestbook-item + .guestbook-item{ margin-top:8px; }
 }
+/* 默认隐藏移动端提示小字（仅在移动端媒体查询内显示） */
+.gb-hint-mobile{ display:none; }
 
-/* 保证移动端按钮可点击（防止被覆盖） */
-.card-widget.card-announcement.card-guestbook .gb-open-btn{ position:relative; z-index:3; cursor:pointer; }
-.gb-sheet__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-.gb-sheet__card{ position:absolute; left:0; right:0; bottom:0; height:90vh; background:#fff; border-radius:16px 16px 0 0; box-shadow:0 -12px 40px rgba(0,0,0,0.24); display:flex; flex-direction:column; animation: sheet-in 220ms cubic-bezier(.2,.9,.2,1); }
-.gb-sheet.is-closing .gb-sheet__card{ animation: sheet-out 200ms cubic-bezier(.2,.9,.2,1); }
-.gb-sheet__header{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(12,24,40,0.06); }
-.gb-sheet__close{ border:0; background:transparent; font-size:24px; width:36px; height:36px; border-radius:10px; cursor:pointer; }
-.gb-sheet__body{ padding:12px 14px 18px; overflow:auto; height:100%; }
-@media (min-width: 721px){ .gb-sheet{ display:none !important; } }
-body.dark .gb-sheet__card{ background:#0f1725; color:#eaf2ff; border:1px solid rgba(255,255,255,0.06); }
+/* 桌面端：禁用留言板文本框的拖动角标（保持移动端可按需自适应高度） */
+@media (min-width: 721px){
+	.guestbook-form .gb-row textarea{ resize: none; }
+	.card-guestbook .gb-toggle{ display:none !important; }
+}
+
+/* 移动端：留言板标题右侧展开/收起按钮 + 折叠动画 */
+@media (max-width: 720px){
+	.card-guestbook .item-headline{
+		display:flex;
+		align-items:center;
+		gap:8px;
+	}
+	.card-guestbook .item-headline .gb-title{
+		flex:1;
+	}
+	.card-guestbook .gb-hint-mobile{ display:block; font-size:12px; color:#6b7280; margin:6px 2px 0; }
+	body.dark .card-guestbook .gb-hint-mobile{ color:#9aa6b2; }
+		.card-guestbook .gb-toggle{
+			-webkit-appearance:none;
+			appearance:none;
+		border:1px solid rgba(15,23,42,0.12);
+		background:#fff;
+		width:28px; height:28px; border-radius:8px;
+		display:inline-flex; align-items:center; justify-content:center;
+		cursor:pointer;
+		transition: background .24s ease, border-color .24s ease;
+		pointer-events:auto; position:relative; z-index:1;
+	}
+	.card-guestbook .gb-toggle::after{
+		content:'\25BE'; /* ▼ */
+		font-size:14px; line-height:1;
+		transition: transform .24s ease;
+	}
+	.card-guestbook.is-open .gb-toggle::after{ transform: rotate(180deg); }
+	body.dark .card-guestbook .gb-toggle{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12); color:#eaf2ff; }
+
+	/* 折叠容器动画：使用 max-height + opacity，避免高度计算兼容性问题 */
+	.card-guestbook .gb-collapsible{ overflow:hidden; max-height:0; opacity:0; transition: max-height .32s cubic-bezier(.2,.8,.2,1), opacity .24s ease; }
+	.card-guestbook.is-open .gb-collapsible{ max-height:1600px; opacity:1; }
+	/* 展开后隐藏提示小字 */
+	.card-guestbook.is-open .gb-hint-mobile{ display:none; }
+}
 
 
