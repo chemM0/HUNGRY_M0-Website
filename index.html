@@ -46,6 +46,30 @@
 				<div class="loader-text">正在更新网页内容…</div>
 			</div>
 		</div>
+		<!-- Inline safeguard: 在 pageshow（包括 bfcache 恢复）及早移除遮罩，避免回退后遮罩残留导致无法点击 -->
+		<script>
+		(function(){
+			function forceRemoveLoader(){
+				try{
+					var l = document.getElementById('site-loader');
+					if(!l) return;
+					// 立刻取消所有可能阻挡交互的样式
+					l.style.pointerEvents = 'none';
+					l.style.visibility = 'hidden';
+					l.style.opacity = '0';
+					l.style.display = 'none';
+					// 尽量移除元素，保证不再阻挡
+					if(l.parentNode) l.parentNode.removeChild(l);
+				}catch(e){/* ignore */}
+			}
+			// 页面恢复（包括 bfcache/persisted）
+			window.addEventListener('pageshow', function(e){ forceRemoveLoader(); });
+			// DOM 已就绪时也尝试移除（防止脚本未及时运行导致短时阻塞）
+			document.addEventListener('DOMContentLoaded', function(){ forceRemoveLoader(); });
+			// 立即尝试（如果脚本在恢复后的同步阶段执行）
+			forceRemoveLoader();
+		})();
+		</script>
 		<div id="body-wrap">
 			<nav class="not_index_bg" id="nav">
 				<!-- 装饰性背景元素：颜色块与粒子 -->
@@ -218,6 +242,49 @@
 		</aside>
 		</div>
 		</main>
+		<!-- 项目列表弹窗（非新页面） -->
+		<div id="projectsModal" class="proj-modal" role="dialog" aria-modal="true" aria-labelledby="projectsModalTitle" aria-hidden="true">
+			<div class="proj-modal__backdrop" data-close="modal"></div>
+			<div class="proj-modal__card" role="document">
+				<div class="proj-modal__header">
+					<h3 id="projectsModalTitle">所有项目</h3>
+					<button class="proj-modal__close" type="button" aria-label="关闭" title="关闭" data-close="modal">×</button>
+				</div>
+				<div class="proj-modal__body">
+					<div class="proj-modal__grid">
+						<!-- 1. 实时视奸 -->
+						<article class="proj-item">
+							<img class="proj-item__thumb" src="assets/pictures/QQ20251025-172116.png" alt="实时视奸缩略图">
+							<div class="proj-item__main">
+								<h4 class="proj-item__title">👀 实时视奸 <span class="hot-badge" aria-hidden="true">Hot</span></h4>
+								<p class="proj-item__desc">在网页上实时查看我的电脑运行状态、CPU/内存、当前活动窗口等。</p>
+								<div class="proj-item__tags">
+									<span>Tauri</span><span>React</span><span>TypeScript</span><span>Tailwind CSS</span><span>Rust</span><span>PHP</span>
+								</div>
+								<div class="proj-item__actions">
+									<a class="proj-item__btn" href="https://watchmedo.hungrym0.top/public/index.php" target="_blank" rel="noopener">打开</a>
+								</div>
+							</div>
+						</article>
+
+						<!-- 2. 安全微伴刷课 -->
+						<article class="proj-item">
+							<img class="proj-item__thumb" src="assets/pictures/QQ20251021-160526.png" alt="安全微伴刷课缩略图">
+							<div class="proj-item__main">
+								<h4 class="proj-item__title">🔑 安全微伴刷课</h4>
+								<p class="proj-item__desc">小型刷课工具，自动完成安全微伴的大部分课程与考试。</p>
+								<div class="proj-item__tags">
+									<span>自动化</span><span>安全微伴</span><span>脚本</span>
+								</div>
+								<div class="proj-item__actions">
+									<a class="proj-item__btn" href="weiban.html">打开</a>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
 		<footer id="footer">
 			<div id="footer-wrap">
 					<div class="copyright">&copy; 2025 HUNGRY_M0&nbsp;&nbsp;|&nbsp;&nbsp;<small><a class="force-blue" href="terms.html">服务条款</a></small>&nbsp;&nbsp;|&nbsp;&nbsp;<small>赣ICP备2025074310号-1</small></div>
@@ -416,6 +483,68 @@
 	<!-- 使用本地访客计数后端替代 busuanzi，优先调用本服务器的 API，失败时回退到 localStorage -->
 	<script>window.VISITOR_API_URL = 'https://watchmedo.hungrym0.top/visitors.php';</script>
 	<script src="JavaScript/visitors.js"></script>
+
+	<!-- 项目弹窗交互脚本：打开/关闭、ESC、遮罩关闭、焦点管理 -->
+	<script>
+	(function(){
+		const openBtn = document.querySelector('.projects-header .view-all');
+		const modal = document.getElementById('projectsModal');
+		if(!openBtn || !modal) return;
+
+		const closeEls = modal.querySelectorAll('[data-close="modal"]');
+		let lastActive = null;
+
+		function lockScroll(lock){
+			if(lock){
+				document.documentElement.style.overflow = 'hidden';
+				document.body.style.overflow = 'hidden';
+			}else{
+				document.documentElement.style.overflow = '';
+				document.body.style.overflow = '';
+			}
+		}
+
+		function open(){
+			lastActive = document.activeElement;
+			modal.setAttribute('aria-hidden','false');
+			modal.classList.remove('is-closing');
+			modal.classList.add('is-open');
+			lockScroll(true);
+			const focusTarget = modal.querySelector('.proj-modal__close');
+			if(focusTarget) focusTarget.focus();
+		}
+
+		function close(){
+			// 开启关闭过渡，待动画结束后再真正隐藏和解锁滚动
+			modal.classList.remove('is-open');
+			modal.classList.add('is-closing');
+			// 与 CSS 动画时长对齐（200-240ms），这里取 240ms 再留 40ms 缓冲
+			setTimeout(()=>{
+				modal.classList.remove('is-closing');
+				modal.setAttribute('aria-hidden','true');
+				lockScroll(false);
+				if(lastActive && typeof lastActive.focus === 'function') lastActive.focus();
+			}, 280);
+		}
+
+		openBtn.addEventListener('click', function(e){ e.preventDefault(); open(); });
+		closeEls.forEach(el=> el.addEventListener('click', close));
+		modal.addEventListener('click', function(e){
+			if(e.target === modal || e.target.classList.contains('proj-modal__backdrop')) close();
+		});
+		document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+		// 简单焦点圈（trap）
+		modal.addEventListener('keydown', function(e){
+			if(e.key !== 'Tab') return;
+			const focusables = modal.querySelectorAll('a,button,input,select,textarea,[tabindex]:not([tabindex="-1"])');
+			if(!focusables.length) return;
+			const first = focusables[0];
+			const last = focusables[focusables.length-1];
+			if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+			else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+		});
+	})();
+	</script>
 
 	</body>
 </html>
