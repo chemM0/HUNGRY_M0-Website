@@ -1,5 +1,5 @@
 (function(){
-  const API = (typeof window !== 'undefined' && window.GUESTBOOK_API_URL) ? window.GUESTBOOK_API_URL : 'https://watchmedo.hungry.top/guestbook.php';
+  const API = (typeof window !== 'undefined' && window.GUESTBOOK_API_URL) ? window.GUESTBOOK_API_URL : 'https://watchmedo.hungrym0.top/guestbook.php';
 
   function esc(s){
     return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
@@ -24,7 +24,7 @@
         const li = document.createElement('li');
         li.className = 'guestbook-item';
         const avatarText = (it.name||'?').trim().charAt(0).toUpperCase() || '?';
-        const region = it.region ? ` · <span class="gb-region">${esc(it.region)}</span>` : '';
+          const region = it.region ? `<span class="gb-region">· ${esc(it.region)}</span>` : '';
         li.innerHTML = `
           <div class="gb-avatar" aria-hidden="true">${esc(avatarText)}</div>
           <div class="gb-main">
@@ -134,4 +134,9 @@
     sheet.addEventListener('click', function(e){ if(e.target.matches('[data-close="gb"], .gb-sheet__backdrop')) closeSheet(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape' && sheet.classList.contains('is-open')) closeSheet(); });
   }
+  // 兜底委托，防止某些布局下按钮被重新渲染导致失去绑定
+  document.addEventListener('click', function(e){
+    const t = e.target.closest('#gbOpenBtn');
+    if(t){ e.preventDefault(); openSheet(); }
+  });
 })();

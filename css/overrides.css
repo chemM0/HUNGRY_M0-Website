@@ -1027,10 +1027,12 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-item{ display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid rgba(12,24,40,0.08); background:#fafcff; border-radius:10px; }
 .guestbook-item .gb-avatar{ width:32px; height:32px; border-radius:50%; background:#e6f0ff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#1f6fc4; }
 .guestbook-item .gb-main{ flex:1; min-width:0; }
-.guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; }
+.guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; flex-wrap:nowrap; }
 .guestbook-item .gb-name{ font-weight:700; color:#1b2a41; }
 .guestbook-item .gb-time{ opacity:.8; }
 .guestbook-item .gb-region{ opacity:.8; }
+.guestbook-item .gb-time{ opacity:.8; white-space:nowrap; }
+.guestbook-item .gb-region{ opacity:.8; white-space:nowrap; }
 .guestbook-item .gb-head .gb-del{ margin-left:auto; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:4px 6px; border-radius:6px; }
 .guestbook-item .gb-head .gb-del:hover{ background:#ffe6e3; }
 .guestbook-item .gb-text{ font-size:14px; color:#1b2a41; word-break:break-word; }
@@ -1053,6 +1055,18 @@ body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
 /* 抽屉样式（与项目弹窗风格统一） */
 .gb-sheet{ position:fixed; inset:0; display:none; z-index:100001; }
 .gb-sheet.is-open{ display:block; }
+
+/* Desktop 微调：更紧凑的排版与更小字号 */
+@media (min-width: 1024px){
+	.guestbook-item{ padding:8px 10px; border-radius:8px; gap:8px; }
+	.guestbook-item .gb-avatar{ width:28px; height:28px; font-size:12px; }
+	.guestbook-item .gb-head{ font-size:12px; gap:6px; margin-bottom:2px; }
+	.guestbook-item .gb-text{ font-size:13px; }
+	.guestbook-list .guestbook-item + .guestbook-item{ margin-top:8px; }
+}
+
+/* 保证移动端按钮可点击（防止被覆盖） */
+.card-widget.card-announcement.card-guestbook .gb-open-btn{ position:relative; z-index:3; cursor:pointer; }
 .gb-sheet__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
 .gb-sheet__card{ position:absolute; left:0; right:0; bottom:0; height:90vh; background:#fff; border-radius:16px 16px 0 0; box-shadow:0 -12px 40px rgba(0,0,0,0.24); display:flex; flex-direction:column; animation: sheet-in 220ms cubic-bezier(.2,.9,.2,1); }
 .gb-sheet.is-closing .gb-sheet__card{ animation: sheet-out 200ms cubic-bezier(.2,.9,.2,1); }
