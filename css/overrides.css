@@ -1011,6 +1011,11 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-form .gb-row textarea{
 	width:100%; box-sizing:border-box; border:1px solid rgba(12,24,40,0.08); background:#ffffff; border-radius:10px; padding:10px 12px; font-size:14px; color:#1f2633; outline:none; transition:border-color 160ms ease, box-shadow 160ms ease;
 }
+.guestbook-form .gb-row.gb-input, .guestbook-form .gb-row.gb-textarea{ position:relative; }
+.guestbook-form .gb-row.gb-input i, .guestbook-form .gb-row.gb-textarea i{ position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#7a8aa3; font-size:14px; pointer-events:none; }
+.guestbook-form .gb-row.gb-textarea i{ top:14px; transform:none; }
+.guestbook-form .gb-row.gb-input input{ padding-left:32px; }
+.guestbook-form .gb-row.gb-textarea textarea{ padding-left:32px; }
 .guestbook-form .gb-row textarea{ resize:vertical; min-height:72px; }
 .guestbook-form .gb-row input:focus,
 .guestbook-form .gb-row textarea:focus{ border-color:#1f6fc4; box-shadow:0 0 0 3px rgba(31,111,196,0.12); }
@@ -1025,6 +1030,9 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; }
 .guestbook-item .gb-name{ font-weight:700; color:#1b2a41; }
 .guestbook-item .gb-time{ opacity:.8; }
+.guestbook-item .gb-region{ opacity:.8; }
+.guestbook-item .gb-head .gb-del{ margin-left:auto; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:4px 6px; border-radius:6px; }
+.guestbook-item .gb-head .gb-del:hover{ background:#ffe6e3; }
 .guestbook-item .gb-text{ font-size:14px; color:#1b2a41; word-break:break-word; }
 
 /* 暗色适配 */
@@ -1033,5 +1041,25 @@ body.dark .guestbook-form .gb-row textarea{ background:rgba(255,255,255,0.04); b
 body.dark .guestbook-item{ background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.06); }
 body.dark .guestbook-item .gb-name{ color:#eaf2ff; }
 body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
+
+/* 移动端：留言板变为全屏底部抽屉 */
+.gb-open-btn{ display:none; margin-top:10px; padding:8px 12px; border-radius:10px; border:1px solid rgba(31,111,196,0.18); background:#f6fbff; color:#1f6fc4; font-weight:700; }
+@media (max-width: 720px){
+	.card-widget.card-announcement.card-guestbook .guestbook-form,
+	.card-widget.card-announcement.card-guestbook .guestbook-list{ display:none; }
+	.card-widget.card-announcement.card-guestbook .gb-open-btn{ display:inline-flex; align-items:center; gap:6px; }
+}
+
+/* 抽屉样式（与项目弹窗风格统一） */
+.gb-sheet{ position:fixed; inset:0; display:none; z-index:100001; }
+.gb-sheet.is-open{ display:block; }
+.gb-sheet__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.gb-sheet__card{ position:absolute; left:0; right:0; bottom:0; height:90vh; background:#fff; border-radius:16px 16px 0 0; box-shadow:0 -12px 40px rgba(0,0,0,0.24); display:flex; flex-direction:column; animation: sheet-in 220ms cubic-bezier(.2,.9,.2,1); }
+.gb-sheet.is-closing .gb-sheet__card{ animation: sheet-out 200ms cubic-bezier(.2,.9,.2,1); }
+.gb-sheet__header{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(12,24,40,0.06); }
+.gb-sheet__close{ border:0; background:transparent; font-size:24px; width:36px; height:36px; border-radius:10px; cursor:pointer; }
+.gb-sheet__body{ padding:12px 14px 18px; overflow:auto; height:100%; }
+@media (min-width: 721px){ .gb-sheet{ display:none !important; } }
+body.dark .gb-sheet__card{ background:#0f1725; color:#eaf2ff; border:1px solid rgba(255,255,255,0.06); }
 
 

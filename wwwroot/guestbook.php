@@ -21,6 +21,7 @@ if (!is_dir($dataDir)) {
 }
 $dataFile = $dataDir . DIRECTORY_SEPARATOR . 'guestbook.json';
 $rateFile = $dataDir . DIRECTORY_SEPARATOR . 'guestbook_rate.json';
+$ipCacheFile = $dataDir . DIRECTORY_SEPARATOR . 'ip_region_cache.json';
 
 function read_json($file){
     if(!file_exists($file)) return [];
@@ -46,12 +47,55 @@ function client_ip(){
     return '0.0.0.0';
 }
 
+function is_private_ip($ip){
+    if(!filter_var($ip, FILTER_VALIDATE_IP)) return true;
+    if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false){
+        return true; // private or reserved
+    }
+    return false;
+}
+
+function get_region($ip, $cacheFile){
+    if(is_private_ip($ip)) return '';
+    $cache = read_json($cacheFile);
+    $now = time();
+    $ttl = 60*60*24*180; // 180 days
+    if(isset($cache[$ip])){
+        $rec = $cache[$ip];
+        if(is_array($rec) && isset($rec['region']) && isset($rec['ts']) && ($now - (int)$rec['ts'] < $ttl)){
+            return (string)$rec['region'];
+        }
+    }
+    $region = '';
+    $url = 'http://ip-api.com/json/'.urlencode($ip).'?fields=status,regionName&lang=zh-CN';
+    $ctx = stream_context_create(['http'=>['timeout'=>1.8]]);
+    $resp = @file_get_contents($url, false, $ctx);
+    if($resp){
+        $j = json_decode($resp, true);
+        if(($j['status'] ?? '') === 'success'){
+            $region = trim((string)($j['regionName'] ?? ''));
+        }
+    }
+    $cache[$ip] = ['region'=>$region, 'ts'=>$now];
+    write_json_atomic($cacheFile, $cache);
+    return $region;
+}
+
+// try include app config to reuse admin password hash
+@include_once __DIR__ . '/includes/config.php';
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($method === 'GET'){
     $items = read_json($dataFile);
     // newest first
     usort($items, function($a,$b){ return ($b['ts']??0) <=> ($a['ts']??0); });
+    // enrich region for legacy items
+    foreach($items as &$it){
+        if(empty($it['region']) && !empty($it['ip'])){
+            $it['region'] = get_region($it['ip'], $ipCacheFile);
+        }
+    }
     echo json_encode(['ok'=>true, 'items'=>array_slice($items,0,50)], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
     exit;
 }
@@ -59,6 +103,40 @@ if ($method === 'GET'){
 if ($method === 'POST'){
     $input = file_get_contents('php://input');
     $json = json_decode($input, true);
+    // delete action
+    if (isset($json['action']) && $json['action'] === 'delete'){
+        $id = (int)($json['id'] ?? 0);
+        $token = (string)($json['token'] ?? '');
+        if(!$id || $token===''){ echo json_encode(['ok'=>false,'error'=>'缺少参数']); exit; }
+        // verify with ADMIN_PASSWORD_HASH if defined
+        if(defined('ADMIN_PASSWORD_HASH')){
+            if(!password_verify($token, ADMIN_PASSWORD_HASH)){
+                echo json_encode(['ok'=>false,'error'=>'认证失败']); exit;
+            }
+        } else {
+            echo json_encode(['ok'=>false,'error'=>'未配置管理员密码']); exit;
+        }
+
+        $fp = @fopen($dataFile, 'c+');
+        if(!$fp){ echo json_encode(['ok'=>false,'error'=>'无法写入数据文件'], JSON_UNESCAPED_UNICODE); exit; }
+        @flock($fp, LOCK_EX);
+        $existing = stream_get_contents($fp);
+        $arr = $existing ? json_decode($existing,true) : [];
+        if(!is_array($arr)) $arr = [];
+        $before = count($arr);
+        $arr = array_values(array_filter($arr, function($it) use($id){ return (int)($it['id']??0) !== $id; }));
+        $after = count($arr);
+        ftruncate($fp, 0);
+        rewind($fp);
+        fwrite($fp, json_encode($arr, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+        fflush($fp);
+        @flock($fp, LOCK_UN);
+        fclose($fp);
+        $deleted = $before - $after;
+        if($deleted < 1){ echo json_encode(['ok'=>false,'error'=>'未找到记录']); exit; }
+        echo json_encode(['ok'=>true, 'deleted'=>$deleted]); exit;
+    }
+
     $name = trim($json['name'] ?? '');
     $message = trim($json['message'] ?? '');
 
@@ -91,8 +169,11 @@ if ($method === 'POST'){
         'message' => $message,
         'time' => date('Y-m-d H:i:s'),
         'ts' => $now,
-        'ip' => $ip
+        'ip' => $ip,
+        'region' => ''
     ];
+    // enrich region (best-effort)
+    $record['region'] = get_region($ip, $ipCacheFile);
 
     // Use flock for concurrency safety
     $fp = @fopen($dataFile, 'c+');

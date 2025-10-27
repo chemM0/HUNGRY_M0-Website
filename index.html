@@ -120,17 +120,20 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-widget card-announcement">
+						<div class="card-widget card-announcement card-guestbook">
 							<div class="card-content">
 								<div class="item-headline">
 									<i class="fa fa-commenting" aria-hidden="true"></i>
 									<span>留言板</span>
 								</div>
-								<form id="guestbookForm" class="guestbook-form" autocomplete="off">
-									<div class="gb-row">
+								<button class="gb-open-btn" type="button" id="gbOpenBtn" aria-label="打开留言板" title="打开留言板">打开留言板</button>
+								<form id="guestbookForm" class="guestbook-form" autocomplete="off" data-gb="inline">
+									<div class="gb-row gb-input">
+										<i class="fa fa-user" aria-hidden="true"></i>
 										<input type="text" id="gb_name" name="name" placeholder="昵称" maxlength="24" required aria-label="昵称">
 									</div>
-									<div class="gb-row">
+									<div class="gb-row gb-textarea">
+										<i class="fa fa-pencil" aria-hidden="true"></i>
 										<textarea id="gb_message" name="message" rows="3" placeholder="想说点什么…" maxlength="300" required aria-label="留言内容"></textarea>
 									</div>
 									<div class="gb-actions">
@@ -507,9 +510,28 @@
 	<!-- 使用本地访客计数后端替代 busuanzi，优先调用本服务器的 API，失败时回退到 localStorage -->
 	<script>window.VISITOR_API_URL = 'https://watchmedo.hungrym0.top/visitors.php';</script>
 	<script src="JavaScript/visitors.js"></script>
-	<!-- 留言板 API 地址（同域部署时为 wwwroot/api/guestbook.php；如放其它域，请改此处） -->
-	<script>window.GUESTBOOK_API_URL = window.GUESTBOOK_API_URL || 'https://watchmedo.hungrym0.top/guestbook.php';</script>
+	<!-- 留言板 API 地址（你已移动到 wwwroot/guestbook.php，可改为你的域名绝对路径） -->
+	<script>window.GUESTBOOK_API_URL = window.GUESTBOOK_API_URL || 'wwwroot/guestbook.php';</script>
 	<script src="JavaScript/guestbook.js"></script>
+
+	<!-- 移动端全屏留言板抽屉 -->
+	<div id="guestbookSheet" class="gb-sheet" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gbSheetTitle">
+		<div class="gb-sheet__backdrop" data-close="gb"></div>
+		<div class="gb-sheet__card" role="document">
+			<div class="gb-sheet__header">
+				<h3 id="gbSheetTitle">留言板</h3>
+				<button type="button" class="gb-sheet__close" aria-label="关闭" data-close="gb">×</button>
+			</div>
+			<div class="gb-sheet__body">
+				<form id="guestbookFormSheet" class="guestbook-form" autocomplete="off" data-gb="sheet">
+					<div class="gb-row gb-input"><i class="fa fa-user" aria-hidden="true"></i><input type="text" id="gb_name_sheet" name="name" placeholder="昵称" maxlength="24" required aria-label="昵称"></div>
+					<div class="gb-row gb-textarea"><i class="fa fa-pencil" aria-hidden="true"></i><textarea id="gb_message_sheet" name="message" rows="4" placeholder="想说点什么…" maxlength="300" required aria-label="留言内容"></textarea></div>
+					<div class="gb-actions"><button type="submit" class="gb-submit">发布</button></div>
+				</form>
+				<ul id="guestbookListSheet" class="guestbook-list" aria-live="polite" aria-busy="false"></ul>
+			</div>
+		</div>
+	</div>
 
 	<!-- 项目弹窗交互脚本：打开/关闭、ESC、遮罩关闭、焦点管理 -->
 	<script>
