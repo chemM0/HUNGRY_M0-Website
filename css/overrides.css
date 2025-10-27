@@ -1024,16 +1024,19 @@ hr{ border: none; height: 1px; background: linear-gradient(90deg, transparent, r
 .guestbook-form .gb-submit:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(31,111,196,.18); filter:brightness(1.05); }
 .guestbook-form .gb-submit[disabled]{ opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
 .guestbook-list{ list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
-.guestbook-item{ display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid rgba(12,24,40,0.08); background:#fafcff; border-radius:10px; }
-.guestbook-item .gb-avatar{ width:32px; height:32px; border-radius:50%; background:#e6f0ff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#1f6fc4; }
+.guestbook-item{ display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid rgba(12,24,40,0.08); background:#fafcff; border-radius:10px; overflow:hidden; }
+.guestbook-item .gb-avatar{ width:32px; height:32px; border-radius:50%; background:#e6f0ff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#1f6fc4; margin-top:2px; }
 .guestbook-item .gb-main{ flex:1; min-width:0; }
-.guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; flex-wrap:nowrap; }
+.guestbook-item .gb-head{ display:flex; align-items:center; gap:8px; font-size:13px; color:#546079; margin-bottom:4px; flex-wrap:wrap; }
 .guestbook-item .gb-name{ font-weight:700; color:#1b2a41; }
 .guestbook-item .gb-time{ opacity:.8; }
 .guestbook-item .gb-region{ opacity:.8; }
+.guestbook-item .gb-head > .gb-name,
+.guestbook-item .gb-head > .gb-time,
+.guestbook-item .gb-head > .gb-region{ flex:0 1 auto; min-width:0; }
 .guestbook-item .gb-time{ opacity:.8; white-space:nowrap; }
 .guestbook-item .gb-region{ opacity:.8; white-space:nowrap; }
-.guestbook-item .gb-head .gb-del{ margin-left:auto; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:4px 6px; border-radius:6px; }
+.guestbook-item .gb-head .gb-del{ margin-left:auto; background:transparent; border:0; color:#c0392b; font-size:12px; cursor:pointer; padding:4px 6px; border-radius:6px; flex:0 0 auto; align-self:flex-start; }
 .guestbook-item .gb-head .gb-del:hover{ background:#ffe6e3; }
 .guestbook-item .gb-text{ font-size:14px; color:#1b2a41; word-break:break-word; }
 
@@ -1058,10 +1061,10 @@ body.dark .guestbook-item .gb-text{ color:#eaf2ff; }
 
 /* Desktop 微调：更紧凑的排版与更小字号 */
 @media (min-width: 1024px){
-	.guestbook-item{ padding:8px 10px; border-radius:8px; gap:8px; }
-	.guestbook-item .gb-avatar{ width:28px; height:28px; font-size:12px; }
-	.guestbook-item .gb-head{ font-size:12px; gap:6px; margin-bottom:2px; }
-	.guestbook-item .gb-text{ font-size:13px; }
+	.guestbook-item{ padding:6px 8px; border-radius:8px; gap:8px; }
+	.guestbook-item .gb-avatar{ width:26px; height:26px; font-size:12px; }
+	.guestbook-item .gb-head{ font-size:11.5px; gap:6px; margin-bottom:2px; }
+	.guestbook-item .gb-text{ font-size:12.5px; }
 	.guestbook-list .guestbook-item + .guestbook-item{ margin-top:8px; }
 }
 
