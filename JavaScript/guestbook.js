@@ -1,5 +1,5 @@
 (function(){
-  const API = (typeof window !== 'undefined' && window.GUESTBOOK_API_URL) ? window.GUESTBOOK_API_URL : 'wwwroot/guestbook.php';
+  const API = (typeof window !== 'undefined' && window.GUESTBOOK_API_URL) ? window.GUESTBOOK_API_URL : 'https://watchmedo.hungry.top/guestbook.php';
 
   function esc(s){
     return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
@@ -44,7 +44,12 @@
   async function load(){
     try{
       const res = await fetch(API + '?t=' + Date.now(), {cache:'no-store'});
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try{ data = JSON.parse(text); }catch(parseErr){
+        const snippet = text.slice(0,120).replace(/\s+/g,' ').trim();
+        throw new Error(`非 JSON 响应：${snippet}`);
+      }
       if(data && data.ok) renderItems(data.items||[]);
       else throw new Error(data && data.error || '加载失败');
     }catch(e){
@@ -69,7 +74,8 @@
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({name: nameVal, message: messageVal})
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data; try{ data = JSON.parse(text); }catch(_){ throw new Error(`提交失败：非 JSON 响应`); }
       if(!data.ok) throw new Error(data.error||'提交失败');
       // 记住昵称
       try{ localStorage.setItem('gb_name', nameVal); }catch(_){}
@@ -91,8 +97,9 @@
     if(!token){ token = prompt('请输入管理员密码以删除该留言：') || ''; }
     if(!token) return;
     try{
-      const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'delete', id, token }) });
-      const data = await res.json();
+  const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'delete', id, token }) });
+  const text = await res.text();
+  let data; try{ data = JSON.parse(text); }catch(_){ throw new Error('删除失败：非 JSON 响应'); }
       if(!data.ok) throw new Error(data.error||'删除失败');
       try{ localStorage.setItem('gb_admin_token', token); }catch(_){ }
       await load();
