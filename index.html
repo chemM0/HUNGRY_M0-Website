@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-27T20:56:43+08:00">
+<html lang="zh" data-last-modified="2025-10-27T21:48:33+08:00">
 	<head>
 	<meta charset="UTF-8">
 	<title>HUNGRY_M0 主页</title>
@@ -475,39 +475,6 @@
 				if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', renderSkills); else renderSkills();
 			})();
 			
-			// 雪花效果（轻量柔和版）：降低数量、缩小尺寸，并在“减少动态”或移动端时自动停用
-			(function ($) {
-				$.fn.snow = function (options) {
-					var $flake = $('<div id="snowbox" />').css({ 'position': 'absolute', 'z-index': '9999', 'top': '-50px' }).html('&#10052;'),
-						documentHeight = $(document).height(),
-						documentWidth = $(document).width(),
-						defaults = { minSize: 6, maxSize: 14, newOn: 1600, flakeColor: '#dbeafe' },
-						options = $.extend({}, defaults, options);
-					var interval = setInterval(function () {
-						var startPositionLeft = Math.random() * documentWidth - 100,
-							startOpacity = 0.5 + Math.random(),
-							sizeFlake = options.minSize + Math.random() * options.maxSize,
-							endPositionTop = documentHeight - 200,
-							endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
-							durationFall = documentHeight * 8 + Math.random() * 4000;
-						$flake.clone().appendTo('body').css({ left: startPositionLeft, opacity: startOpacity, 'font-size': sizeFlake, color: options.flakeColor }).animate({ top: endPositionTop, left: endPositionLeft, opacity: 0.2 }, durationFall, 'linear', function () { $(this).remove() });
-					}, options.newOn);
-				};
-			})(jQuery);
-			$(function (){
-				try{
-					var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-					var isMobile = window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
-					if(!reduce){
-						$.fn.snow({
-							minSize: isMobile? 4 : 6,
-							maxSize: isMobile? 10 : 14,
-							newOn: isMobile? 2200 : 1600,
-							flakeColor: document.body.classList.contains('dark') ? '#9ecbff' : '#dbeafe'
-						});
-					}
-				}catch(e){ /* ignore */ }
-			});
 			
 		</script>
 
@@ -620,6 +587,7 @@
 
 	</body>
 </html>
+
 
 
 

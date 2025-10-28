@@ -117,6 +117,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
+                    <!-- 返回首页按钮（移动端仅显示图标，桌面端显示文字） -->
+                    <a href="https://www.hungrym0.top/index.html" aria-label="返回首页" class="group inline-flex items-center mr-3 sm:mr-4 px-2.5 py-2 rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 group-hover:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span class="ml-2 hidden sm:inline text-sm">返回首页</span>
+                    </a>
                     <a href="index.php" class="brand">
                         <span class="brand-logo"><img src="https://www.hungrym0.top/favicon.png" alt="logo"></span>
                         <span class="ml-3 brand-text">
