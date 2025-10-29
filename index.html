@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-27T21:48:33+08:00">
+<html lang="zh" data-last-modified="2025-10-28T19:13:16+08:00">
 	<head>
 	<meta charset="UTF-8">
 	<title>HUNGRY_M0 主页</title>
@@ -98,7 +98,7 @@
 									<!-- 主页上的夜间模式开关已移除 -->
 									<!-- 姓名与描述：已使用仓库上下文的合理默认（可替换） -->
 									<div class="author-info__name"><span class="gradient-text">HUNGRY_M0</span></div>
-									<div class="author-info__description">当前网页版本：v0.3.4</div>
+									<div class="author-info__description">当前网页版本：v0.3.5</div>
 								</div>
 								<div class="card-info-social-icons is-center">
 									<a class="social-icon social-link contact-btn" href="contact.html" title="联系">
@@ -110,13 +110,10 @@
 										<span class="social-link-text">关于本站</span>
 									</a>
 								</div>
-								<!-- 夜间模式功能开关 -->
+								<!-- 夜间模式功能开关（替换为临时文件夹的主题按钮组件，不改功能，仅替换外观/实现） -->
 								<div class="setting-switch">
 									<span class="switch-label">夜间模式</span>
-									<label class="switch">
-										<input type="checkbox" id="darkModeSwitch" aria-label="夜间模式开关">
-										<span class="slider"></span>
-									</label>
+									<theme-button id="themeButton" size="1.2"></theme-button>
 								</div>
 							</div>
 						</div>
@@ -314,6 +311,30 @@
 		<script src="vendor/js/jquery.fancybox-2.1.5.js"></script>
 		<!-- 夜间/日间切换逻辑（确保页面能绑定 #darkToggle） -->
 		<script src="JavaScript/dark_theme.js"></script>
+		<!-- 主题按钮自定义元素（来自 临时文件夹/js/script.js） -->
+		<script src="JavaScript/theme_button.js"></script>
+		<!-- 将主题按钮与全站 dark class/localStorage 持久化打通 -->
+		<script>
+		(function(){
+			const KEY = 'site_theme';
+			function apply(isDark){
+				if(isDark){ document.body.classList.add('dark'); }
+				else { document.body.classList.remove('dark'); }
+				try{ localStorage.setItem(KEY, isDark ? 'dark' : 'light'); }catch(e){}
+			}
+			document.addEventListener('DOMContentLoaded', function(){
+				var btn = document.getElementById('themeButton');
+				if(!btn) return;
+				try{
+					var stored = localStorage.getItem(KEY);
+					btn.setAttribute('value', stored === 'dark' ? 'dark' : 'light');
+				}catch(e){}
+				btn.addEventListener('change', function(e){
+					apply(e && e.detail === 'dark');
+				});
+			});
+		})();
+		</script>
 
 		<!-- 已移除 busuanzi 以避免布局问题 -->
 		<script>
@@ -587,6 +608,7 @@
 
 	</body>
 </html>
+
 
 
 
