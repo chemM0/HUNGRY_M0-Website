@@ -1,0 +1,311 @@
+/* Terms page exclusive styles: modern, clean, and scoped so other pages remain unaffected */
+
+/* Color system */
+:root {
+  --terms-bg: #f7f9fc;
+  --terms-card: #ffffff;
+  --terms-text: #1e293b; /* slate-800 */
+  --terms-subtext: #475569; /* slate-600 */
+  --terms-border: rgba(15, 23, 42, 0.06); /* slate-900 6% */
+  --terms-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+  --brand: #1976d2;
+  --brand-2: #64b5f6;
+  --accent: #0ea5e9; /* sky-500 */
+  --success: #22c55e;
+  --danger: #ef4444;
+}
+
+/* Dark theme overrides (driven by body.dark from existing scripts) */
+body.dark {
+  --terms-bg: #0b0f14;
+  --terms-card: #0f1113; /* near-elevation surface */
+  --terms-text: #e6eef8;
+  --terms-subtext: #aab6bf;
+  --terms-border: rgba(255, 255, 255, 0.06);
+  --terms-shadow: 0 14px 40px rgba(0,0,0,0.48);
+  --brand: #64b5f6;
+  --brand-2: #90caf9;
+  --accent: #38bdf8;
+}
+
+/* Page base tweaks only for .terms-page */
+body.terms-page {
+  background: var(--terms-bg);
+}
+
+/* Container tightening for this page */
+body.terms-page .about-wrap {
+  max-width: 960px;
+  margin: 24px auto 16px;
+  padding: 0 20px 20px;
+}
+
+/* Header with logo and meta */
+.terms-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: flex-start;
+  margin: 8px 0 8px;
+}
+
+.terms-header .about-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(25,118,210,0.16);
+  box-shadow: 0 8px 24px rgba(25,118,210,0.10);
+}
+
+.terms-header .about-author {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: .3px;
+  color: var(--terms-text);
+}
+
+.terms-header .about-version {
+  font-size: 13px;
+  color: var(--terms-subtext);
+}
+
+/* Card */
+.terms-card.about-card {
+  width: 100%;
+  background: var(--terms-card);
+  border: 1px solid var(--terms-border);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: var(--terms-shadow);
+}
+
+/* In-card content */
+.terms-card .about-body {
+  color: var(--terms-text);
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.terms-card .about-body h3 {
+  margin: 18px 0 8px;
+  font-size: 18px;
+  color: var(--terms-text);
+}
+
+.terms-card .about-body p {
+  color: var(--terms-subtext);
+  margin: 6px 0 8px;
+}
+
+.terms-card .about-body ul {
+  padding-left: 18px;
+}
+
+/* Anchor offset for fixed nav/buttons */
+.terms-card .about-body h3 { scroll-margin-top: calc(var(--nav-height) + 24px); }
+
+/* Pills TOC */
+.terms-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 6px;
+}
+
+.terms-toc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--brand);
+  background: rgba(25,118,210,0.08);
+  border: 1px solid rgba(25,118,210,0.16);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background .2s ease, transform .15s ease, color .2s ease, border-color .2s ease;
+}
+
+.terms-toc a:hover { transform: translateY(-2px); background: rgba(25,118,210,0.12); }
+.terms-toc a:active { transform: translateY(1px); }
+body.dark .terms-toc a { color: var(--brand-2); background: rgba(100,181,246,0.09); border-color: rgba(100,181,246,0.18); }
+
+/* Buttons — new modern set, scoped */
+.btn { 
+  --btn-bg: #111827; 
+  --btn-fg: #fff; 
+  --btn-bd: transparent; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 10px 14px; 
+  border-radius: 12px; 
+  border: 1px solid var(--btn-bd); 
+  background: var(--btn-bg); 
+  color: var(--btn-fg); 
+  font-weight: 700; 
+  font-size: 14px; 
+  text-decoration: none; 
+  line-height: 1; 
+  cursor: pointer; 
+  box-shadow: 0 10px 22px rgba(2,6,23,0.06); 
+  transition: transform .16s cubic-bezier(.2,.9,.3,1), box-shadow .16s ease, background .24s ease, color .24s ease, border-color .24s ease;
+}
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(2,6,23,0.10); }
+.btn:active, .btn:focus-visible { transform: translateY(0) scale(.98); box-shadow: 0 8px 18px rgba(2,6,23,0.08); outline: none; }
+
+/* Variants */
+.btn-primary { 
+  --btn-bg: linear-gradient(135deg, var(--brand), var(--accent)); 
+  --btn-fg: #fff; 
+}
+
+.btn-ghost { 
+  --btn-bg: rgba(25,118,210,0.08); 
+  --btn-fg: var(--brand); 
+  --btn-bd: rgba(25,118,210,0.16);
+}
+body.dark .btn-ghost { --btn-bg: rgba(100,181,246,0.10); --btn-fg: var(--brand-2); --btn-bd: rgba(100,181,246,0.22); }
+
+.btn-outline { 
+  --btn-bg: transparent; 
+  --btn-fg: var(--brand); 
+  --btn-bd: rgba(25,118,210,0.35);
+}
+
+/* Compact circular icon button */
+.btn-icon { 
+  --btn-bg: rgba(25,118,210,0.12); 
+  --btn-fg: var(--brand); 
+  --btn-bd: rgba(25,118,210,0.16); 
+  width: 44px; 
+  height: 44px; 
+  padding: 0; 
+  border-radius: 50%; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 18px; 
+}
+body.dark .btn-icon { --btn-bg: rgba(100,181,246,0.10); --btn-fg: var(--brand-2); --btn-bd: rgba(100,181,246,0.22); }
+
+.btn .icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; }
+
+/* Place existing floating buttons into the new visual system without changing HTML positions */
+body.terms-page .back-button, body.terms-page .back-prev { 
+  background: rgba(25,118,210,0.08) !important; 
+  color: var(--brand) !important; 
+  border: 1px solid rgba(25,118,210,0.16) !important; 
+  border-radius: 12px !important; 
+  font-weight: 700 !important; 
+  box-shadow: 0 8px 22px rgba(2,6,23,0.06) !important; 
+}
+body.dark.terms-page .back-button, body.dark.terms-page .back-prev { background: rgba(100,181,246,0.10) !important; color: var(--brand-2) !important; border-color: rgba(100,181,246,0.22) !important; }
+
+/* Refresh: redesigned icon button */
+.btn-refresh { 
+  --btn-bg: rgba(25,118,210,0.12);
+  --btn-bd: rgba(25,118,210,0.16);
+  --btn-fg: var(--brand);
+  position: fixed;
+  top: calc(var(--nav-height) + 16px);
+  right: 72px;
+  z-index: 10020;
+  width: 44px; height: 44px; padding: 0; border-radius: 50%; 
+  background: var(--btn-bg); border: 1px solid var(--btn-bd); color: var(--btn-fg);
+  box-shadow: 0 8px 22px rgba(2,6,23,0.06);
+}
+.btn-refresh .svg { width: 20px; height: 20px; fill: currentColor; }
+@media (max-width: 600px){ .btn-refresh { top: calc(var(--nav-height) + 8px); right: 64px; } }
+
+/* Spin animation on click */
+@keyframes terms-spin { to { transform: rotate(360deg); } }
+.btn-refresh.is-spinning .svg { animation: terms-spin 900ms linear infinite; }
+
+/* Footer note */
+.terms-footer { margin-top: 16px; color: var(--terms-subtext); }
+
+/* Fine-tuned space and list */
+.terms-card .about-body li { color: var(--terms-subtext); margin: 6px 0; }
+
+/* Reduce decorative uiverse span noise on this page if still present */
+body.terms-page .uiverse-btn span:not(:nth-child(6)) { display: none !important; }
+
+/* Let the theme toggle reuse the icon button visuals */
+/* Place homepage theme button at top-right */
+/* theme button 内置于菜单项，因此不再进行 fixed 定位 */
+body.terms-page #themeButton { position: static; }
+
+/* Left-side back buttons: align just below nav for this page */
+/* 隐藏散落的独立按钮，集中于汉堡菜单 */
+body.terms-page .back-button, body.terms-page .back-prev, body.terms-page .btn-refresh { display: none !important; }
+
+/* 汉堡菜单（右上角） */
+.terms-actions { position: fixed; top: calc(var(--nav-height) + 12px); left: 16px; z-index: 10030; }
+@media (max-width: 600px){ .terms-actions { top: calc(var(--nav-height) + 6px); left: 8px; } }
+
+.menu-fab {
+  position: relative;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(25,118,210,0.16);
+  background: rgba(25,118,210,0.12);
+  color: var(--brand);
+  box-shadow: 0 8px 22px rgba(2,6,23,0.06);
+  cursor: pointer;
+  transition: transform .18s cubic-bezier(.2,.9,.3,1), box-shadow .18s ease, background .24s ease;
+}
+body.dark .menu-fab { border-color: rgba(100,181,246,0.22); background: rgba(100,181,246,0.10); color: var(--brand-2); }
+.menu-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(2,6,23,0.10); }
+.menu-fab:active { transform: translateY(0) scale(.98); }
+
+.menu-fab .bar { position: absolute; left: 12px; right: 12px; height: 2px; background: currentColor; border-radius: 1px; transition: transform .22s ease, opacity .22s ease, top .22s ease; }
+.menu-fab .bar:nth-child(1){ top: 14px; }
+.menu-fab .bar:nth-child(2){ top: 20px; }
+.menu-fab .bar:nth-child(3){ top: 26px; }
+
+.terms-actions.open .menu-fab .bar:nth-child(1){ top: 20px; transform: rotate(45deg); }
+.terms-actions.open .menu-fab .bar:nth-child(2){ opacity: 0; }
+.terms-actions.open .menu-fab .bar:nth-child(3){ top: 20px; transform: rotate(-45deg); }
+
+@keyframes fab-spin { to { transform: rotate(360deg); } }
+.menu-fab.spin { animation: fab-spin 600ms linear 1; }
+
+/* 菜单面板 */
+.menu-panel {
+  position: absolute; right: 0; top: 52px;
+  min-width: 220px; max-width: 280px;
+  background: var(--terms-card);
+  color: var(--terms-text);
+  border: 1px solid var(--terms-border);
+  border-radius: 14px;
+  box-shadow: var(--terms-shadow);
+  padding: 8px;
+  transform: translateY(-6px) scale(.98);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: transform .22s ease, opacity .22s ease, visibility .22s;
+}
+.terms-actions .menu-panel { right: auto; left: 0; }
+.terms-actions.open .menu-panel { transform: translateY(0) scale(1); opacity: 1; visibility: visible; pointer-events: auto; }
+
+.menu-item {
+  display: flex; align-items: center; gap: 10px; justify-content: flex-start;
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit; text-decoration: none; border: none; cursor: pointer;
+  transition: background .18s ease, transform .12s ease;
+}
+.menu-item:hover { background: rgba(25,118,210,0.08); }
+body.dark .menu-item:hover { background: rgba(100,181,246,0.10); }
+.menu-item:active { transform: translateY(1px); }
+.menu-item .mi { width: 20px; display: inline-flex; align-items: center; justify-content: center; }
+
+.menu-item-theme { gap: 12px; }
+.menu-item-theme theme-button { margin-left: auto; }
+
+/* 不使用遮罩，根据用户要求移除遮罩交互 */

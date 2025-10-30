@@ -8,28 +8,44 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/dark.css">
 	<link rel="stylesheet" type="text/css" href="css/about.css">
+	<link rel="stylesheet" type="text/css" href="css/terms.css">
 </head>
 <body class="terms-page">
 	<div class="about-wrap">
-		<a class="back-button uiverse-btn" href="index.html">
-			<span></span><span></span><span></span><span></span><span></span>
-			<span>🏠 返回主页</span>
+		<a class="back-button btn btn-ghost" href="index.html" aria-label="返回主页">
+			<span class="icon" aria-hidden="true">🏠</span>
+			<span>返回主页</span>
 		</a>
-		<a class="back-prev uiverse-btn" href="#" onclick="history.back(); return false;">
-			<span></span><span></span><span></span><span></span><span></span>
-			<span>← 返回上一页</span>
-		</a>
-		<button id="darkToggle" class="uiverse-btn" type="button" aria-label="切换夜间模式">
-			<span></span><span></span><span></span><span></span><span></span>
+		<button class="back-prev btn btn-ghost" type="button" aria-label="返回上一页" onclick="history.back(); return false;">
+			<span class="icon" aria-hidden="true">←</span>
+			<span>上一页</span>
 		</button>
 
-		<!-- 刷新按钮 -->
-		<button class="refresh-btn" title="刷新页面" aria-label="刷新页面">
-		  <span class="refresh-btn__text">刷新</span>
-		  <span class="refresh-btn__icon" aria-hidden="true">
-		    <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
-		  </span>
-		</button>
+		<!-- 统一操作：右上角汉堡菜单（收纳 主题/刷新/返回） -->
+		<div class="terms-actions">
+			<button id="menuToggle" class="menu-fab" aria-label="打开菜单" aria-expanded="false" aria-controls="menuPanel">
+				<span class="bar"></span>
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</button>
+			<div id="menuPanel" class="menu-panel" role="menu" aria-hidden="true">
+				<a class="menu-item" href="index.html" role="menuitem">
+					<span class="mi" aria-hidden="true">🏠</span><span>返回主页</span>
+				</a>
+				<button id="miBack" class="menu-item" type="button" role="menuitem">
+					<span class="mi" aria-hidden="true">←</span><span>返回上一页</span>
+				</button>
+				<div class="menu-item menu-item-theme" role="menuitem" aria-label="主题">
+					<span class="mi" aria-hidden="true">🌓</span><span>主题</span>
+					<theme-button id="themeButton" size="1.0"></theme-button>
+				</div>
+				<button id="miRefresh" class="menu-item" type="button" role="menuitem">
+					<span class="mi" aria-hidden="true">⟳</span><span>刷新</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- 旧的独立刷新按钮已移除（改为汉堡菜单内） -->
 		<div class="terms-header">
 			<div class="about-logo"><img src="favicon.png" alt="logo"></div>
 			<div>
@@ -42,13 +58,13 @@
 			<div class="about-body">
 				<p>欢迎使用 HUNGRY_M0 提供的各项服务。请在使用前仔细阅读本服务条款（下称“条款”）。访问或使用本服务即表示您已阅读、理解并同意受本条款约束。</p>
 
-				<h3>一、服务范围</h3>
+				<h3 id="section-1">一、服务范围</h3>
 				<p>本服务包括但不限于网站内容浏览、页面展示、工具使用及可能提供的其他在线功能。我们保留对服务内容、功能进行增删或调整的权利。</p>
 
-				<h3>二、账户与注册</h3>
+				<h3 id="section-2">二、账户与注册</h3>
 				<p>在需要注册账户的服务中，您应提供真实、准确的资料并妥善保管账户信息。若发现账户被未经授权使用，请及时联系我们并自行修改密码。</p>
 
-				<h3>三、使用规则</h3>
+				<h3 id="section-3">三、使用规则</h3>
 				<p>您承诺在法律许可范围内使用本服务，不得：</p>
 				<ul>
 					<li>上传或传播违法、侵权、淫秽、诽谤、暴力等非法或有害信息；</li>
@@ -57,25 +73,25 @@
 					<li>将本服务用于未经授权的商业用途或传播盗版内容；</li>
 				</ul>
 
-				<h3>四、您在服务中发布的内容</h3>
+				<h3 id="section-4">四、您在服务中发布的内容</h3>
 				<p>您对在本服务上传、发布或传播的内容承担全部责任。您应保证其内容不侵犯第三方权利，并遵守适用法律法规。我们有权基于法律或政策要求，移除违法或违规内容并采取相应措施。</p>
 
-				<h3>五、隐私与数据</h3>
+				<h3 id="section-5">五、隐私与数据</h3>
 				<p>我们的隐私政策说明了我们如何收集、使用和保护您的个人信息。使用本服务即表示您同意我们按照隐私政策处理您的数据。</p>
 
-				<h3>六、知识产权</h3>
+				<h3 id="section-6">六、知识产权</h3>
 				<p>除非另有说明，本服务中展示的文本、图像、代码以及其他材料的版权均归 HUNGRY_M0 或其权利人所有。未经授权，您不得复制、修改或发布该等内容用于公共或商业目的。</p>
 
-				<h3>七、免责与限制</h3>
+				<h3 id="section-7">七、免责与限制</h3>
 				<p>在适用法律允许的范围内，我们不对因使用或无法使用本服务而产生的直接或间接损失承担责任。同时，我们无法保证服务一定无中断、错误或无安全漏洞，但会尽合理努力维护服务稳定性与安全性。</p>
 
-				<h3>八、变更与终止</h3>
+				<h3 id="section-8">八、变更与终止</h3>
 				<p>我们可随时根据需要修改本条款或终止部分/全部服务。条款变更后，继续使用服务即表示接受更新后的条款。若您不同意变更，请停止使用本服务。</p>
 
-				<h3>九、争议解决</h3>
+				<h3 id="section-9">九、争议解决</h3>
 				<p>本条款适用中华人民共和国法律。如发生争议，双方应先友好协商；协商不成的，任何一方可向有管辖权的法院提起诉讼。</p>
 
-				<h3>十、联系我们</h3>
+				<h3 id="section-10">十、联系我们</h3>
 				<p>如对本条款有疑问或需报告侵权，请通过本站的联系方式页面与我们联系。</p>
 			</div>
 		</div>
@@ -86,5 +102,47 @@
 	<script type="text/javascript" src="JavaScript/page_transitions.js"></script>
 	<script type="text/javascript" src="JavaScript/dark_theme.js"></script>
 	<script type="text/javascript" src="JavaScript/nav_mobile.js"></script>
+	<script src="JavaScript/theme_button.js"></script>
+	<script>
+	// 套用主页主题按钮的联动逻辑（与 localStorage/site_theme 打通）
+	(function(){
+		const KEY = 'site_theme';
+		function apply(isDark){
+			if(isDark){ document.body.classList.add('dark'); }
+			else { document.body.classList.remove('dark'); }
+			try{ localStorage.setItem(KEY, isDark ? 'dark' : 'light'); }catch(e){}
+		}
+		document.addEventListener('DOMContentLoaded', function(){
+			var btn = document.getElementById('themeButton');
+			if(!btn) return;
+			try{
+				var stored = localStorage.getItem(KEY);
+				btn.setAttribute('value', stored === 'dark' ? 'dark' : 'light');
+			}catch(e){}
+			btn.addEventListener('change', function(e){
+				apply(e && e.detail === 'dark');
+			});
+		});
+	})();
+	// 汉堡菜单：开合/遮罩/动作绑定
+	(function(){
+		document.addEventListener('DOMContentLoaded', function(){
+			var wrap = document.querySelector('.terms-actions');
+			if(!wrap) return;
+			var fab = document.getElementById('menuToggle');
+			var panel = document.getElementById('menuPanel');
+			function setOpen(open){
+				wrap.classList.toggle('open', open);
+				fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+				panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+			}
+			fab.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!wrap.classList.contains('open')); });
+			document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) setOpen(false); });
+			document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
+			var back = document.getElementById('miBack'); if(back){ back.addEventListener('click', function(){ history.back(); }); }
+			var ref = document.getElementById('miRefresh'); if(ref){ ref.addEventListener('click', function(){ fab.classList.add('spin'); setTimeout(function(){ location.reload(); }, 280); }); }
+		});
+	})();
+	</script>
 </body>
 </html>
