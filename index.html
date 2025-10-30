@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-last-modified="2025-10-29T16:51:13+08:00">
+<html lang="zh" data-last-modified="2025-10-30T13:54:29+08:00">
 	<head>
 	<meta charset="UTF-8">
 	<title>HUNGRY_M0 主页</title>
@@ -232,7 +232,7 @@
 								<span>Rust</span>
 								<span>php</span>
 							</div>
-							<a class="proj-btn" href="https://watchmedo.hungrym0.top/public/index.php">查看项目</a>
+							<a class="proj-btn" href="https://watchmedo.hungrym0.top/public/index.php" data-maintenance="true">查看项目</a>
 						</div>
 					</article>
 
@@ -257,6 +257,19 @@
 		</aside>
 		</div>
 		</main>
+		<!-- 维护提示弹窗（自定义样式，非 alert） -->
+		<div id="maintenanceModal" class="notice-modal" role="dialog" aria-modal="true" aria-labelledby="maintTitle" aria-describedby="maintDesc" aria-hidden="true">
+			<div class="notice-modal__backdrop" data-close="maint"></div>
+			<div class="notice-modal__card" role="document">
+				<button class="notice-modal__close" type="button" aria-label="关闭" title="关闭" data-close="maint">×</button>
+				<div class="notice-modal__icon" aria-hidden="true">🚫</div>
+				<h3 class="notice-modal__title" id="maintTitle">维护中，暂停服务</h3>
+				<p class="notice-modal__desc" id="maintDesc">“实时视奸”项目正在维护中，暂不可用。请稍后再试～</p>
+				<div class="notice-modal__actions">
+					<button class="notice-modal__btn" type="button" data-close="maint">知道了</button>
+				</div>
+			</div>
+		</div>
 		<!-- 项目列表弹窗（非新页面） -->
 		<div id="projectsModal" class="proj-modal" role="dialog" aria-modal="true" aria-labelledby="projectsModalTitle" aria-hidden="true">
 			<div class="proj-modal__backdrop" data-close="modal"></div>
@@ -277,7 +290,7 @@
 									<span>Tauri</span><span>React</span><span>TypeScript</span><span>Tailwind CSS</span><span>Rust</span><span>PHP</span>
 								</div>
 								<div class="proj-item__actions">
-									<a class="proj-item__btn" href="https://watchmedo.hungrym0.top/public/index.php" target="_blank" rel="noopener">打开</a>
+									<a class="proj-item__btn" href="https://watchmedo.hungrym0.top/public/index.php" target="_blank" rel="noopener" data-maintenance="true">打开</a>
 								</div>
 							</div>
 						</article>
@@ -544,6 +557,74 @@
 
 	<!-- 移动端抽屉已移除：统一使用内联留言板表单 -->
 
+	<!-- 维护弹窗交互脚本：拦截 watchmedo 项目点击，弹出自定义提示框 -->
+	<script>
+	(function(){
+		function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+		ready(function(){
+			var modal = document.getElementById('maintenanceModal');
+			if(!modal) return;
+			var closeEls = modal.querySelectorAll('[data-close="maint"], .notice-modal__backdrop');
+			var lastActive = null;
+
+			function lockScroll(lock){
+				if(lock){
+					document.documentElement.style.overflow = 'hidden';
+					document.body.style.overflow = 'hidden';
+				}else{
+					document.documentElement.style.overflow = '';
+					document.body.style.overflow = '';
+				}
+			}
+
+			function open(){
+				lastActive = document.activeElement;
+				modal.setAttribute('aria-hidden','false');
+				modal.classList.remove('is-closing');
+				modal.classList.add('is-open');
+				lockScroll(true);
+				var focusTarget = modal.querySelector('.notice-modal__btn') || modal.querySelector('.notice-modal__close');
+				if(focusTarget) focusTarget.focus();
+			}
+
+			function close(){
+				modal.classList.remove('is-open');
+				modal.classList.add('is-closing');
+				setTimeout(function(){
+					modal.classList.remove('is-closing');
+					modal.setAttribute('aria-hidden','true');
+					lockScroll(false);
+					if(lastActive && typeof lastActive.focus === 'function') lastActive.focus();
+				}, 260);
+			}
+
+			closeEls.forEach(function(el){ el.addEventListener('click', close); });
+			document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+			modal.addEventListener('keydown', function(e){
+				if(e.key !== 'Tab') return;
+				var focusables = modal.querySelectorAll('a,button,input,select,textarea,[tabindex]:not([tabindex="-1"])');
+				if(!focusables.length) return;
+				var first = focusables[0];
+				var last = focusables[focusables.length-1];
+				if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+				else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+			});
+
+			// 拦截带 data-maintenance 的链接
+			var targets = document.querySelectorAll('a[data-maintenance="true"]');
+			targets.forEach(function(a){
+				a.addEventListener('click', function(e){
+					e.preventDefault();
+					open();
+				});
+				// 设置提示状态样式
+				a.setAttribute('title','维护中，暂不可用');
+				a.classList.add('is-disabled-link');
+			});
+		});
+	})();
+	</script>
+
 	<!-- 项目弹窗交互脚本：打开/关闭、ESC、遮罩关闭、焦点管理 -->
 	<script>
 	(function(){
@@ -608,6 +689,7 @@
 
 	</body>
 </html>
+
 
 
 

@@ -939,6 +939,41 @@ body.dark .proj-item{ background: rgba(255,255,255,0.04); border-color: rgba(255
 body.dark .proj-item__desc{ color: #9db1c9; }
 body.dark .proj-item__tags span{ background: rgba(31,111,196,0.26); color: #cfe4ff; border-color: rgba(31,111,196,0.35); }
 
+/* === Maintenance Notice Modal 弹窗样式（与项目弹窗风格统一） === */
+.notice-modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:100001; opacity:0; visibility:hidden; pointer-events:none; }
+.notice-modal.is-open{ opacity:1; visibility:visible; pointer-events:auto; }
+.notice-modal.is-closing{ opacity:0; visibility:visible; pointer-events:none; }
+.notice-modal__backdrop{ position:absolute; inset:0; background: rgba(6,11,20,0.55); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.notice-modal__card{ position:relative; width:min(420px, 92vw); background:#fff; color:#0f1725; border-radius:16px; box-shadow:0 22px 56px rgba(12,24,40,.22); padding:22px 18px 16px; border:1px solid rgba(12,24,40,.06); text-align:center; }
+.notice-modal__close{ position:absolute; right:8px; top:8px; width:34px; height:34px; border-radius:10px; border:0; background:transparent; color:#546079; font-size:22px; cursor:pointer; }
+.notice-modal__close:hover{ background: rgba(31,111,196,0.08); color:#1f6fc4; }
+.notice-modal__icon{ font-size:38px; line-height:1; margin:4px 0 8px; }
+.notice-modal__title{ margin:0 0 8px; font-size:18px; font-weight:800; }
+.notice-modal__desc{ margin:0 0 14px; font-size:14px; color:#546079; }
+.notice-modal__actions{ display:flex; align-items:center; justify-content:center; gap:10px; }
+.notice-modal__btn{ display:inline-flex; align-items:center; justify-content:center; padding:8px 14px; border-radius:10px; border:0; font-weight:700; color:#fff; background:linear-gradient(180deg,#2ba8fb,#1f6fc4); cursor:pointer; box-shadow:0 10px 24px rgba(31,111,196,.14); }
+.notice-modal__btn:hover{ filter:brightness(1.05); }
+
+/* 动画与过渡（与项目弹窗一致的节奏） */
+@keyframes notice-fade-in{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes notice-fade-out{ from{ opacity:1; } to{ opacity:0; } }
+@keyframes notice-pop-in{ from{ opacity:0; transform: translateY(8px) scale(.96); } to{ opacity:1; transform: translateY(0) scale(1); } }
+@keyframes notice-pop-out{ from{ opacity:1; transform: translateY(0) scale(1); } to{ opacity:0; transform: translateY(8px) scale(.96); } }
+.notice-modal.is-open .notice-modal__backdrop{ animation: notice-fade-in 220ms ease both; }
+.notice-modal.is-open .notice-modal__card{ animation: notice-pop-in 220ms cubic-bezier(.2,.9,.2,1) both; }
+.notice-modal.is-closing .notice-modal__backdrop{ animation: notice-fade-out 200ms ease both; }
+.notice-modal.is-closing .notice-modal__card{ animation: notice-pop-out 200ms cubic-bezier(.2,.9,.2,1) both; }
+
+/* 暗色适配 */
+body.dark .notice-modal__backdrop{ background: rgba(0,0,0,0.6); }
+body.dark .notice-modal__card{ background:#0f1725; color:#eaf2ff; border-color: rgba(255,255,255,0.06); }
+body.dark .notice-modal__desc{ color:#9db1c9; }
+body.dark .notice-modal__close{ color:#cfe4ff; }
+body.dark .notice-modal__close:hover{ background: rgba(31,111,196,0.18); color:#ffffff; }
+
+/* 维护中链接的轻微视觉弱化（仍可点击以弹窗） */
+a.is-disabled-link{ cursor: not-allowed; opacity: .82; }
+
 /* === 交互增强：过渡与动画、按钮样式、移动端底部抽屉适配 === */
 /* 查看全部按钮：提升可点击性与动效 */
 .projects-header .view-all{
