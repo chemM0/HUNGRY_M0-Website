@@ -1,5 +1,11 @@
 // Modernize existing refresh buttons and ensure click works reliably
+// Refresh button has been intentionally disabled site-wide. The original script
+// enhanced or created a corner refresh button; to remove the desktop refresh
+// affordance we make this module a no-op. If you later want to re-enable it,
+// remove this early return and restore the original implementation below.
 (function(){
+    // no-op: do not create or enhance refresh buttons
+    return;
     function enhanceButton(btn){
         if(!btn || btn.__modernized) return;
         btn.__modernized = true;
