@@ -1,6 +1,6 @@
 #!/bin/sh
-# POSIX-compatible wrapper to update index.html data-last-modified using git
-# Prefer pwsh if available (for robust replacement), else use sed/perl fallback.
+# POSIX-compatible script to set index.html data-last-modified to CURRENT local time (ISO8601 with timezone).
+# Prefer pwsh if available (uses the PowerShell script), else fallback to perl replacement.
 
 TOP=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
 if [ -z "$TOP" ]; then
@@ -12,30 +12,20 @@ if [ ! -f "$INDEX" ]; then
   exit 0
 fi
 
-TIME=$(git log -1 --format=%cI -- . "\:(exclude)index.html" 2>/dev/null || echo "")
-if [ -z "$TIME" ]; then
-  # Try iterating recent commits and pick the first that doesn't touch index.html
-  for c in $(git rev-list --max-count=200 HEAD 2>/dev/null); do
-    if ! git diff-tree --no-commit-id --name-only -r "$c" | grep -qx "index.html"; then
-      TIME=$(git show -s --format=%cI "$c" 2>/dev/null || echo "")
-      break
-    fi
-  done
-  if [ -z "$TIME" ]; then
-    TIME=$(git log -1 --format=%cI -- index.html 2>/dev/null || echo "")
-  fi
-fi
-TIME=$(echo "$TIME" | tr -d '\n' | sed -e 's/^[[:space:]]*//;s/[[:space:]]*$//')
-if [ -z "$TIME" ]; then
-  exit 0
-fi
-
 if command -v pwsh >/dev/null 2>&1; then
   pwsh -NoProfile -ExecutionPolicy Bypass -File "$TOP/scripts/update_last_modified.ps1"
   exit 0
 fi
 
-# Fallback: try to inject or replace data-last-modified attribute using perl
+# Compute NOW in ISO-8601 with timezone. Prefer `date -Iseconds` if available.
+if date -Iseconds >/dev/null 2>&1; then
+  TIME=$(date -Iseconds)
+else
+  # Fallback: %z gives +0800; insert a colon before the last two digits to become +08:00
+  TIME=$(date "+%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([+-][0-9]{2})([0-9]{2})$/\1:\2/')
+fi
+
+# Fallback replacement using perl
 perl -0777 -pe "if (s/(<html\\b[^>]*?)\\sdata-last-modified=\"[^\"]*\"/\$1 data-last-modified=\"$TIME\"/s) { } else { s/(<html\\b)/\$1 data-last-modified=\"$TIME\"/s } print;" "$INDEX" > "$INDEX.tmp" && mv "$INDEX.tmp" "$INDEX" && git add "$INDEX" || true
 
 exit 0

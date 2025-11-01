@@ -1,33 +1,14 @@
 #!/usr/bin/env pwsh
-# Update index.html's data-last-modified attribute to the latest git commit time for that file.
-# This script is safe to run multiple times and will `git add index.html` when it changes.
+# Update index.html's data-last-modified attribute to the CURRENT local time with timezone.
+# This makes the homepage show the push/commit time precisely.
 try {
     $top = git rev-parse --show-toplevel 2>$null
     if (-not $top) { exit 0 }
     $top = $top.Trim()
     Set-Location $top
 
-    # Prefer the latest commit time for the repository excluding index.html itself.
-    # This prevents the timestamp being overwritten by the script's own update of index.html.
-    # Try pathspec exclusion (modern git)
-    $time = git log -1 --format=%cI -- . ":(exclude)index.html" 2>$null
-    if (-not $time) {
-        # If exclude not supported or returns nothing, iterate recent commits and pick the first commit that did NOT touch index.html.
-        $commits = git rev-list --max-count=200 HEAD 2>$null
-        foreach ($c in $commits) {
-            $files = git diff-tree --no-commit-id --name-only -r $c 2>$null
-            if ($files -and ($files -notcontains 'index.html')) {
-                $time = git show -s --format=%cI $c 2>$null
-                break
-            }
-        }
-        # Final fallback: use index.html's last commit time if nothing else found
-        if (-not $time) {
-            $time = git log -1 --format=%cI -- index.html 2>$null
-        }
-    }
-    if (-not $time) { exit 0 }
-    $time = $time.Trim()
+    # Use local time with timezone offset, ISO-8601 without milliseconds (e.g., 2025-11-02T21:30:15+08:00)
+    $time = [System.DateTimeOffset]::Now.ToString('yyyy-MM-ddTHH:mm:sszzz')
 
     $index = Join-Path $top 'index.html'
     if (-not (Test-Path $index)) { exit 0 }
